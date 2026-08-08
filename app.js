@@ -76,11 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const footer = document.getElementById('social-footer');
         let hasLink = false;
 
+        const ensureHttp = (url) => {
+            if (!url) return '';
+            const trimmed = url.trim();
+            if (trimmed === '') return '';
+            if (!/^https?:\/\//i.test(trimmed)) {
+                return 'https://' + trimmed;
+            }
+            return trimmed;
+        };
+
         const setLink = (id, url) => {
             const el = document.getElementById(id);
             if (el) {
-                if (url && url.trim() !== '') {
-                    el.href = url;
+                const validUrl = ensureHttp(url);
+                if (validUrl) {
+                    el.href = validUrl;
                     el.classList.remove('hidden');
                     hasLink = true;
                 } else {

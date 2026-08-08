@@ -417,9 +417,9 @@ body {
 
 /* Announcement Banner */
 .announcement-banner {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
     color: white;
-    padding: 10px 15px;
+    padding: 12px 15px;
     text-align: center;
     font-weight: bold;
     font-size: 1.1rem;
@@ -430,12 +430,13 @@ body {
 }
 .announcement-banner .marquee {
     white-space: nowrap;
-    animation: marquee 15s linear infinite;
+    animation: marquee 12s linear infinite;
     display: inline-block;
+    padding-left: 100%;
 }
 @keyframes marquee {
-    0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
 }
 
 /* Social Media Footer */
@@ -456,14 +457,20 @@ body {
 .social-icons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 25px;
 }
 .social-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s;
     display: inline-block;
+    color: #94a3b8;
 }
 .social-icon:hover {
     transform: scale(1.2) translateY(-5px);
 }
+#link-facebook:hover { color: #1877f2; }
+#link-instagram:hover { color: #e4405f; }
+#link-tiktok:hover { color: #ffffff; }
+#link-whatsapp:hover { color: #25d366; }
+#link-googlemaps:hover { color: #ea4335; }
