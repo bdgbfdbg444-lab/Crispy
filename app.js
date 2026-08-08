@@ -448,8 +448,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                             
                             const msg = `أنا ${custName}، قمت بتحويل مبلغ ${orderTotal} ج.م لتأكيد طلب رقم ${shortOrderId}، (مرفق مع هذه الرسالة سكرين شوت إيصال التحويل).`;
-                            const waUrl = `https://wa.me/${phoneNum}?text=${encodeURIComponent(msg)}`;
-                            window.open(waUrl, '_blank');
+                            const waUrl = `whatsapp://send?phone=${phoneNum}&text=${encodeURIComponent(msg)}`;
+                            window.location.href = waUrl;
                             paymentModal.classList.add('hidden');
                         };
                         
