@@ -436,10 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         paymentWallet.textContent = walletNumber;
                         
                         whatsappConfirmBtn.onclick = () => {
-                            let phoneNum = (currentMarketing && currentMarketing.whatsAppLink) ? currentMarketing.whatsAppLink : '';
-                            if (phoneNum.includes('wa.me/')) {
-                                phoneNum = phoneNum.split('wa.me/')[1];
-                            }
+                            let phoneNum = (currentMarketing && currentMarketing.orderWhatsAppNumber) ? currentMarketing.orderWhatsAppNumber.trim() : '';
+                            // Remove any spaces or special characters just in case
+                            phoneNum = phoneNum.replace(/\s+/g, '');
                             
                             const msg = `أنا ${custName}، قمت بتحويل مبلغ ${orderTotal} ج.م لتأكيد طلب رقم ${shortOrderId}، (مرفق مع هذه الرسالة سكرين شوت إيصال التحويل).`;
                             const waUrl = `https://wa.me/${phoneNum}?text=${encodeURIComponent(msg)}`;
