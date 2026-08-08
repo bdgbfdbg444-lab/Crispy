@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             
             if (data) {
+                if (data.restaurant) {
+                    applyRestaurantInfo(data.restaurant);
+                }
                 if (data.marketing) {
                     applyMarketing(data.marketing);
                 }
@@ -56,6 +59,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error fetching menu:', error);
             showError('حدث خطأ أثناء تحميل المنيو. يرجى المحاولة لاحقاً.');
+        }
+    };
+
+    const applyRestaurantInfo = (restaurant) => {
+        if (!restaurant) return;
+        
+        const titleEl = document.getElementById('restaurant-title');
+        const logoEl = document.getElementById('restaurant-logo');
+        
+        if (titleEl && restaurant.name) {
+            titleEl.textContent = restaurant.name;
+        }
+        
+        if (logoEl && restaurant.logoPath && restaurant.logoPath.trim() !== '') {
+            logoEl.src = restaurant.logoPath;
+            logoEl.style.display = 'block';
+        } else if (logoEl) {
+            logoEl.style.display = 'none';
         }
     };
 
