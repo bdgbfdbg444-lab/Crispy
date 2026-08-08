@@ -20,15 +20,51 @@
         <p>جاري تحميل أشهى الأطباق...</p>
     </div>
 
-    <main id="menu-container" class="menu-container" style="display: none;">
-        <!-- سيتم حقن الأقسام والمنتجات هنا عبر JavaScript -->
+    <!-- Main Content -->
+    <main id="menu-container">
+        <!-- سيتم حقن الأقسام والأصناف هنا بواسطة JavaScript -->
     </main>
 
-    <footer class="footer">
-        <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
-    </footer>
+    <!-- Floating Cart Button -->
+    <button id="cart-fab" class="cart-fab hidden">
+        <span class="cart-icon">🛒</span>
+        <span id="cart-count" class="cart-count">0</span>
+    </button>
 
-    <!-- ملف التكوين (قم بتعديله قبل الرفع) -->
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>سلة الطلبات 🛒</h2>
+                <button id="close-cart" class="close-btn">&times;</button>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- سيتم حقن الأصناف المطلوبة هنا -->
+            </div>
+            <div class="cart-summary">
+                <div class="cart-total">الإجمالي: <span id="cart-total-price">0.00</span> ج.م</div>
+                
+                <div class="order-form">
+                    <input type="text" id="customer-name" placeholder="رقم الطاولة أو اسم العميل *" required />
+                    <textarea id="order-notes" placeholder="ملاحظات إضافية (مثال: بدون صوص)..." rows="2"></textarea>
+                </div>
+                
+                <button id="checkout-btn" class="checkout-btn">تأكيد وإرسال الطلب</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">✅</h1>
+            <h2>تم إرسال طلبك بنجاح!</h2>
+            <p style="margin-top: 1rem; color: #64748b;">جاري تحضير طلبك، شكراً لاختيارك The Sneaker Box BBQ.</p>
+            <button id="close-success" class="checkout-btn" style="margin-top: 1.5rem;">حسناً</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Not needed, using Fetch) -->
     <script src="config.js"></script>
     <script src="app.js"></script>
 </body>

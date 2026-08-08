@@ -158,3 +158,200 @@ body {
     font-size: 0.9rem;
     margin-top: 2rem;
 }
+
+/* Cart Floating Action Button */
+.cart-fab {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cart-fab:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(217, 119, 6, 0.5);
+}
+.cart-fab.hidden {
+    display: none;
+}
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    backdrop-filter: blur(4px);
+}
+.modal.hidden {
+    display: none;
+}
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+.modal-header {
+    padding: 1.2rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+}
+.cart-items {
+    padding: 1.2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.cart-item-info {
+    flex: 1;
+}
+.cart-item-title {
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 0.2rem;
+}
+.cart-item-price {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #cbd5e1;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+.qty-btn:hover {
+    background-color: #f1f5f9;
+}
+
+.cart-summary {
+    padding: 1.2rem;
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+.cart-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+.order-form input, .order-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    font-family: inherit;
+    resize: vertical;
+}
+.order-form input:focus, .order-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.checkout-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.checkout-btn:hover {
+    background-color: #b45309;
+}
+.text-center {
+    text-align: center;
+    padding: 2rem;
+}
+.add-to-cart-btn {
+    margin-top: 1rem;
+    padding: 0.6rem;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.add-to-cart-btn:hover {
+    background-color: #b45309;
+}
+.product-card.sold-out .add-to-cart-btn {
+    display: none;
+}
