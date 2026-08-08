@@ -121,8 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         categories.forEach((category, index) => {
             const products = category.products || [];
-            if (products.length === 0) return;
-
+            
             const categoryId = `cat-${index}`;
 
             // Create Nav Button
@@ -141,28 +140,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Create Section
             const section = document.createElement('section');
-            section.className = 'category-section';
             section.id = categoryId;
-
-            const title = document.createElement('h2');
-            title.className = 'category-title';
-            title.textContent = category.name;
-            section.appendChild(title);
-
+            section.className = 'category-section';
+            
+            section.innerHTML = `<h2 class="category-title">${category.name}</h2>`;
+            
             const grid = document.createElement('div');
             grid.className = 'products-grid';
 
-            products.forEach(product => {
-                const card = document.createElement('div');
-                card.className = `product-card ${product.isSoldOut ? 'sold-out' : ''}`;
+            if (products.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #64748B; padding: 20px;">لا يوجد منتجات في هذا القسم حالياً.</p>';
+            } else {
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = `product-card ${product.isSoldOut ? 'sold-out' : ''}`;
 
-                if (product.imagePath) {
-                    const img = document.createElement('img');
-                    img.src = product.imagePath;
-                    img.alt = product.name;
-                    img.className = 'product-image';
-                    card.appendChild(img);
-                }
+                    if (product.imagePath) {
+                        const img = document.createElement('img');
+                        img.src = product.imagePath;
+                        img.alt = product.name;
+                        img.className = 'product-image';
+                        card.appendChild(img);
+                    }
 
                 const info = document.createElement('div');
                 info.className = 'product-info';
@@ -192,7 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 card.appendChild(info);
                 grid.appendChild(card);
-            });
+                });
+            }
 
             section.appendChild(grid);
             menuContainer.appendChild(section);
@@ -311,6 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
+                    localStorage.setItem('lastCustomerName', custName);
+                    localStorage.setItem('lastCustomerPhone', custPhone);
+                    
                     cart = [];
                     updateCartUI();
                     document.getElementById('customer-name').value = '';
@@ -326,6 +329,87 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 checkoutBtn.textContent = 'تأكيد وإرسال الطلب';
                 checkoutBtn.disabled = false;
+            }
+        };
+    }
+
+    // --- Rating Logic ---
+    const ratingFab = document.getElementById('rating-fab');
+    const ratingModal = document.getElementById('rating-modal');
+    const closeRatingBtn = document.getElementById('close-rating');
+    const submitRatingBtn = document.getElementById('submit-rating-btn');
+    const stars = document.querySelectorAll('.stars-container i');
+    const ratingComment = document.getElementById('rating-comment');
+    let selectedRating = 0;
+
+    if (ratingFab) {
+        ratingFab.onclick = () => {
+            ratingModal.classList.remove('hidden');
+        };
+    }
+
+    if (closeRatingBtn) {
+        closeRatingBtn.onclick = () => {
+            ratingModal.classList.add('hidden');
+        };
+    }
+
+    stars.forEach(star => {
+        star.onclick = (e) => {
+            selectedRating = parseInt(e.target.getAttribute('data-value'));
+            stars.forEach(s => {
+                if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        };
+    });
+
+    if (submitRatingBtn) {
+        submitRatingBtn.onclick = async () => {
+            if (selectedRating === 0) {
+                alert('يرجى اختيار عدد النجوم للتقييم!');
+                return;
+            }
+
+            const custName = localStorage.getItem('lastCustomerName') || 'عميل غير مسجل';
+            const custPhone = localStorage.getItem('lastCustomerPhone') || 'غير محدد';
+
+            submitRatingBtn.textContent = 'جاري الإرسال...';
+            submitRatingBtn.disabled = true;
+
+            const reviewData = {
+                customerName: custName,
+                customerPhone: custPhone,
+                rating: selectedRating,
+                comment: ratingComment.value.trim(),
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(`${dbUrl}Reviews.json`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reviewData)
+                });
+
+                if (response.ok) {
+                    ratingModal.classList.add('hidden');
+                    showToast('تم إرسال تقييمك بنجاح. شكراً لك!');
+                    // Reset
+                    selectedRating = 0;
+                    stars.forEach(s => s.classList.remove('active'));
+                    ratingComment.value = '';
+                } else {
+                    alert('حدث خطأ أثناء إرسال التقييم.');
+                }
+            } catch (error) {
+                alert('تعذر الاتصال بالإنترنت.');
+            } finally {
+                submitRatingBtn.textContent = 'إرسال التقييم';
+                submitRatingBtn.disabled = false;
             }
         };
     }

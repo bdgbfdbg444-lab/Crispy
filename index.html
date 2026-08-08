@@ -40,6 +40,11 @@
         <span id="cart-count" class="cart-count">0</span>
     </button>
 
+    <!-- Floating Rating Button -->
+    <button id="rating-fab" class="rating-fab">
+        <span class="rating-icon">⭐</span>
+    </button>
+
     <!-- Cart Modal -->
     <div id="cart-modal" class="modal hidden">
         <div class="modal-content">
@@ -71,6 +76,26 @@
             <h2>تم إرسال طلبك بنجاح!</h2>
             <p style="margin-top: 1rem; color: #64748b;">جاري تحضير طلبك، شكراً لاختيارك The Sneaker Box BBQ.</p>
             <button id="close-success" class="checkout-btn" style="margin-top: 1.5rem;">حسناً</button>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="rating-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h2>قيّم تجربتك ⭐</h2>
+                <button id="close-rating" class="close-btn">&times;</button>
+            </div>
+            <p style="color: #64748b; margin-bottom: 15px;">رأيك يهمنا لتحسين جودة خدمتنا.</p>
+            <div class="stars-container" id="stars-container">
+                <i class="fa-solid fa-star" data-value="1"></i>
+                <i class="fa-solid fa-star" data-value="2"></i>
+                <i class="fa-solid fa-star" data-value="3"></i>
+                <i class="fa-solid fa-star" data-value="4"></i>
+                <i class="fa-solid fa-star" data-value="5"></i>
+            </div>
+            <textarea id="rating-comment" placeholder="أضف تعليقك هنا (اختياري)..." rows="3" style="width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"></textarea>
+            <button id="submit-rating-btn" class="checkout-btn" style="margin-top: 15px;">إرسال التقييم</button>
         </div>
     </div>
 

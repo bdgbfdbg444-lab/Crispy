@@ -474,3 +474,42 @@ body {
 #link-tiktok:hover { color: #ffffff; }
 #link-whatsapp:hover { color: #25d366; }
 #link-googlemaps:hover { color: #ea4335; }
+/* Rating FAB */
+.rating-fab {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: #ffffff;
+    color: #f97316;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #f97316;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+.rating-fab:hover {
+    transform: scale(1.1);
+}
+
+/* Stars */
+.stars-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 2.5rem;
+    color: #e2e8f0;
+    cursor: pointer;
+}
+.stars-container i.active {
+    color: #f59e0b;
+}
+.stars-container i:hover {
+    transform: scale(1.1);
+}
