@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -156,6 +156,26 @@
             </div>
 
             <button id="confirm-weight-btn" class="checkout-btn" style="width: 100%;">تأكيد وإضافة للسلة</button>
+        </div>
+    </div>
+
+        <!-- Addons Modal -->
+    <div id="addons-modal" class="modal hidden">
+        <div class="modal-content" style="padding: 25px; max-height: 80vh; display: flex; flex-direction: column;">
+            <span class="close-btn" id="close-addons-modal">&times;</span>
+            <h2 id="addons-item-name" style="color: var(--primary-color); margin-bottom: 5px;">اسم الصنف</h2>
+            <p id="addons-free-limit-text" style="color: #64748b; font-size: 0.9em; margin-bottom: 15px;"></p>
+            
+            <div id="addons-list" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; text-align: right; padding-right: 5px;">
+                <!-- Addons checkboxes injected here via JS -->
+            </div>
+            
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
+                <span style="font-size: 1.1em; color: #555;">الإجمالي: </span>
+                <span id="addons-price-display" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</span>
+            </div>
+
+            <button id="confirm-addons-btn" class="checkout-btn" style="width: 100%;">تأكيد وإضافة للسلة</button>
         </div>
     </div>
 

@@ -24,6 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentWallet = document.getElementById('payment-wallet');
     const whatsappConfirmBtn = document.getElementById('whatsapp-confirm-btn');
 
+    // Addons Modal UI
+    const addonsModal = document.getElementById('addons-modal');
+    const closeAddonsModalBtn = document.getElementById('close-addons-modal');
+    const addonsItemName = document.getElementById('addons-item-name');
+    const addonsFreeLimitText = document.getElementById('addons-free-limit-text');
+    const addonsList = document.getElementById('addons-list');
+    const addonsPriceDisplay = document.getElementById('addons-price-display');
+    const confirmAddonsBtn = document.getElementById('confirm-addons-btn');
+    
+    let currentAddonProduct = null;
+    let windowGlobalAddons = [];
+
     // Toast UI
     const toast = document.getElementById('toast');
 
@@ -50,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             
             if (data) {
+                if (data.addOns || data.addons) {
+                    windowGlobalAddons = data.addOns || data.addons || [];
+                }
+                
                 if (data.restaurant) {
                     applyRestaurantInfo(data.restaurant);
                 }
@@ -312,6 +328,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         window.addToCart = (product) => {
+            if (product.autoShowModifiers && windowGlobalAddons.length > 0) {
+                currentAddonProduct = product;
+                addonsItemName.textContent = product.name;
+                
+                const limit = product.freeModifiersLimit || 0;
+                if (limit > 0) {
+                    addonsFreeLimitText.textContent = `مسموح لك بـ ${limit} إضافات مجانية`;
+                } else {
+                    addonsFreeLimitText.textContent = '';
+                }
+                
+                addonsList.innerHTML = '';
+                windowGlobalAddons.forEach(addon => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '10px';
+                    
+                    const label = document.createElement('label');
+                    label.style.display = 'flex';
+                    label.style.alignItems = 'center';
+                    label.style.gap = '10px';
+                    label.style.cursor = 'pointer';
+                    
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = addon.id;
+                    cb.dataset.price = addon.price || 0;
+                    cb.dataset.name = addon.name;
+                    cb.dataset.group = addon.group || 'Free'; // Free or Paid
+                    cb.className = 'addon-checkbox';
+                    
+                    cb.onchange = calculateAddonsPrice;
+                    
+                    const text = document.createElement('span');
+                    text.textContent = `${addon.name} (+${addon.price} ج.م)`;
+                    text.style.color = '#333';
+                    
+                    label.appendChild(cb);
+                    label.appendChild(text);
+                    div.appendChild(label);
+                    addonsList.appendChild(div);
+                });
+                
+                calculateAddonsPrice();
+                addonsModal.classList.remove('hidden');
+                return;
+            }
+
             if (product.isSoldByWeight || product.IsSoldByWeight) {
                 currentWeightProduct = product;
                 currentWeight = 100;
@@ -325,11 +388,73 @@ document.addEventListener('DOMContentLoaded', () => {
             if (existing) {
                 existing.quantity += 1;
             } else {
-                cart.push({ product, quantity: 1 });
+                cart.push({ product: { ...product }, quantity: 1 });
             }
             updateCartUI();
             showToast(`تمت إضافة ${product.name} للسلة`);
         };
+
+        if (closeAddonsModalBtn) closeAddonsModalBtn.onclick = () => addonsModal.classList.add('hidden');
+
+        const calculateAddonsPrice = () => {
+            if (!currentAddonProduct) return;
+            const limit = currentAddonProduct.freeModifiersLimit || 0;
+            let freeCount = 0;
+            let totalAddonsPrice = 0;
+            const checkboxes = document.querySelectorAll('.addon-checkbox');
+            
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    const price = parseFloat(cb.dataset.price);
+                    if (cb.dataset.group === 'Free') {
+                        freeCount++;
+                        if (freeCount > limit) {
+                            totalAddonsPrice += price;
+                        }
+                    } else {
+                        // Paid addons always charge
+                        totalAddonsPrice += price;
+                    }
+                }
+            });
+            
+            const total = currentAddonProduct.sellingPrice + totalAddonsPrice;
+            addonsPriceDisplay.textContent = `${total.toFixed(2)} ج.م`;
+            return { totalAddonsPrice, total };
+        };
+
+        if (confirmAddonsBtn) {
+            confirmAddonsBtn.onclick = () => {
+                if (!currentAddonProduct) return;
+                
+                const prices = calculateAddonsPrice();
+                const checkboxes = document.querySelectorAll('.addon-checkbox:checked');
+                const selectedNames = Array.from(checkboxes).map(cb => cb.dataset.name);
+                
+                let customName = currentAddonProduct.name;
+                if (selectedNames.length > 0) {
+                    customName += ' | ' + selectedNames.join(', ');
+                }
+                
+                const customProduct = {
+                    ...currentAddonProduct,
+                    name: customName,
+                    sellingPrice: prices.total,
+                    autoShowModifiers: false // don't show again
+                };
+
+                const existing = cart.find(item => item.product.name === customProduct.name);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({ product: customProduct, quantity: 1 });
+                }
+                
+                updateCartUI();
+                showToast(`تمت إضافة ${currentAddonProduct.name} للسلة`);
+                addonsModal.classList.add('hidden');
+            };
+        }
 
         window.updateCartQuantity = (productName, delta) => {
             const itemIndex = cart.findIndex(i => i.product.name === productName);
