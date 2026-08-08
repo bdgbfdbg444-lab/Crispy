@@ -181,13 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     badge.className = 'sold-out-badge';
                     badge.textContent = 'نفذ حالياً / Sold Out';
                     info.appendChild(badge);
-                } else {
-                    const addBtn = document.createElement('button');
-                    addBtn.className = 'add-to-cart-btn';
-                    addBtn.textContent = 'إضافة للسلة +';
-                    addBtn.onclick = () => window.addToCart(product);
-                    info.appendChild(addBtn);
-                }
+                  } else {
+                      const addBtn = document.createElement('button');
+                      addBtn.className = 'add-to-cart-btn';
+                      addBtn.textContent = 'إضافة للسلة +';
+                      addBtn.onclick = () => window.addToCart(product);
+                      info.appendChild(addBtn);
+                  }
 
                 card.appendChild(info);
                 grid.appendChild(card);
@@ -215,7 +215,81 @@ document.addEventListener('DOMContentLoaded', () => {
         if (closeCartBtn) closeCartBtn.onclick = () => cartModal.classList.add('hidden');
         if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
 
+        // Weight Modal elements
+        const weightModal = document.getElementById('weight-modal');
+        const closeWeightModalBtn = document.getElementById('close-weight-modal');
+        const weightMinusBtn = document.getElementById('weight-minus-btn');
+        const weightPlusBtn = document.getElementById('weight-plus-btn');
+        const weightDisplay = document.getElementById('weight-display');
+        const weightPriceDisplay = document.getElementById('weight-price-display');
+        const confirmWeightBtn = document.getElementById('confirm-weight-btn');
+        const weightItemName = document.getElementById('weight-item-name');
+
+        let currentWeightProduct = null;
+        let currentWeight = 100; // starting at 100g
+        
+        if (closeWeightModalBtn) closeWeightModalBtn.onclick = () => weightModal.classList.add('hidden');
+
+        const updateWeightUI = () => {
+            if (!currentWeightProduct) return;
+            weightDisplay.textContent = currentWeight;
+            const totalPrice = (currentWeightProduct.sellingPrice / 1000) * currentWeight;
+            weightPriceDisplay.textContent = `${totalPrice.toFixed(2)} ج.م`;
+        };
+
+        if (weightMinusBtn) {
+            weightMinusBtn.onclick = () => {
+                if (currentWeight > 100) {
+                    currentWeight -= 50;
+                    updateWeightUI();
+                }
+            };
+        }
+
+        if (weightPlusBtn) {
+            weightPlusBtn.onclick = () => {
+                currentWeight += 50;
+                updateWeightUI();
+            };
+        }
+
+        if (confirmWeightBtn) {
+            confirmWeightBtn.onclick = () => {
+                if (!currentWeightProduct) return;
+                
+                const totalPrice = (currentWeightProduct.sellingPrice / 1000) * currentWeight;
+                
+                // Create a virtual product for the cart
+                const customProduct = {
+                    ...currentWeightProduct,
+                    name: `${currentWeightProduct.name} - ${currentWeight}g`,
+                    sellingPrice: totalPrice,
+                    isSoldByWeight: false // Since we've already calculated it
+                };
+
+                const existing = cart.find(item => item.product.name === customProduct.name);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({ product: customProduct, quantity: 1 });
+                }
+                
+                updateCartUI();
+                showToast(`تمت إضافة ${customProduct.name} للسلة`);
+                weightModal.classList.add('hidden');
+            };
+        }
+
         window.addToCart = (product) => {
+            if (product.isSoldByWeight) {
+                currentWeightProduct = product;
+                currentWeight = 100;
+                weightItemName.textContent = product.name;
+                updateWeightUI();
+                weightModal.classList.remove('hidden');
+                return;
+            }
+
             const existing = cart.find(item => item.product.name === product.name);
             if (existing) {
                 existing.quantity += 1;
