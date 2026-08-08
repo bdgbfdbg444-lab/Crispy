@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         window.addToCart = (product) => {
-            if (product.isSoldByWeight) {
+            if (product.isSoldByWeight || product.IsSoldByWeight) {
                 currentWeightProduct = product;
                 currentWeight = 100;
                 weightItemName.textContent = product.name;
