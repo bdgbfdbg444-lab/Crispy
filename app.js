@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
         menuContainer.innerHTML = ''; 
 
         categories.forEach(category => {
-            // فلترة المنتجات المتاحة فقط
-            const availableProducts = category.products.filter(p => p.isAvailable);
+            // عرض جميع المنتجات داخل القسم
+            const products = category.products || [];
 
-            if (availableProducts.length === 0) return;
+            if (products.length === 0) return;
 
             const section = document.createElement('section');
             section.className = 'category-section';
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const grid = document.createElement('div');
             grid.className = 'products-grid';
 
-            availableProducts.forEach(product => {
+            products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = `product-card ${product.isSoldOut ? 'sold-out' : ''}`;
 
