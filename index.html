@@ -60,7 +60,17 @@
                 <div class="cart-total">الإجمالي: <span id="cart-total-price">0.00</span> ج.م</div>
                 
                 <div class="order-form">
-                    <input type="text" id="customer-name" placeholder="رقم الطاولة أو اسم العميل *" required />
+                    <div class="order-type-selector" style="margin-bottom: 15px; display: flex; gap: 15px; justify-content: center;">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            <input type="radio" name="orderType" value="DineIn" checked>
+                            🍽️ طلب محلي (صالة)
+                        </label>
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            <input type="radio" name="orderType" value="PickUp">
+                            🛍️ استلام من الفرع
+                        </label>
+                    </div>
+                    <input type="text" id="customer-name" placeholder="اسم العميل *" required />
                     <input type="tel" id="customer-phone" placeholder="رقم الموبايل *" required />
                     <textarea id="order-notes" placeholder="ملاحظات إضافية (مثال: بدون صوص)..." rows="2"></textarea>
                 </div>
@@ -75,8 +85,33 @@
         <div class="modal-content text-center">
             <h1 style="font-size: 3rem; margin-bottom: 1rem;">✅</h1>
             <h2>تم إرسال طلبك بنجاح!</h2>
-            <p style="margin-top: 1rem; color: #64748b;">جاري تحضير طلبك، شكراً لاختيارك The Sneaker Box BBQ.</p>
+            <p style="margin-top: 1rem; color: #64748b;">جاري تحضير طلبك، شكراً لاختيارك المنيو الرقمي.</p>
             <button id="close-success" class="checkout-btn" style="margin-top: 1.5rem;">حسناً</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h2>تأكيد الطلب الخارجي 🛍️</h2>
+                <button id="close-payment" class="close-btn">&times;</button>
+            </div>
+            <p style="color: #64748b; margin-bottom: 15px;">يرجى تحويل مبلغ الفاتورة إلى المحفظة التالية لتأكيد طلبك:</p>
+            
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+                <p style="font-size: 1.1em; color: #555; margin-bottom: 5px;">قيمة الفاتورة:</p>
+                <p id="payment-amount" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</p>
+                <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;" />
+                <p style="font-size: 1.1em; color: #555; margin-bottom: 5px;">رقم المحفظة (كاش/انستاباي):</p>
+                <p id="payment-wallet" style="font-size: 1.5em; font-weight: bold; color: #1e293b; letter-spacing: 2px;">غير متوفر</p>
+            </div>
+
+            <p style="font-size: 0.9em; color: #dc2626; margin-bottom: 15px;">⚠️ لن يتم البدء في تحضير الطلب إلا بعد تأكيد التحويل وإرسال الإيصال.</p>
+            
+            <button id="whatsapp-confirm-btn" class="checkout-btn" style="background: #25D366; color: white;">
+                <i class="fa-brands fa-whatsapp"></i> تأكيد عبر الواتساب
+            </button>
         </div>
     </div>
 

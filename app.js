@@ -17,10 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const successModal = document.getElementById('success-modal');
     const closeSuccessBtn = document.getElementById('close-success');
     
+    // Payment Modal UI Elements
+    const paymentModal = document.getElementById('payment-modal');
+    const closePaymentBtn = document.getElementById('close-payment');
+    const paymentAmount = document.getElementById('payment-amount');
+    const paymentWallet = document.getElementById('payment-wallet');
+    const whatsappConfirmBtn = document.getElementById('whatsapp-confirm-btn');
+
     // Toast UI
     const toast = document.getElementById('toast');
 
     let cart = [];
+    let currentMarketing = null;
     let dbUrl = FIREBASE_DB_URL;
     if (!dbUrl.endsWith('/')) {
         dbUrl += '/';
@@ -81,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const applyMarketing = (marketing) => {
+        currentMarketing = marketing;
         // Banner
         const banner = document.getElementById('announcement-banner');
         const text = document.getElementById('announcement-text');
@@ -235,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cartFab) cartFab.onclick = () => cartModal.classList.remove('hidden');
         if (closeCartBtn) closeCartBtn.onclick = () => cartModal.classList.add('hidden');
         if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
+        if (closePaymentBtn) closePaymentBtn.onclick = () => paymentModal.classList.add('hidden');
 
         // Weight Modal elements
         const weightModal = document.getElementById('weight-modal');
@@ -374,6 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const custName = document.getElementById('customer-name').value.trim();
             const custPhone = document.getElementById('customer-phone').value.trim();
             const notes = document.getElementById('order-notes').value.trim();
+            const selectedOrderType = document.querySelector('input[name="orderType"]:checked').value;
 
             if (!custName || !custPhone) {
                 alert('يرجى إدخال اسم العميل ورقم الموبايل أولاً!');
@@ -384,6 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutBtn.disabled = true;
 
             const orderTotal = cart.reduce((sum, item) => sum + (item.product.sellingPrice * item.quantity), 0);
+            const shortOrderId = "#" + Math.floor(1000 + Math.random() * 9000);
             
             const newOrder = {
                 orderDate: new Date().toISOString(),
@@ -391,6 +403,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 customerPhone: custPhone,
                 notes: notes,
                 totalAmount: orderTotal,
+                orderType: selectedOrderType,
+                displayOrderId: shortOrderId,
                 items: cart.map(item => ({
                     productName: item.product.name,
                     quantity: item.quantity,
@@ -415,7 +429,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('customer-phone').value = '';
                     document.getElementById('order-notes').value = '';
                     cartModal.classList.add('hidden');
-                    successModal.classList.remove('hidden');
+                    
+                    if (selectedOrderType === 'PickUp') {
+                        paymentAmount.textContent = `${orderTotal.toFixed(2)} ج.م`;
+                        const walletNumber = (currentMarketing && currentMarketing.walletNumber) ? currentMarketing.walletNumber : 'غير متوفر';
+                        paymentWallet.textContent = walletNumber;
+                        
+                        whatsappConfirmBtn.onclick = () => {
+                            let phoneNum = (currentMarketing && currentMarketing.whatsAppLink) ? currentMarketing.whatsAppLink : '';
+                            if (phoneNum.includes('wa.me/')) {
+                                phoneNum = phoneNum.split('wa.me/')[1];
+                            }
+                            
+                            const msg = `أنا ${custName}، قمت بتحويل مبلغ ${orderTotal} ج.م لتأكيد طلب رقم ${shortOrderId}، (مرفق مع هذه الرسالة سكرين شوت إيصال التحويل).`;
+                            const waUrl = `https://wa.me/${phoneNum}?text=${encodeURIComponent(msg)}`;
+                            window.open(waUrl, '_blank');
+                            paymentModal.classList.add('hidden');
+                        };
+                        
+                        paymentModal.classList.remove('hidden');
+                    } else {
+                        successModal.classList.remove('hidden');
+                    }
                 } else {
                     alert('حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.');
                 }
