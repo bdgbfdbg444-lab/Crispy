@@ -440,6 +440,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Remove any spaces or special characters just in case
                             phoneNum = phoneNum.replace(/\s+/g, '');
                             
+                            // Ensure country code (20 for Egypt)
+                            if (phoneNum.startsWith('0')) {
+                                phoneNum = '20' + phoneNum.substring(1);
+                            } else if (!phoneNum.startsWith('20') && !phoneNum.startsWith('+') && phoneNum.length > 0) {
+                                phoneNum = '20' + phoneNum;
+                            }
+                            
                             const msg = `أنا ${custName}، قمت بتحويل مبلغ ${orderTotal} ج.م لتأكيد طلب رقم ${shortOrderId}، (مرفق مع هذه الرسالة سكرين شوت إيصال التحويل).`;
                             const waUrl = `https://wa.me/${phoneNum}?text=${encodeURIComponent(msg)}`;
                             window.open(waUrl, '_blank');
