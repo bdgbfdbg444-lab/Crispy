@@ -20,6 +20,9 @@
         <p>جاري تحميل أشهى الأطباق...</p>
     </div>
 
+    <!-- Category Navigation -->
+    <nav id="category-nav" class="category-nav"></nav>
+
     <!-- Main Content -->
     <main id="menu-container">
         <!-- سيتم حقن الأقسام والأصناف هنا بواسطة JavaScript -->
@@ -46,6 +49,7 @@
                 
                 <div class="order-form">
                     <input type="text" id="customer-name" placeholder="رقم الطاولة أو اسم العميل *" required />
+                    <input type="tel" id="customer-phone" placeholder="رقم الموبايل *" required />
                     <textarea id="order-notes" placeholder="ملاحظات إضافية (مثال: بدون صوص)..." rows="2"></textarea>
                 </div>
                 
@@ -63,6 +67,9 @@
             <button id="close-success" class="checkout-btn" style="margin-top: 1.5rem;">حسناً</button>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">تم إضافة الصنف للسلة</div>
 
     <!-- Firebase SDK (Not needed, using Fetch) -->
     <script src="config.js"></script>

@@ -1,11 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // UI Elements
     const loader = document.getElementById('loader');
     const menuContainer = document.getElementById('menu-container');
+    const categoryNav = document.getElementById('category-nav');
+    
+    // Cart UI Elements
+    const cartFab = document.getElementById('cart-fab');
+    const cartCount = document.getElementById('cart-count');
+    const cartModal = document.getElementById('cart-modal');
+    const closeCartBtn = document.getElementById('close-cart');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    
+    // Success Modal UI Elements
+    const successModal = document.getElementById('success-modal');
+    const closeSuccessBtn = document.getElementById('close-success');
+    
+    // Toast UI
+    const toast = document.getElementById('toast');
 
+    let cart = [];
     let dbUrl = FIREBASE_DB_URL;
     if (!dbUrl.endsWith('/')) {
         dbUrl += '/';
     }
+
+    const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    };
 
     const fetchMenu = async () => {
         try {
@@ -27,13 +54,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderMenu = (categories) => {
         menuContainer.innerHTML = ''; 
+        if (categoryNav) categoryNav.innerHTML = '';
 
-        categories.forEach(category => {
+        categories.forEach((category, index) => {
             const products = category.products || [];
             if (products.length === 0) return;
 
+            const categoryId = `cat-${index}`;
+
+            // Create Nav Button
+            if (categoryNav) {
+                const navBtn = document.createElement('button');
+                navBtn.className = 'category-nav-btn';
+                if (index === 0) navBtn.classList.add('active');
+                navBtn.textContent = category.name;
+                navBtn.onclick = () => {
+                    document.querySelectorAll('.category-nav-btn').forEach(btn => btn.classList.remove('active'));
+                    navBtn.classList.add('active');
+                    document.getElementById(categoryId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                };
+                categoryNav.appendChild(navBtn);
+            }
+
+            // Create Section
             const section = document.createElement('section');
             section.className = 'category-section';
+            section.id = categoryId;
 
             const title = document.createElement('h2');
             title.className = 'category-title';
@@ -77,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const addBtn = document.createElement('button');
                     addBtn.className = 'add-to-cart-btn';
                     addBtn.textContent = 'إضافة للسلة +';
-                    addBtn.onclick = () => addToCart(product);
+                    addBtn.onclick = () => window.addToCart(product);
                     info.appendChild(addBtn);
                 }
 
@@ -102,9 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         fetchMenu();
 
-        cartFab.onclick = () => cartModal.classList.remove('hidden');
-        closeCartBtn.onclick = () => cartModal.classList.add('hidden');
-        closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
+        if (cartFab) cartFab.onclick = () => cartModal.classList.remove('hidden');
+        if (closeCartBtn) closeCartBtn.onclick = () => cartModal.classList.add('hidden');
+        if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
 
         window.addToCart = (product) => {
             const existing = cart.find(item => item.product.name === product.name);
@@ -114,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cart.push({ product, quantity: 1 });
             }
             updateCartUI();
+            showToast(`تمت إضافة ${product.name} للسلة`);
         };
 
         window.updateCartQuantity = (productName, delta) => {
@@ -128,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const updateCartUI = () => {
+            if (!cartCount || !cartItemsContainer || !cartTotalPrice) return;
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
             
@@ -164,12 +212,13 @@ document.addEventListener('DOMContentLoaded', () => {
             cartTotalPrice.textContent = total.toFixed(2);
         };
 
-        checkoutBtn.onclick = async () => {
+        if (checkoutBtn) checkoutBtn.onclick = async () => {
             const custName = document.getElementById('customer-name').value.trim();
+            const custPhone = document.getElementById('customer-phone').value.trim();
             const notes = document.getElementById('order-notes').value.trim();
 
-            if (!custName) {
-                alert('يرجى إدخال رقم الطاولة أو اسم العميل أولاً!');
+            if (!custName || !custPhone) {
+                alert('يرجى إدخال اسم العميل ورقم الموبايل أولاً!');
                 return;
             }
 
@@ -181,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newOrder = {
                 orderDate: new Date().toISOString(),
                 customerName: custName,
+                customerPhone: custPhone,
                 notes: notes,
                 totalAmount: orderTotal,
                 items: cart.map(item => ({
@@ -201,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     cart = [];
                     updateCartUI();
                     document.getElementById('customer-name').value = '';
+                    document.getElementById('customer-phone').value = '';
                     document.getElementById('order-notes').value = '';
                     cartModal.classList.add('hidden');
                     successModal.classList.remove('hidden');
