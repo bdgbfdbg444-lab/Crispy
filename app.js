@@ -41,14 +41,66 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const data = await response.json();
             
-            if (data && data.categories) {
-                renderMenu(data.categories);
+            if (data) {
+                if (data.marketing) {
+                    applyMarketing(data.marketing);
+                }
+                if (data.categories) {
+                    renderMenu(data.categories);
+                } else {
+                    showError('لا يوجد أصناف حالياً.');
+                }
             } else {
-                showError('لا يوجد أصناف حالياً.');
+                showError('لا يوجد بيانات حالياً.');
             }
         } catch (error) {
             console.error('Error fetching menu:', error);
             showError('حدث خطأ أثناء تحميل المنيو. يرجى المحاولة لاحقاً.');
+        }
+    };
+
+    const applyMarketing = (marketing) => {
+        // Banner
+        const banner = document.getElementById('announcement-banner');
+        const text = document.getElementById('announcement-text');
+        if (banner && text) {
+            if (marketing.announcementText && marketing.announcementText.trim() !== '') {
+                text.textContent = marketing.announcementText;
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // Social Media Footer
+        const footer = document.getElementById('social-footer');
+        let hasLink = false;
+
+        const setLink = (id, url) => {
+            const el = document.getElementById(id);
+            if (el) {
+                if (url && url.trim() !== '') {
+                    el.href = url;
+                    el.classList.remove('hidden');
+                    hasLink = true;
+                } else {
+                    el.classList.add('hidden');
+                }
+            }
+        };
+
+        setLink('link-facebook', marketing.facebookLink);
+        setLink('link-instagram', marketing.instagramLink);
+        setLink('link-tiktok', marketing.tikTokLink);
+        setLink('link-whatsapp', marketing.whatsAppLink);
+        setLink('link-googlemaps', marketing.googleMapsLink);
+
+        if (footer) {
+            if (hasLink) {
+                footer.classList.remove('hidden');
+            } else {
+                footer.classList.add('hidden');
+            }
         }
     };
 

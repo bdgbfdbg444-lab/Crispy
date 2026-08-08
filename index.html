@@ -10,10 +10,15 @@
 <body>
     <header class="header">
         <div class="logo-container">
-            <h1>The Sneaker Box BBQ 🍖</h1>
+            <h1>The Sneaker Box BBQ 🍔</h1>
             <p>أصلي، طازج، ومدخن بشغف</p>
         </div>
     </header>
+
+    <!-- Announcement Banner -->
+    <div id="announcement-banner" class="announcement-banner hidden">
+        <div class="marquee"><span id="announcement-text"></span></div>
+    </div>
 
     <div id="loader" class="loader">
         <div class="spinner"></div>
@@ -70,6 +75,18 @@
 
     <!-- Toast Notification -->
     <div id="toast" class="toast hidden">تم إضافة الصنف للسلة</div>
+
+    <!-- Social Media Footer -->
+    <footer id="social-footer" class="social-footer hidden">
+        <p class="footer-title">تابعنا لمعرفة أحدث العروض!</p>
+        <div class="social-icons">
+            <a id="link-facebook" href="#" target="_blank" class="social-icon hidden" title="Facebook">📘</a>
+            <a id="link-instagram" href="#" target="_blank" class="social-icon hidden" title="Instagram">📸</a>
+            <a id="link-tiktok" href="#" target="_blank" class="social-icon hidden" title="TikTok">🎵</a>
+            <a id="link-whatsapp" href="#" target="_blank" class="social-icon hidden" title="WhatsApp">💬</a>
+            <a id="link-googlemaps" href="#" target="_blank" class="social-icon hidden" title="Google Maps">📍</a>
+        </div>
+    </footer>
 
     <!-- Firebase SDK (Not needed, using Fetch) -->
     <script src="config.js"></script>

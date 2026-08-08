@@ -414,3 +414,56 @@ body {
     bottom: 1rem;
     pointer-events: none;
 }
+
+/* Announcement Banner */
+.announcement-banner {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+.announcement-banner .marquee {
+    white-space: nowrap;
+    animation: marquee 15s linear infinite;
+    display: inline-block;
+}
+@keyframes marquee {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Social Media Footer */
+.social-footer {
+    background: #1e293b;
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.social-footer .footer-title {
+    color: #f8fafc;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.social-icon {
+    font-size: 2rem;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+.social-icon:hover {
+    transform: scale(1.2) translateY(-5px);
+}
