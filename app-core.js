@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeAddonsModalBtn = document.getElementById('close-addons-modal');
     const addonsItemName = document.getElementById('addons-item-name');
     const addonsFreeLimitText = document.getElementById('addons-free-limit-text');
-    const addonsList = document.getElementById('addons-list');
+    const addonsList = document.getElementById('addons-container') || document.getElementById('addons-list');
     const addonsPriceDisplay = document.getElementById('addons-price-display');
     const confirmAddonsBtn = document.getElementById('confirm-addons-btn');
     
@@ -494,7 +494,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
     if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
-    document.getElementById('close-rating').onclick = () => ratingModal.classList.add('hidden');
+    const closeRatingEl = document.getElementById('close-rating');
+    if (closeRatingEl && ratingModal) {
+        closeRatingEl.onclick = () => ratingModal.classList.add('hidden');
+    }
     
     // ======== FLY TO CART ANIMATION ========
     function flyToCart(event) {
@@ -563,11 +566,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Weight Modal elements
         const weightModal = document.getElementById('weight-modal');
-        const closeWeightModalBtn = document.getElementById('close-weight-modal');
-        const weightMinusBtn = document.getElementById('weight-minus-btn');
-        const weightPlusBtn = document.getElementById('weight-plus-btn');
+        const closeWeightModalBtn = document.getElementById('close-weight-modal') || document.getElementById('cancel-weight-btn');
+        const weightMinusBtn = document.getElementById('btn-minus-weight');
+        const weightPlusBtn = document.getElementById('btn-plus-weight');
         const weightDisplay = document.getElementById('weight-display');
-        const weightPriceDisplay = document.getElementById('weight-price-display');
+        const weightPriceDisplay = document.getElementById('weight-total-price');
         const confirmWeightBtn = document.getElementById('confirm-weight-btn');
         const weightItemName = document.getElementById('weight-item-name');
 
@@ -577,16 +580,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (closeWeightModalBtn) closeWeightModalBtn.onclick = () => weightModal.classList.add('hidden');
 
         const updateWeightUI = () => {
-            if (!currentWeightProduct) return;
-            weightDisplay.textContent = currentWeight;
+            if (!currentWeightProduct || !weightDisplay || !weightPriceDisplay) return;
+            weightDisplay.innerHTML = `${currentWeight}<span style="font-size:1.5rem;">g</span>`;
             const totalPrice = (currentWeightProduct.sellingPrice / 1000) * currentWeight;
-            weightPriceDisplay.textContent = `${totalPrice.toFixed(2)} ج.م`;
+            weightPriceDisplay.textContent = totalPrice.toFixed(2);
         };
 
         if (weightMinusBtn) {
             weightMinusBtn.onclick = () => {
                 if (currentWeight > 100) {
-                    currentWeight -= 50;
+                    currentWeight -= 100;
                     updateWeightUI();
                 }
             };
