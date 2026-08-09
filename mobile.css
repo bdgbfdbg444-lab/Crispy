@@ -1,0 +1,124 @@
+/* Mobile Specific Styles (max-width: 991px) */
+
+body {
+    padding-bottom: 70px; /* Space for bottom nav */
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    gap: 4px;
+    flex: 1;
+    transition: color 0.2s;
+    position: relative;
+}
+
+.bottom-nav-item i {
+    font-size: 1.4rem;
+}
+
+.bottom-nav-item.active {
+    color: var(--primary-color);
+}
+
+.bottom-nav-item .badge {
+    position: absolute;
+    top: -5px;
+    right: 50%;
+    transform: translateX(15px);
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: none; /* hidden by default if 0 */
+}
+
+/* Hide Desktop Top Navbar elements */
+.top-navbar .nav-links,
+.top-navbar .nav-actions,
+.top-navbar .mobile-menu-btn {
+    display: none !important;
+}
+.top-navbar {
+    justify-content: center;
+}
+
+/* Mobile Hero Section */
+.hero-section {
+    min-height: 85vh;
+    padding-top: 60px;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+}
+
+.hero-3d-container {
+    height: 40vh;
+    width: 100%;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.hero-content {
+    text-align: center;
+    padding: 0 1.5rem;
+}
+
+.hero-title {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.hero-buttons {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.hero-btn-solid, .hero-btn-outline {
+    width: 100%;
+    text-align: center;
+    padding: 1.2rem;
+    font-size: 1.2rem;
+    border-radius: 12px; /* Touch friendly */
+}
+
+/* Mobile Video Section */
+.video-section {
+    padding: 2rem 1rem;
+}
+.video-container {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Disable hover effects on mobile */
+@media (hover: none) {
+    .btn:hover, .product-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}

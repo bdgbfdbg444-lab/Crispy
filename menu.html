@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Sneaker Box BBQ - المنيو الرقمي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <!-- CSS Split -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" media="(min-width: 992px)" href="desktop.css">
+    <link rel="stylesheet" media="(max-width: 991px)" href="mobile.css">
 </head>
 <body id="menu-page">
     <header class="header" style="position: relative;">
@@ -190,20 +197,57 @@
         <div class="social-icons">
             <a id="link-facebook" href="#" target="_blank" class="social-icon hidden" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
             <a id="link-instagram" href="#" target="_blank" class="social-icon hidden" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a id="link-tiktok" href="#" target="_blank" class="social-icon hidden" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-            <a id="link-whatsapp" href="#" target="_blank" class="social-icon hidden" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-            <a id="link-googlemaps" href="#" target="_blank" class="social-icon hidden" title="Google Maps"><i class="fa-solid fa-map-location-dot"></i></a>
-        </div>
+            <!-- Bottom Navigation Bar (Mobile) -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="menu.html" class="bottom-nav-item active">
+            <i class="fa-solid fa-utensils"></i>
+            <span>المنيو</span>
+        </a>
+        <a href="javascript:void(0)" class="bottom-nav-item cart-trigger">
+            <div style="position: relative;">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge cart-count">0</span>
+            </div>
+            <span>السلة</span>
+        </a>
+        <a href="#profile" class="bottom-nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- Floating CTA (Hidden if needed on mobile) -->
+    <a href="#" class="floating-cta cart-trigger">
+        <i class="fa-solid fa-cart-shopping"></i> <span class="cart-count badge" style="background: white; color: var(--primary-color); padding: 2px 6px; border-radius: 10px; font-size: 0.8rem; margin-right: 5px;">0</span>
+    </a>
+
+    <footer class="footer">
+        <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Powered by AlSafwah POS</p>
     </footer>
 
-    <!-- Firebase SDK (Not needed, using Fetch) -->
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    
+    <!-- Swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Firebase config and App Logic -->
     <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="desktop-interactions.js"></script>
+    <script src="mobile-interactions.js"></script>
+    <script src="app-core.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             AOS.init({
-                duration: 600,
+                duration: 800,
                 once: true,
                 offset: 50
             });

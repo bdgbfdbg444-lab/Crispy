@@ -7,7 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <!-- CSS Split -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" media="(min-width: 992px)" href="desktop.css">
+    <link rel="stylesheet" media="(max-width: 991px)" href="mobile.css">
 </head>
 <body class="portfolio-body" id="home-page">
     <div id="toast" class="toast hidden"></div>
@@ -76,14 +83,30 @@
                 </div>
             </div>
 
-            <!-- Image Side (Left in RTL) -->
-            <div class="hero-image-wrapper" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="200">
-                <!-- Using a better transparent BBQ placeholder image, with a nice rotation animation -->
-                <img src="https://purepng.com/public/uploads/large/purepng.com-barbecuefood-meat-barbecue-94152464197478jbe.png" alt="Barbecue Dish" class="hero-main-img">
+            <!-- Right side (RTL -> Image is on the left visually) -->
+            <div class="hero-image-wrapper hero-3d-container" data-aos="zoom-in" data-aos-duration="1200">
+                <!-- Spline 3D Placeholder Scene -->
+                <spline-viewer url="https://prod.spline.design/qK320aF9qU4h-5O6/scene.splinecode"></spline-viewer>
             </div>
             
         </div>
     </header>
+
+    <!-- Video Section -->
+    <section class="video-section">
+        <div class="container">
+            <div class="video-container">
+                <!-- Autoplay muted handled by GSAP when scrolled into view -->
+                <video id="promo-video" muted playsinline style="width: 100%; height: auto; display: block;">
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button class="mute-btn" id="mute-btn">
+                    <i class="fa-solid fa-volume-xmark"></i>
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- Our Story Section -->
     <section class="story-section">
@@ -206,7 +229,30 @@
         </div>
     </section>
 
-    <!-- Floating CTA -->
+    <!-- Bottom Navigation Bar (Mobile) -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="menu.html" class="bottom-nav-item">
+            <i class="fa-solid fa-utensils"></i>
+            <span>المنيو</span>
+        </a>
+        <a href="javascript:void(0)" class="bottom-nav-item cart-trigger">
+            <div style="position: relative;">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge cart-count">0</span>
+            </div>
+            <span>السلة</span>
+        </a>
+        <a href="#profile" class="bottom-nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- Floating CTA (Hidden if needed on mobile) -->
     <a href="menu.html" class="floating-cta">
         <i class="fa-solid fa-utensils"></i> اطلب الآن
     </a>
@@ -216,9 +262,20 @@
         <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Powered by AlSafwah POS</p>
     </footer>
 
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    
+    <!-- Swiper & Spline -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
+
     <!-- Firebase config and App Logic -->
     <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="desktop-interactions.js"></script>
+    <script src="mobile-interactions.js"></script>
+    <script src="app-core.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
