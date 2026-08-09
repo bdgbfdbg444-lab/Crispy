@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imageContainer.style.flexShrink = '0';
             
             const img = document.createElement('img');
-            img.src = product.ImagePath || 'https://via.placeholder.com/120';
+            img.src = product.imagePath || product.ImagePath || 'https://via.placeholder.com/120';
             img.className = 'product-image';
             img.style.width = '100%';
             img.style.height = '100%';
