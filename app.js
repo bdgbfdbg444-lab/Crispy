@@ -351,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (val.toLowerCase().startsWith('<iframe')) {
                     mapEl.innerHTML = val;
                 } else if (val.startsWith('http') || val.includes('goo.gl') || val.includes('google.com/maps') || val.includes('!3d')) {
+                    if (!val.startsWith('http')) val = 'https://' + val;
                     // Try to extract coordinates from URL
                     let lat = '', lng = '';
                     let match = val.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
@@ -361,10 +362,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (match) { lat = match[1]; lng = match[2]; }
                     }
 
-                    let query = (lat && lng) ? `${lat},${lng}` : (data.locationAddress || 'Restaurant');
-                    let embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&hl=ar&z=15&output=embed`;
+                    let query = (lat && lng) ? `${lat},${lng}` : ((data.restaurantName || '') + ' ' + (data.locationAddress || '')).trim();
+                    if (!query) query = 'Restaurant';
+                    let embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&hl=ar&z=16&output=embed`;
 
-                    mapEl.innerHTML = `<iframe src="${embedUrl}" width="100%" height="350" style="border:0; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+                    mapEl.innerHTML = `
+                        <div style="position:relative; width:100%; height:350px; border-radius:12px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                            <iframe src="${embedUrl}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <a href="${val}" target="_blank" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); background:#d9480f; color:white; padding:10px 20px; border-radius:30px; font-weight:bold; font-size:14px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,0.3); display:flex; align-items:center; gap:8px; z-index:1000;">
+                                <i class="fa-solid fa-map-location-dot"></i> فتح الرابط الأصلي
+                            </a>
+                        </div>
+                    `;
                 } else {
                     mapEl.innerHTML = val;
                 }
