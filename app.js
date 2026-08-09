@@ -271,17 +271,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!data) {
                     showError('لا توجد بيانات في قاعدة البيانات.');
                     return;
-                }
-                
-                // Set Restaurant Info
-                const resTitle = document.getElementById('home-restaurant-title');
-                const resDesc = document.getElementById('home-restaurant-desc');
-                if (data.RestaurantName && resTitle) resTitle.textContent = data.RestaurantName;
-                if (data.RestaurantDescription && resDesc) resDesc.textContent = data.RestaurantDescription;
-
+        Promise.all([
+            fetch(`${FIREBASE_DB_URL}/menu.json`).then(res => res.json()),
+            fetch(`${FIREBASE_DB_URL}/WebsiteData.json`).then(res => res.json()).catch(() => null)
+        ])
+        .then(([menuData, websiteData]) => {
+            if (menuData) {
                 // Find Hot Items
                 let hotItems = [];
-                const categories = data.categories || data.Categories;
+                const categories = menuData.categories || menuData.Categories;
                 if (categories) {
                     categories.forEach(c => {
                         const products = c.products || c.Products;
@@ -294,13 +292,72 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
-                
                 renderBestSellers(hotItems);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                showError('حدث خطأ أثناء تحميل البيانات.');
-            });
+            }
+
+            if (websiteData) {
+                applyWebsiteData(websiteData);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching home data:', error);
+            showError('حدث خطأ أثناء تحميل بيانات الصفحة الرئيسية.');
+        });
+    }
+
+    function applyWebsiteData(data) {
+        // Hero
+        if (data.heroMediaUrl) {
+            const heroEl = document.getElementById('hero-section');
+            if (heroEl) {
+                // Determine if video or image
+                if (data.heroMediaUrl.match(/\.(mp4|webm)$/i)) {
+                    heroEl.innerHTML = `<video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0;"><source src="${data.heroMediaUrl}" type="video/mp4"></video>` + heroEl.innerHTML;
+                    heroEl.style.backgroundImage = 'none';
+                } else {
+                    heroEl.style.backgroundImage = `url('${data.heroMediaUrl}')`;
+                }
+            }
+        }
+        
+        // Story
+        if (data.ourStoryText) {
+            const storyEl = document.getElementById('story-text-preview');
+            if (storyEl) storyEl.innerText = data.ourStoryText;
+        }
+
+        // Location & Hours
+        if (data.locationAddress) {
+            const addrEl = document.getElementById('location-address-preview');
+            if (addrEl) addrEl.innerText = data.locationAddress;
+        }
+        if (data.workingHours) {
+            const hoursEl = document.getElementById('location-hours-preview');
+            if (hoursEl) hoursEl.innerText = data.workingHours;
+        }
+        if (data.googleMapsIframe) {
+            const mapEl = document.getElementById('map-iframe-preview');
+            if (mapEl) mapEl.innerHTML = data.googleMapsIframe;
+        }
+
+        // Gallery
+        if (data.galleryImages) {
+            const galleryEl = document.getElementById('gallery-grid');
+            if (galleryEl) {
+                const urls = data.galleryImages.split(',').filter(url => url.trim() !== '');
+                if (urls.length > 0) {
+                    galleryEl.innerHTML = '';
+                    urls.forEach(url => {
+                        const img = document.createElement('img');
+                        img.src = url.trim();
+                        img.className = 'gallery-img';
+                        galleryEl.appendChild(img);
+                    });
+                }
+            }
+        }
+        
+        // Testimonials can be added similarly if JSON parsed
     }
 
     function renderBestSellers(items) {
