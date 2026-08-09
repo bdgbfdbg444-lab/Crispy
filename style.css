@@ -435,19 +435,25 @@ body {
 }
 
 /* ======== Dark Mode ======== */
-body.dark-mode {
+body.dark-mode,
+body.dark-mode .story-section,
+body.dark-mode .gallery-section,
+body.dark-mode .location-section {
     background-color: #0F172A;
     color: #F8FAFC;
 }
 
-body.dark-mode .bg-light {
+body.dark-mode .bg-light,
+body.dark-mode .best-sellers-section,
+body.dark-mode .testimonials-section {
     background-color: #1E293B !important;
 }
 
 body.dark-mode .product-card,
 body.dark-mode .modal-content,
 body.dark-mode .testimonial-card,
-body.dark-mode .location-info {
+body.dark-mode .location-info,
+body.dark-mode .feature-item {
     background-color: #1E293B;
     border-color: #334155;
     color: #F8FAFC;
