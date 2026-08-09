@@ -481,11 +481,20 @@ document.addEventListener('DOMContentLoaded', () => {
         grid.style.display = 'grid';
     }
 
-    // The buttons are already null-checked, so they won't throw on the home page.
-    if (cartFab) cartFab.onclick = () => cartModal.classList.remove('hidden');
-        if (closeCartBtn) closeCartBtn.onclick = () => cartModal.classList.add('hidden');
-        if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
-        document.getElementById('close-rating').onclick = () => ratingModal.classList.add('hidden');
+    // Initialize cart triggers
+    const cartTriggers = document.querySelectorAll('.cart-trigger');
+    cartTriggers.forEach(trigger => {
+        trigger.onclick = () => {
+            if (cartModal) cartModal.classList.remove('hidden');
+        };
+    });
+    if (closeCartBtn) {
+        closeCartBtn.onclick = () => {
+            if (cartModal) cartModal.classList.add('hidden');
+        };
+    }
+    if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
+    document.getElementById('close-rating').onclick = () => ratingModal.classList.add('hidden');
     
     // ======== FLY TO CART ANIMATION ========
     function flyToCart(event) {
@@ -795,12 +804,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!cartCount || !cartItemsContainer || !cartTotalPrice) return;
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
-            
-            if (totalItems > 0) {
-                cartFab.classList.remove('hidden');
+                        if (totalItems > 0) {
+                // We use standard badges in the new layout
+                const badges = document.querySelectorAll('.cart-count');
+                badges.forEach(b => {
+                    b.style.display = 'inline-block';
+                    b.textContent = totalItems;
+                });
             } else {
-                cartFab.classList.add('hidden');
-                cartModal.classList.add('hidden');
+                const badges = document.querySelectorAll('.cart-count');
+                badges.forEach(b => {
+                    b.style.display = 'none';
+                    b.textContent = 0;
+                });
+                if(cartModal) cartModal.classList.add('hidden');
             }
 
             cartItemsContainer.innerHTML = '';

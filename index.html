@@ -40,7 +40,7 @@
     <header class="hero-section">
         <!-- Floating Image -->
         <div class="hero-image-wrapper">
-            <img src="https://purepng.com/public/uploads/large/purepng.com-barbecuefood-meat-barbecue-94152464197478jbe.png" alt="Epic BBQ" class="hero-img-float">
+            <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" style="border-radius: 50%; object-fit: cover; width: 300px; height: 300px; border: 4px solid var(--primary-color);" alt="Epic BBQ" class="hero-img-float">
         </div>
         
         <div class="hero-content">
@@ -104,6 +104,23 @@
             <span>السلة</span>
         </a>
     </nav>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content" style="text-align: right;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem;">السلة</h2>
+                <button id="close-cart" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="cart-items" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; max-height: 50vh; overflow-y: auto;">
+                <!-- Items injected here -->
+            </div>
+            <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                الإجمالي: <span id="cart-total-price" style="color: var(--primary-color);">0</span> جنيه
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="alert('Checkout integration pending')">إتمام الطلب</button>
+        </div>
+    </div>
 
     <footer style="text-align: center; padding: 3rem; margin-top: 5rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
         <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
