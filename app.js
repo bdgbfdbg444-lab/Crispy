@@ -264,13 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function fetchHomeData() {
-        const url = `${FIREBASE_DB_URL}/menu.json`;
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (!data) {
-                    showError('لا توجد بيانات في قاعدة البيانات.');
-                    return;
         Promise.all([
             fetch(`${FIREBASE_DB_URL}/menu.json`).then(res => res.json()),
             fetch(`${FIREBASE_DB_URL}/WebsiteData.json`).then(res => res.json()).catch(() => null)
