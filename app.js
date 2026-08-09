@@ -368,12 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     mapEl.innerHTML = `
                         <div style="position:relative; width:100%; height:350px; border-radius:12px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
-                            <iframe src="${embedUrl}" style="position:absolute; top:-65px; left:0; width:100%; height:calc(100% + 65px); border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            <!-- Disable pointer events on the entire map to prevent interacting with hidden elements if needed, or just let them drag. -->
-                            <!-- We overlay an invisible div on the top to block any remaining clicks on the hidden header area -->
-                            <div style="position:absolute; top:0; left:0; width:100%; height:30px; background:transparent; z-index:10;"></div>
-                            
-                            <a href="${val}" target="_blank" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); background:#d9480f; color:white; padding:10px 20px; border-radius:30px; font-weight:bold; font-size:14px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,0.3); display:flex; align-items:center; gap:8px; z-index:1000; cursor:pointer;">
+                            <iframe src="${embedUrl}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <a href="${val}" target="_blank" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); background:#d9480f; color:white; padding:10px 20px; border-radius:30px; font-weight:bold; font-size:14px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,0.3); display:flex; align-items:center; gap:8px; z-index:1000;">
                                 <i class="fa-solid fa-map-location-dot"></i> فتح الرابط الأصلي
                             </a>
                         </div>
