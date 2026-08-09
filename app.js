@@ -318,35 +318,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'product-card';
             
-            const imageContainer = document.createElement('div');
-            imageContainer.style.width = '120px';
-            imageContainer.style.height = '120px';
-            imageContainer.style.flexShrink = '0';
-            
-            const img = document.createElement('img');
-            img.src = product.imagePath || product.ImagePath || 'https://via.placeholder.com/120';
-            img.className = 'product-image';
-            img.style.width = '100%';
-            img.style.height = '100%';
-            imageContainer.appendChild(img);
+            const imagePath = product.imagePath || product.ImagePath;
+            if (imagePath) {
+                const img = document.createElement('img');
+                img.src = imagePath;
+                img.className = 'product-image';
+                card.appendChild(img);
+            }
             
             const info = document.createElement('div');
-            info.style.flex = '1';
-            info.style.display = 'flex';
-            info.style.flexDirection = 'column';
+            info.className = 'product-info';
             
-            const name = document.createElement('div');
+            const name = document.createElement('h3');
             name.className = 'product-name';
             name.textContent = product.Name || product.name;
             
-            const price = document.createElement('div');
+            const price = document.createElement('p');
             price.className = 'product-price';
-            price.textContent = `${product.SellingPrice || product.sellingPrice} ج.م`;
+            const priceVal = product.SellingPrice || product.sellingPrice;
+            price.textContent = `${parseFloat(priceVal).toFixed(2)} ج.م`;
             
             info.appendChild(name);
             info.appendChild(price);
             
-            card.appendChild(imageContainer);
             card.appendChild(info);
             
             grid.appendChild(card);
