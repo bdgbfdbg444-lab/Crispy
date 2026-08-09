@@ -329,18 +329,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.addToCart = (product) => {
             if (product.autoShowModifiers && windowGlobalAddons.length > 0) {
-                currentAddonProduct = product;
-                addonsItemName.textContent = product.name;
                 
-                const limit = product.freeModifiersLimit || 0;
-                if (limit > 0) {
-                    addonsFreeLimitText.textContent = `مسموح لك بـ ${limit} إضافات مجانية`;
-                } else {
-                    addonsFreeLimitText.textContent = '';
-                }
-                
-                addonsList.innerHTML = '';
-                windowGlobalAddons.forEach(addon => {
+                const validAddons = windowGlobalAddons.filter(addon => {
+                    if (!addon.linkedProductIds || addon.linkedProductIds.trim() === '') return false;
+                    const ids = addon.linkedProductIds.split(',').map(s => s.trim());
+                    return ids.includes(product.id.toString());
+                });
+
+                if (validAddons.length > 0) {
+                    currentAddonProduct = product;
+                    addonsItemName.textContent = product.name;
+                    
+                    const limit = product.freeModifiersLimit || 0;
+                    if (limit > 0) {
+                        addonsFreeLimitText.textContent = `مسموح لك بـ ${limit} إضافات مجانية`;
+                    } else {
+                        addonsFreeLimitText.textContent = '';
+                    }
+                    
+                    addonsList.innerHTML = '';
+                    validAddons.forEach(addon => {
                     const div = document.createElement('div');
                     div.style.marginBottom = '10px';
                     
@@ -365,14 +373,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     text.style.color = '#333';
                     
                     label.appendChild(cb);
-                    label.appendChild(text);
-                    div.appendChild(label);
-                    addonsList.appendChild(div);
-                });
-                
-                calculateAddonsPrice();
-                addonsModal.classList.remove('hidden');
-                return;
+                        label.appendChild(text);
+                        div.appendChild(label);
+                        addonsList.appendChild(div);
+                    });
+                    
+                    calculateAddonsPrice();
+                    addonsModal.classList.remove('hidden');
+                    return;
+                }
             }
 
             if (product.isSoldByWeight || product.IsSoldByWeight) {
