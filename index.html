@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body id="home-page" class="portfolio-body">
+<body class="portfolio-body" id="home-page">
+    <div id="toast" class="toast hidden"></div>
     
     <!-- Hero Section -->
-    <section class="hero-section">
+    <header class="hero-section" id="hero-section">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title" id="home-restaurant-title">The Sneaker Box BBQ</h1>
@@ -20,15 +21,16 @@
                 <i class="fa-solid fa-utensils"></i> اطلب الآن
             </a>
         </div>
-    </section>
+    </header>
 
     <!-- Our Story Section -->
     <section class="story-section">
         <div class="container text-center">
-            <h2 class="section-title">قصتنا</h2>
-            <div class="story-content">
-                <p>في The Sneaker Box BBQ، لا نقدم مجرد طعام، بل نقدم تجربة فريدة عشاق اللحوم. نحن نؤمن بأن الباربيكيو الحقيقي يحتاج إلى الصبر، ولذلك نستخدم أفضل أنواع الحطب لتدخين اللحوم لساعات طويلة على حرارة هادئة لتصل إليك بأقصى درجات الطراوة والنكهة الأصيلة.</p>
-                <p>لحومنا مختارة بعناية فائقة وتُحضّر يومياً بشغف لا ينتهي لضمان أعلى مستويات الجودة.</p>
+            <h2 class="section-title">قصتنا ببساطة</h2>
+            <div class="story-content" id="story-text-preview">
+                بدأت رحلتنا من شغف حقيقي باللحوم المدخنة بالطريقة الأمريكية الأصيلة (Texas Style). 
+                نستخدم أفضل أنواع حطب التفاح والبلوط للتدخين البطيء الذي يستمر لأكثر من 16 ساعة، 
+                لضمان قوام يذوب في الفم ونكهة تدخين متوازنة وغنية. نحن لا نقدم مجرد طعام، بل نقدم تجربة!
             </div>
             <div class="story-features">
                 <div class="feature-item">
@@ -72,7 +74,7 @@
     <section class="gallery-section">
         <div class="container text-center">
             <h2 class="section-title">من كواليس التحضير</h2>
-            <div class="gallery-grid">
+            <div class="gallery-grid" id="gallery-grid">
                 <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 1" class="gallery-img">
                 <img src="https://images.unsplash.com/photo-1544025162-8111142156d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 2" class="gallery-img">
                 <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 3" class="gallery-img">
@@ -85,7 +87,7 @@
     <section class="testimonials-section bg-light">
         <div class="container text-center">
             <h2 class="section-title">آراء عملائنا</h2>
-            <div class="testimonials-grid">
+            <div class="testimonials-grid" id="testimonials-grid">
                 <div class="testimonial-card">
                     <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"أفضل بريسكت ممكن تدوقه! اللحمة دايبة وطعم التدخين فيها خيالي. تجربة لا تُنسى بصراحة."</p>
@@ -115,27 +117,27 @@
                         <i class="fa-solid fa-location-dot"></i>
                         <div>
                             <h3>العنوان</h3>
-                            <p>المعادي، شارع 9، القاهرة (مثال)</p>
+                            <p id="location-address-preview">المعادي، شارع 9، القاهرة (مثال)</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <i class="fa-regular fa-clock"></i>
                         <div>
                             <h3>مواعيد العمل</h3>
-                            <p>يومياً: 1:00 ظهراً - 1:00 صباحاً</p>
-                            <p>الجمعة: 2:00 ظهراً - 2:00 صباحاً</p>
+                            <p id="location-hours-preview" style="white-space: pre-line;">يومياً: 1:00 ظهراً - 1:00 صباحاً
+الجمعة: 2:00 ظهراً - 2:00 صباحاً</p>
                         </div>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item" id="location-phone-container">
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <h3>للاتصال</h3>
-                            <p>01012345678</p>
+                            <p id="location-phone-preview">01012345678</p>
                         </div>
                     </div>
                     <a href="menu.html" class="btn-primary" style="display:inline-block; margin-top:20px; padding: 10px 20px; text-decoration:none; border-radius:30px; font-weight:bold;">الاستلام من الفرع</a>
                 </div>
-                <div class="map-container">
+                <div class="map-container" id="map-iframe-preview">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3456.2577717467645!2d31.259902315113423!3d29.961300981912952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145847e38eb4d58f%3A0xf64f3d1b712c77d5!2sMaadi%20as%20Sarayat%20Al%20Gharbeyah%2C%20Maadi%2C%20Cairo%20Governorate!5e0!3m2!1sen!2seg!4v1689264427506!5m2!1sen!2seg" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>

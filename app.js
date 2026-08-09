@@ -54,9 +54,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     };
 
+    async function fetchWithVersion(url) {
+        try {
+            const vRes = await fetch(`${FIREBASE_DB_URL}/version.json?t=${new Date().getTime()}`);
+            if (vRes.ok) {
+                const vData = await vRes.json();
+                if (vData && vData.version) {
+                    return await fetch(`${url}?v=${vData.version}`);
+                }
+            }
+        } catch (e) {
+            console.warn('Version check failed', e);
+        }
+        // Fallback to generic timestamp if version file fails or is missing
+        return await fetch(`${url}?t=${new Date().getTime()}`);
+    }
+
     const fetchMenu = async () => {
         try {
-            const response = await fetch(`${dbUrl}menu.json`);
+            const response = await fetchWithVersion(`${dbUrl}menu.json`);
             if (!response.ok) throw new Error('Network response was not ok');
             
             const data = await response.json();
@@ -265,8 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fetchHomeData() {
         Promise.all([
-            fetch(`${FIREBASE_DB_URL}/menu.json`).then(res => res.json()),
-            fetch(`${FIREBASE_DB_URL}/WebsiteData.json`).then(res => res.json()).catch(() => null)
+            fetchWithVersion(`${FIREBASE_DB_URL}/menu.json`).then(res => res.json()),
+            fetchWithVersion(`${FIREBASE_DB_URL}/WebsiteData.json`).then(res => res.json()).catch(() => null)
         ])
         .then(([menuData, websiteData]) => {
             if (menuData) {
