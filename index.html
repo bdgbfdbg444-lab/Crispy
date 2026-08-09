@@ -6,6 +6,7 @@
     <title>The Sneaker Box BBQ - الرئيسية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="portfolio-body" id="home-page">
@@ -14,7 +15,7 @@
     <!-- Hero Section -->
     <header class="hero-section" id="hero-section">
         <div class="hero-overlay"></div>
-        <div class="hero-content">
+        <div class="hero-content" data-aos="zoom-in" data-aos-duration="1000">
             <h1 class="hero-title" id="home-restaurant-title">The Sneaker Box BBQ</h1>
             <p class="hero-subtitle" id="home-restaurant-desc">أصالة الباربيكيو المدخن، شغف في كل قطعة</p>
             <a href="menu.html" class="btn-primary hero-btn">
@@ -26,24 +27,24 @@
     <!-- Our Story Section -->
     <section class="story-section">
         <div class="container text-center">
-            <h2 class="section-title">قصتنا ببساطة</h2>
-            <div class="story-content" id="story-text-preview">
+            <h2 class="section-title" data-aos="fade-up">قصتنا ببساطة</h2>
+            <div class="story-content" id="story-text-preview" data-aos="fade-up" data-aos-delay="100">
                 بدأت رحلتنا من شغف حقيقي باللحوم المدخنة بالطريقة الأمريكية الأصيلة (Texas Style). 
                 نستخدم أفضل أنواع حطب التفاح والبلوط للتدخين البطيء الذي يستمر لأكثر من 16 ساعة، 
                 لضمان قوام يذوب في الفم ونكهة تدخين متوازنة وغنية. نحن لا نقدم مجرد طعام، بل نقدم تجربة!
             </div>
             <div class="story-features">
-                <div class="feature-item">
+                <div class="feature-item" data-aos="fade-up" data-aos-delay="200">
                     <i class="fa-solid fa-fire-flame-curved feature-icon"></i>
                     <h3>تدخين على الحطب</h3>
                     <p>نكهة مدخنة أصيلة وطبيعية 100%</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
                     <i class="fa-solid fa-cow feature-icon"></i>
                     <h3>لحوم فاخرة</h3>
                     <p>نختار أفضل وأجود قطع اللحم الطازجة</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
                     <i class="fa-solid fa-clock feature-icon"></i>
                     <h3>طهي بطيء</h3>
                     <p>تُطهى ببطء لساعات لتذوب في الفم</p>
@@ -60,7 +61,7 @@
                 <i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل الأصناف...
             </div>
             
-            <div id="best-sellers-grid" class="best-sellers-grid" style="display: none;">
+            <div id="best-sellers-grid" class="best-sellers-grid" style="display: none;" data-aos="fade-up">
                 <!-- Populated dynamically via app.js -->
             </div>
             
@@ -88,17 +89,17 @@
         <div class="container text-center">
             <h2 class="section-title">آراء عملائنا</h2>
             <div class="testimonials-grid" id="testimonials-grid">
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="100">
                     <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"أفضل بريسكت ممكن تدوقه! اللحمة دايبة وطعم التدخين فيها خيالي. تجربة لا تُنسى بصراحة."</p>
                     <p class="testimonial-author">- أحمد م.</p>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="200">
                     <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"جودة اللحوم ممتازة والبهارات موزونة بالملي. طلبت أكتر من مرة وكل مرة نفس الجودة العالية."</p>
                     <p class="testimonial-author">- كريم س.</p>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="300">
                     <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"شغل احترافي جداً والاهتمام بالتفاصيل واضح. من أحسن مطاعم الباربيكيو اللي جربتها."</p>
                     <p class="testimonial-author">- محمد ع.</p>
@@ -157,5 +158,15 @@
     <!-- Firebase config and App Logic -->
     <script src="config.js"></script>
     <script src="app.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+        });
+    </script>
 </body>
 </html>

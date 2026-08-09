@@ -216,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 products.forEach(product => {
                     const card = document.createElement('div');
                     card.className = `product-card ${product.isSoldOut ? 'sold-out' : ''}`;
+                    card.setAttribute('data-aos', 'fade-up');
 
                     if (product.imagePath) {
                         const img = document.createElement('img');
@@ -247,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       const addBtn = document.createElement('button');
                       addBtn.className = 'add-to-cart-btn';
                       addBtn.textContent = 'إضافة للسلة +';
-                      addBtn.onclick = () => window.addToCart(product);
+                      addBtn.onclick = (e) => window.addToCart(product, e);
                       info.appendChild(addBtn);
                   }
 
@@ -315,6 +316,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyWebsiteData(data) {
+        // Theme Colors
+        if (data.primaryThemeColor) {
+            document.documentElement.style.setProperty('--primary-color', data.primaryThemeColor);
+        }
+
+        // Dark Mode
+        if (data.enableDarkModeToggle) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // AOS Animations Toggle
+        if (data.enableScrollAnimations === false) {
+            const style = document.createElement('style');
+            style.innerHTML = '[data-aos] { opacity: 1 !important; transform: none !important; transition: none !important; }';
+            document.head.appendChild(style);
+        }
+
+        // Popups
+        if (data.showPopupOffer && data.popupOfferText && !sessionStorage.getItem('popupSeen')) {
+            setTimeout(() => {
+                // simple alert for now, could be enhanced to custom modal
+                alert(data.popupOfferText);
+                sessionStorage.setItem('popupSeen', 'true');
+            }, 1500);
+        }
+
         // Hero
         if (data.heroMediaUrl) {
             const heroEl = document.getElementById('hero-section');
@@ -414,6 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(product => {
             const card = document.createElement('div');
             card.className = 'product-card';
+            card.setAttribute('data-aos', 'fade-up');
             
             const imagePath = product.imagePath || product.ImagePath;
             if (imagePath) {
@@ -450,7 +478,72 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cartFab) cartFab.onclick = () => cartModal.classList.remove('hidden');
         if (closeCartBtn) closeCartBtn.onclick = () => cartModal.classList.add('hidden');
         if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
-        if (closePaymentBtn) closePaymentBtn.onclick = () => paymentModal.classList.add('hidden');
+        document.getElementById('close-rating').onclick = () => ratingModal.classList.add('hidden');
+    
+    // ======== FLY TO CART ANIMATION ========
+    function flyToCart(event) {
+        if (!event) return;
+        const button = event.target || event.currentTarget;
+        if (!button) return;
+        
+        const card = button.closest('.product-card');
+        if (!card) return;
+        
+        const img = card.querySelector('img');
+        if (!img) return;
+        
+        const rect = img.getBoundingClientRect();
+        executeFlyAnimation(img.src, rect.left, rect.top, rect.width, rect.height);
+    }
+    
+    function flyToCartSynthetic(x, y) {
+        // Fallback for modals: fly a generic dot from the clicked position
+        executeFlyAnimation(null, parseFloat(x), parseFloat(y), 40, 40);
+    }
+    
+    function executeFlyAnimation(imgSrc, left, top, width, height) {
+        const cartIcon = document.getElementById('cart-fab');
+        if (!cartIcon) return;
+        
+        const flyingEl = document.createElement('div');
+        flyingEl.className = 'flying-img';
+        flyingEl.style.left = `${left}px`;
+        flyingEl.style.top = `${top}px`;
+        flyingEl.style.width = `${width}px`;
+        flyingEl.style.height = `${height}px`;
+        
+        if (imgSrc) {
+            flyingEl.style.backgroundImage = `url('${imgSrc}')`;
+            flyingEl.style.backgroundSize = 'cover';
+            flyingEl.style.backgroundPosition = 'center';
+            flyingEl.style.borderRadius = '50%';
+        } else {
+            flyingEl.style.backgroundColor = '#F97316';
+            flyingEl.style.borderRadius = '50%';
+        }
+        
+        document.body.appendChild(flyingEl);
+        
+        // Trigger reflow
+        void flyingEl.offsetWidth;
+        
+        const cartRect = cartIcon.getBoundingClientRect();
+        
+        // Animate
+        flyingEl.style.left = `${cartRect.left + (cartRect.width / 2) - 10}px`;
+        flyingEl.style.top = `${cartRect.top + (cartRect.height / 2) - 10}px`;
+        flyingEl.style.width = '20px';
+        flyingEl.style.height = '20px';
+        flyingEl.style.opacity = '0.5';
+        
+        setTimeout(() => {
+            if(document.body.contains(flyingEl)) {
+                flyingEl.remove();
+            }
+            cartIcon.classList.add('bounce');
+            setTimeout(() => cartIcon.classList.remove('bounce'), 300);
+        }, 600);
+    }
 
         // Weight Modal elements
         const weightModal = document.getElementById('weight-modal');
@@ -508,17 +601,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Now pass the modified product back to addToCart
                 // This allows it to check for modifiers (if any) or just add to cart
+                
+                if (weightModal.dataset.sourceX && weightModal.dataset.sourceY) {
+                    flyToCartSynthetic(weightModal.dataset.sourceX, weightModal.dataset.sourceY);
+                }
+
                 window.addToCart(customProduct);
             };
         }
 
-        window.addToCart = (product) => {
+        window.addToCart = (product, event) => {
             if (product.isSoldByWeight || product.IsSoldByWeight) {
                 currentWeightProduct = product;
                 currentWeight = 100;
                 weightItemName.textContent = product.name;
                 updateWeightUI();
                 weightModal.classList.remove('hidden');
+                
+                // store event for later use
+                if(event) {
+                    weightModal.dataset.sourceX = event.clientX;
+                    weightModal.dataset.sourceY = event.clientY;
+                }
                 return;
             }
 
@@ -574,6 +678,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     calculateAddonsPrice();
                     addonsModal.classList.remove('hidden');
+                    
+                    // store event
+                    if(event) {
+                        addonsModal.dataset.sourceX = event.clientX;
+                        addonsModal.dataset.sourceY = event.clientY;
+                    }
                     return;
                 }
             }
@@ -587,6 +697,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateCartUI();
             showToast(`تمت إضافة ${product.name} للسلة`);
+            
+            if(event) {
+                flyToCart(event);
+            }
         };
 
         if (closeAddonsModalBtn) closeAddonsModalBtn.onclick = () => addonsModal.classList.add('hidden');
@@ -647,6 +761,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 updateCartUI();
                 showToast(`تمت إضافة ${currentAddonProduct.name} للسلة`);
+                
+                // Trigger fly-to-cart animation if we saved the coordinates
+                if (addonsModal.dataset.sourceX && addonsModal.dataset.sourceY) {
+                    flyToCartSynthetic(addonsModal.dataset.sourceX, addonsModal.dataset.sourceY);
+                }
+                
                 addonsModal.classList.add('hidden');
             };
         }

@@ -415,6 +415,67 @@ body {
     pointer-events: none;
 }
 
+/* ======== Fly-to-Cart Animation ======== */
+.flying-img {
+    position: fixed;
+    z-index: 9999;
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth ease-out */
+    pointer-events: none;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.bounce {
+    animation: bounce 0.3s ease-in-out;
+}
+
+@keyframes bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* ======== Dark Mode ======== */
+body.dark-mode {
+    background-color: #0F172A;
+    color: #F8FAFC;
+}
+
+body.dark-mode .bg-light {
+    background-color: #1E293B !important;
+}
+
+body.dark-mode .product-card,
+body.dark-mode .modal-content,
+body.dark-mode .testimonial-card,
+body.dark-mode .location-info {
+    background-color: #1E293B;
+    border-color: #334155;
+    color: #F8FAFC;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .product-name,
+body.dark-mode .section-title,
+body.dark-mode .modal-header h2,
+body.dark-mode h3 {
+    color: #F8FAFC;
+}
+
+body.dark-mode .category-btn {
+    background-color: #334155;
+    color: #CBD5E1;
+}
+
+body.dark-mode .category-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+body.dark-mode .footer {
+    background-color: #0B132B;
+    color: #CBD5E1;
+}
+
 /* Announcement Banner */
 .announcement-banner {
     background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
