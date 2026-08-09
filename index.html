@@ -1,200 +1,79 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Sneaker Box BBQ - المنيو الرقمي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>The Sneaker Box BBQ - الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <header class="header">
-        <div class="logo-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
-            <img id="restaurant-logo" src="" alt="Restaurant Logo" style="max-height: 80px; display: none; border-radius: 8px;">
-            <h1 id="restaurant-title">المنيو الرقمي</h1>
-            <p>أصلي، طازج، ومصنوع بشغف</p>
+<body id="home-page" class="portfolio-body">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" id="home-restaurant-title">The Sneaker Box BBQ</h1>
+            <p class="hero-subtitle" id="home-restaurant-desc">أصالة الباربيكيو المدخن، شغف في كل قطعة</p>
+            <a href="menu.html" class="btn-primary hero-btn">
+                <i class="fa-solid fa-utensils"></i> اطلب الآن
+            </a>
         </div>
-    </header>
+    </section>
 
-    <!-- Announcement Banner -->
-    <div id="announcement-banner" class="announcement-banner hidden">
-        <div class="marquee"><span id="announcement-text"></span></div>
-    </div>
-
-    <div id="loader" class="loader">
-        <div class="spinner"></div>
-        <p>جاري تحميل أشهى الأطباق...</p>
-    </div>
-
-    <!-- Category Navigation -->
-    <nav id="category-nav" class="category-nav"></nav>
-
-    <!-- Main Content -->
-    <main id="menu-container">
-        <!-- سيتم حقن الأقسام والأصناف هنا بواسطة JavaScript -->
-    </main>
-
-    <!-- Floating Cart Button -->
-    <button id="cart-fab" class="cart-fab hidden">
-        <span class="cart-icon">🛒</span>
-        <span id="cart-count" class="cart-count">0</span>
-    </button>
-
-    <!-- Floating Rating Button -->
-    <button id="rating-fab" class="rating-fab">
-        <span class="rating-icon">⭐</span>
-    </button>
-
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>سلة الطلبات 🛒</h2>
-                <button id="close-cart" class="close-btn">&times;</button>
+    <!-- Our Story Section -->
+    <section class="story-section">
+        <div class="container text-center">
+            <h2 class="section-title">قصتنا</h2>
+            <div class="story-content">
+                <p>في The Sneaker Box BBQ، لا نقدم مجرد طعام، بل نقدم تجربة فريدة عشاق اللحوم. نحن نؤمن بأن الباربيكيو الحقيقي يحتاج إلى الصبر، ولذلك نستخدم أفضل أنواع الحطب لتدخين اللحوم لساعات طويلة على حرارة هادئة لتصل إليك بأقصى درجات الطراوة والنكهة الأصيلة.</p>
+                <p>لحومنا مختارة بعناية فائقة وتُحضّر يومياً بشغف لا ينتهي لضمان أعلى مستويات الجودة.</p>
             </div>
-            <div id="cart-items" class="cart-items">
-                <!-- سيتم حقن الأصناف المطلوبة هنا -->
-            </div>
-            <div class="cart-summary">
-                <div class="cart-total">الإجمالي: <span id="cart-total-price">0.00</span> ج.م</div>
-                
-                <div class="order-form">
-                    <div class="order-type-selector" style="margin-bottom: 15px; display: flex; gap: 15px; justify-content: center;">
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                            <input type="radio" name="orderType" value="DineIn" checked>
-                            🍽️ طلب محلي (صالة)
-                        </label>
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                            <input type="radio" name="orderType" value="PickUp">
-                            🛍️ استلام من الفرع
-                        </label>
-                    </div>
-                    <input type="text" id="customer-name" placeholder="اسم العميل *" required />
-                    <input type="tel" id="customer-phone" placeholder="رقم الموبايل *" required />
-                    <textarea id="order-notes" placeholder="ملاحظات إضافية (مثال: بدون صوص)..." rows="2"></textarea>
+            <div class="story-features">
+                <div class="feature-item">
+                    <i class="fa-solid fa-fire-flame-curved feature-icon"></i>
+                    <h3>تدخين على الحطب</h3>
+                    <p>نكهة مدخنة أصيلة وطبيعية 100%</p>
                 </div>
-                
-                <button id="checkout-btn" class="checkout-btn">تأكيد وإرسال الطلب</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="success-modal" class="modal hidden">
-        <div class="modal-content text-center">
-            <h1 style="font-size: 3rem; margin-bottom: 1rem;">✅</h1>
-            <h2>تم إرسال طلبك بنجاح!</h2>
-            <p style="margin-top: 1rem; color: #64748b;">جاري تحضير طلبك، شكراً لاختيارك المنيو الرقمي.</p>
-            <button id="close-success" class="checkout-btn" style="margin-top: 1.5rem;">حسناً</button>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="modal hidden">
-        <div class="modal-content text-center">
-            <div class="modal-header">
-                <h2>تأكيد الطلب الخارجي 🛍️</h2>
-                <button id="close-payment" class="close-btn">&times;</button>
-            </div>
-            <p style="color: #64748b; margin-bottom: 15px;">يرجى تحويل مبلغ الفاتورة إلى المحفظة التالية لتأكيد طلبك:</p>
-            
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
-                <p style="font-size: 1.1em; color: #555; margin-bottom: 5px;">قيمة الفاتورة:</p>
-                <p id="payment-amount" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</p>
-                <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;" />
-                <p style="font-size: 1.1em; color: #555; margin-bottom: 5px;">رقم المحفظة (كاش/انستاباي):</p>
-                <p id="payment-wallet" style="font-size: 1.5em; font-weight: bold; color: #1e293b; letter-spacing: 2px;">غير متوفر</p>
-            </div>
-
-            <p style="font-size: 0.9em; color: #dc2626; margin-bottom: 15px;">⚠️ لن يتم البدء في تحضير الطلب إلا بعد تأكيد التحويل وإرسال الإيصال.</p>
-            
-            <button id="whatsapp-confirm-btn" class="checkout-btn" style="background: #25D366; color: white;">
-                <i class="fa-brands fa-whatsapp"></i> تأكيد عبر الواتساب
-            </button>
-        </div>
-    </div>
-
-    <!-- Rating Modal -->
-    <div id="rating-modal" class="modal hidden">
-        <div class="modal-content text-center">
-            <div class="modal-header">
-                <h2>قيّم تجربتك ⭐</h2>
-                <button id="close-rating" class="close-btn">&times;</button>
-            </div>
-            <p style="color: #64748b; margin-bottom: 15px;">رأيك يهمنا لتحسين جودة خدمتنا.</p>
-            <div class="stars-container" id="stars-container">
-                <i class="fa-solid fa-star" data-value="1"></i>
-                <i class="fa-solid fa-star" data-value="2"></i>
-                <i class="fa-solid fa-star" data-value="3"></i>
-                <i class="fa-solid fa-star" data-value="4"></i>
-                <i class="fa-solid fa-star" data-value="5"></i>
-            </div>
-            <textarea id="rating-comment" placeholder="أضف تعليقك هنا (اختياري)..." rows="3" style="width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"></textarea>
-            <button id="submit-rating-btn" class="checkout-btn" style="margin-top: 15px;">إرسال التقييم</button>
-        </div>
-    </div>
-
-    <!-- Weight Selection Modal -->
-    <div id="weight-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: center; padding: 30px;">
-            <span class="close-btn" id="close-weight-modal">&times;</span>
-            <h2 id="weight-item-name" style="color: var(--primary-color); margin-bottom: 5px;">اسم الصنف</h2>
-            <p style="color: #666; font-size: 0.9em; margin-bottom: 20px;">البيع بالوزن</p>
-            
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px; gap: 20px;">
-                <button id="weight-minus-btn" style="background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 24px; cursor: pointer;">-</button>
-                <div style="font-size: 28px; font-weight: bold; min-width: 100px;">
-                    <span id="weight-display">100</span><span style="font-size: 16px; color: #666;">g</span>
+                <div class="feature-item">
+                    <i class="fa-solid fa-cow feature-icon"></i>
+                    <h3>لحوم فاخرة</h3>
+                    <p>نختار أفضل وأجود قطع اللحم الطازجة</p>
                 </div>
-                <button id="weight-plus-btn" style="background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 24px; cursor: pointer;">+</button>
+                <div class="feature-item">
+                    <i class="fa-solid fa-clock feature-icon"></i>
+                    <h3>طهي بطيء</h3>
+                    <p>تُطهى ببطء لساعات لتذوب في الفم</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Sellers Section (Dynamic) -->
+    <section class="best-sellers-section bg-light">
+        <div class="container">
+            <h2 class="section-title text-center">الأكثر مبيعاً <i class="fa-solid fa-fire" style="color:#ef4444;"></i></h2>
+            <div id="loader" class="loader">
+                <i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل الأصناف...
             </div>
             
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
-                <span style="font-size: 1.1em; color: #555;">السعر الإجمالي: </span>
-                <span id="weight-price-display" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</span>
-            </div>
-
-            <button id="confirm-weight-btn" class="checkout-btn" style="width: 100%;">تأكيد وإضافة للسلة</button>
-        </div>
-    </div>
-
-        <!-- Addons Modal -->
-    <div id="addons-modal" class="modal hidden">
-        <div class="modal-content" style="padding: 25px; max-height: 80vh; display: flex; flex-direction: column;">
-            <span class="close-btn" id="close-addons-modal">&times;</span>
-            <h2 id="addons-item-name" style="color: var(--primary-color); margin-bottom: 5px;">اسم الصنف</h2>
-            <p id="addons-free-limit-text" style="color: #64748b; font-size: 0.9em; margin-bottom: 15px;"></p>
-            
-            <div id="addons-list" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; text-align: right; padding-right: 5px;">
-                <!-- Addons checkboxes injected here via JS -->
+            <div id="best-sellers-grid" class="best-sellers-grid" style="display: none;">
+                <!-- Populated dynamically via app.js -->
             </div>
             
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
-                <span style="font-size: 1.1em; color: #555;">الإجمالي: </span>
-                <span id="addons-price-display" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</span>
+            <div class="text-center" style="margin-top: 3rem;">
+                <a href="menu.html" class="btn-outline">عرض القائمة الكاملة <i class="fa-solid fa-arrow-left"></i></a>
             </div>
-
-            <button id="confirm-addons-btn" class="checkout-btn" style="width: 100%;">تأكيد وإضافة للسلة</button>
         </div>
-    </div>
+    </section>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast hidden">تم إضافة الصنف للسلة</div>
-
-    <!-- Social Media Footer -->
-    <footer id="social-footer" class="social-footer hidden">
-        <p class="footer-title">تابعنا لمعرفة أحدث العروض!</p>
-        <div class="social-icons">
-            <a id="link-facebook" href="#" target="_blank" class="social-icon hidden" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a id="link-instagram" href="#" target="_blank" class="social-icon hidden" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a id="link-tiktok" href="#" target="_blank" class="social-icon hidden" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-            <a id="link-whatsapp" href="#" target="_blank" class="social-icon hidden" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-            <a id="link-googlemaps" href="#" target="_blank" class="social-icon hidden" title="Google Maps"><i class="fa-solid fa-map-location-dot"></i></a>
-        </div>
+    <footer class="footer portfolio-footer">
+        <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Powered by AlSafwah POS</p>
     </footer>
 
-    <!-- Firebase SDK (Not needed, using Fetch) -->
+    <!-- Firebase config and App Logic -->
     <script src="config.js"></script>
     <script src="app.js"></script>
 </body>

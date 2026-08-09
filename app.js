@@ -247,17 +247,114 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.style.display = 'none';
         menuContainer.style.display = 'block';
     };
-
     const showError = (message) => {
         loader.innerHTML = `<p style="color: red; text-align: center; font-weight: bold;">${message}</p>`;
     };
 
-    if(FIREBASE_DB_URL.includes("YOUR-FIREBASE-PROJECT")) {
-        showError('يرجى تعديل ملف config.js ووضع رابط Firebase الخاص بك.');
-    } else {
-        fetchMenu();
+    const isHomePage = document.body.id === 'home-page';
 
-        if (cartFab) cartFab.onclick = () => cartModal.classList.remove('hidden');
+    if(FIREBASE_DB_URL.includes("YOUR-FIREBASE-PROJECT")) {
+        showError('يرجى تحديث رابط config.js لربطه بقاعدة Firebase الخاصة بك.');
+    } else {
+        if (isHomePage) {
+            fetchHomeData();
+        } else {
+            fetchMenu();
+        }
+    }
+
+    function fetchHomeData() {
+        const url = `${FIREBASE_DB_URL}/menu.json`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (!data) {
+                    showError('لا توجد بيانات في قاعدة البيانات.');
+                    return;
+                }
+                
+                // Set Restaurant Info
+                const resTitle = document.getElementById('home-restaurant-title');
+                const resDesc = document.getElementById('home-restaurant-desc');
+                if (data.RestaurantName && resTitle) resTitle.textContent = data.RestaurantName;
+                if (data.RestaurantDescription && resDesc) resDesc.textContent = data.RestaurantDescription;
+
+                // Find Hot Items
+                let hotItems = [];
+                if (data.Categories) {
+                    data.Categories.forEach(c => {
+                        if (c.Products) {
+                            c.Products.forEach(p => {
+                                if (p.isHotItem) {
+                                    hotItems.push(p);
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                renderBestSellers(hotItems);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                showError('حدث خطأ أثناء تحميل البيانات.');
+            });
+    }
+
+    function renderBestSellers(items) {
+        if(loader) loader.style.display = 'none';
+        const grid = document.getElementById('best-sellers-grid');
+        if (!grid) return;
+        
+        if (items.length === 0) {
+            grid.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">لا توجد أصناف مميزة حالياً.</p>';
+            grid.style.display = 'grid';
+            return;
+        }
+
+        items.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            const imageContainer = document.createElement('div');
+            imageContainer.style.width = '120px';
+            imageContainer.style.height = '120px';
+            imageContainer.style.flexShrink = '0';
+            
+            const img = document.createElement('img');
+            img.src = product.ImagePath || 'https://via.placeholder.com/120';
+            img.className = 'product-image';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            imageContainer.appendChild(img);
+            
+            const info = document.createElement('div');
+            info.style.flex = '1';
+            info.style.display = 'flex';
+            info.style.flexDirection = 'column';
+            
+            const name = document.createElement('div');
+            name.className = 'product-name';
+            name.textContent = product.Name || product.name;
+            
+            const price = document.createElement('div');
+            price.className = 'product-price';
+            price.textContent = `${product.SellingPrice || product.sellingPrice} ج.م`;
+            
+            info.appendChild(name);
+            info.appendChild(price);
+            
+            card.appendChild(imageContainer);
+            card.appendChild(info);
+            
+            grid.appendChild(card);
+        });
+        
+        grid.style.display = 'grid';
+    }
+
+    // The buttons are already null-checked, so they won't throw on the home page.
+    if (cartFab) cartFab.onclick = () => cartModal.classList.remove('hidden');
         if (closeCartBtn) closeCartBtn.onclick = () => cartModal.classList.add('hidden');
         if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
         if (closePaymentBtn) closePaymentBtn.onclick = () => paymentModal.classList.add('hidden');

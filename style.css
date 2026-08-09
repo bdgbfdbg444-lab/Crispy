@@ -426,8 +426,151 @@ body {
     overflow: hidden;
     position: relative;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    z-index: 100;
+    z-index: 1000;
 }
+
+/* ---------------------------------------------
+   LANDING PAGE STYLES (PORTFOLIO)
+   --------------------------------------------- */
+.portfolio-body {
+    background-color: #f8fafc;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
+    background: url('https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+.hero-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    padding: 2rem;
+    max-width: 800px;
+}
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+.hero-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+}
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.6);
+    background-color: #b45309;
+}
+
+/* Story Section */
+.story-section {
+    padding: 5rem 1rem;
+    background-color: white;
+}
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+.story-content {
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #475569;
+}
+.story-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.feature-item {
+    flex: 1;
+    min-width: 250px;
+    padding: 2rem;
+    background: #f1f5f9;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+.feature-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+.feature-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
+
+/* Best Sellers Section */
+.best-sellers-section {
+    padding: 5rem 1rem;
+    background-color: #f8fafc;
+}
+.bg-light {
+    background-color: #f8fafc;
+}
+.best-sellers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.btn-outline {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: all 0.3s;
+}
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+.portfolio-footer {
+    background: #1e293b;
+    color: white;
+    margin-top: 0;
+    padding: 3rem 1rem;
+}
+
 .announcement-banner .marquee {
     white-space: nowrap;
     animation: marquee 12s linear infinite;
