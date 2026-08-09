@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Sneaker Box BBQ - المنيو الرقمي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>THE SNEAKER BOX BBQ - المنيو</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
@@ -15,189 +16,156 @@
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" media="(min-width: 992px)" href="desktop.css">
     <link rel="stylesheet" media="(max-width: 991px)" href="mobile.css">
+    
+    <style>
+        /* Specific Menu Overrides for Brutalist Vibe */
+        .category-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 4rem 0 2rem 0;
+            text-transform: uppercase;
+            color: var(--primary-color);
+            border-bottom: 2px solid rgba(255, 51, 0, 0.2);
+            padding-bottom: 1rem;
+        }
+        
+        .product-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        .product-card .price {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+        
+        .add-to-cart-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            width: 100%;
+        }
+        .add-to-cart-btn:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100000;
+        }
+        .modal.hidden { display: none; }
+        .modal-content {
+            background: var(--surface-color);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .weight-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .weight-btn {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body id="menu-page">
-    <header class="header" style="position: relative;">
-        <a href="index.html" class="back-home-btn" style="position: absolute; right: 15px; top: 15px; color: white; text-decoration: none; font-weight: bold; font-size: 14px; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 20px;"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</a>
-        <div class="logo-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
-            <img id="restaurant-logo" src="" alt="Restaurant Logo" style="max-height: 80px; display: none; border-radius: 8px;">
-            <h1 id="restaurant-title">قائمة الطعام</h1>
-            <p>أشهى أطباق الباربيكيو المدخن</p>
+    <div id="toast" class="toast hidden">تم إضافة الصنف للسلة</div>
+    
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <a href="index.html" class="nav-logo">
+            <i class="fa-solid fa-fire"></i> THE SNEAKER BOX
+        </a>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="menu.html">المنيو</a>
         </div>
-    </header>
-
-    <!-- Announcement Banner -->
-    <div id="announcement-banner" class="announcement-banner hidden">
-        <div class="marquee"><span id="announcement-text"></span></div>
-    </div>
-
-    <div id="loader" class="loader">
-        <div class="spinner"></div>
-        <p>جاري تحميل أشهى الأطباق...</p>
-    </div>
-
-    <!-- Category Navigation -->
-    <nav id="category-nav" class="category-nav"></nav>
-
-    <!-- Main Content -->
-    <main id="menu-container">
-        <!-- سيتم حقن الأقسام والأصناف هنا بواسطة JavaScript -->
-    </main>
-
-    <!-- Floating Cart Button -->
-    <button id="cart-fab" class="cart-fab hidden">
-        <span class="cart-icon">🛒</span>
-        <span id="cart-count" class="cart-count">0</span>
-    </button>
-
-    <!-- Floating Rating Button -->
-    <button id="rating-fab" class="rating-fab">
-        <span class="rating-icon">⭐</span>
-    </button>
-
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>سلة الطلبات 🛒</h2>
-                <button id="close-cart" class="close-btn">&times;</button>
-            </div>
-            <div id="cart-items" class="cart-items">
-                <!-- سيتم حقن الأصناف المطلوبة هنا -->
-            </div>
-            <div class="cart-summary">
-                <div class="cart-total">الإجمالي: <span id="cart-total-price">0.00</span> ج.م</div>
-                
-                <div class="order-form">
-                    <div class="order-type-selector" style="margin-bottom: 15px; display: flex; gap: 15px; justify-content: center;">
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                            <input type="radio" name="orderType" value="DineIn" checked>
-                            🍽️ طلب محلي (صالة)
-                        </label>
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                            <input type="radio" name="orderType" value="PickUp">
-                            🛍️ استلام من الفرع
-                        </label>
-                    </div>
-                    <input type="text" id="customer-name" placeholder="اسم العميل *" required />
-                    <input type="tel" id="customer-phone" placeholder="رقم الموبايل *" required />
-                    <textarea id="order-notes" placeholder="ملاحظات إضافية (مثال: بدون صوص)..." rows="2"></textarea>
-                </div>
-                
-                <button id="checkout-btn" class="checkout-btn">تأكيد وإرسال الطلب</button>
+        <div class="nav-actions">
+            <div class="cart-trigger" style="position:relative; font-size:1.5rem;">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge cart-count" style="display:none; position:absolute; top:-10px; right:-10px; background:var(--primary-color); padding:2px 6px; border-radius:10px; font-size:12px; font-weight:bold;">0</span>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Success Modal -->
-    <div id="success-modal" class="modal hidden">
-        <div class="modal-content text-center">
-            <h1 style="font-size: 3rem; margin-bottom: 1rem;">✅</h1>
-            <h2>تم إرسال طلبك بنجاح!</h2>
-            <p style="margin-top: 1rem; color: #64748b;">جاري تحضير طلبك، شكراً لاختيارك المنيو الرقمي.</p>
-            <button id="close-success" class="checkout-btn" style="margin-top: 1.5rem;">حسناً</button>
+    <div class="container" style="padding-top: 120px;">
+        <h1 class="text-massive" style="text-align: right; margin-bottom: 2rem;">
+            اكتشف <span class="highlight">المنيو</span>
+        </h1>
+        
+        <div id="loader" class="loader">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> جاري التحميل...
         </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="modal hidden">
-        <div class="modal-content text-center">
-            <div class="modal-header">
-                <h2>تأكيد الطلب الخارجي 🛍️</h2>
-                <button id="close-payment" class="close-btn">&times;</button>
-            </div>
-            <p style="color: #64748b; margin-bottom: 15px;">يرجى تحويل مبلغ الفاتورة إلى المحفظة التالية لتأكيد طلبك:</p>
-            
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
-                <p style="font-size: 1.1em; color: #555; margin-bottom: 5px;">قيمة الفاتورة:</p>
-                <p id="payment-amount" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</p>
-                <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;" />
-                <p style="font-size: 1.1em; color: #555; margin-bottom: 5px;">رقم المحفظة (كاش/انستاباي):</p>
-                <p id="payment-wallet" style="font-size: 1.5em; font-weight: bold; color: #1e293b; letter-spacing: 2px;">غير متوفر</p>
-            </div>
-
-            <p style="font-size: 0.9em; color: #dc2626; margin-bottom: 15px;">⚠️ لن يتم البدء في تحضير الطلب إلا بعد تأكيد التحويل وإرسال الإيصال.</p>
-            
-            <button id="whatsapp-confirm-btn" class="checkout-btn" style="background: #25D366; color: white;">
-                <i class="fa-brands fa-whatsapp"></i> تأكيد عبر الواتساب
-            </button>
-        </div>
-    </div>
-
-    <!-- Rating Modal -->
-    <div id="rating-modal" class="modal hidden">
-        <div class="modal-content text-center">
-            <div class="modal-header">
-                <h2>قيّم تجربتك ⭐</h2>
-                <button id="close-rating" class="close-btn">&times;</button>
-            </div>
-            <p style="color: #64748b; margin-bottom: 15px;">رأيك يهمنا لتحسين جودة خدمتنا.</p>
-            <div class="stars-container" id="stars-container">
-                <i class="fa-solid fa-star" data-value="1"></i>
-                <i class="fa-solid fa-star" data-value="2"></i>
-                <i class="fa-solid fa-star" data-value="3"></i>
-                <i class="fa-solid fa-star" data-value="4"></i>
-                <i class="fa-solid fa-star" data-value="5"></i>
-            </div>
-            <textarea id="rating-comment" placeholder="أضف تعليقك هنا (اختياري)..." rows="3" style="width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"></textarea>
-            <button id="submit-rating-btn" class="checkout-btn" style="margin-top: 15px;">إرسال التقييم</button>
+        
+        <div id="menu-container" style="display: none;">
+            <!-- Rendered by app-core.js -->
         </div>
     </div>
 
     <!-- Weight Selection Modal -->
     <div id="weight-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: center; padding: 30px;">
-            <span class="close-btn" id="close-weight-modal">&times;</span>
-            <h2 id="weight-item-name" style="color: var(--primary-color); margin-bottom: 5px;">اسم الصنف</h2>
-            <p style="color: #666; font-size: 0.9em; margin-bottom: 20px;">البيع بالوزن</p>
+        <div class="modal-content">
+            <h2 id="weight-item-name" style="font-size: 2rem; margin-bottom: 1rem;"></h2>
+            <p style="color: var(--text-muted);">حدد الوزن المطلوب بالجرام (أقل كمية 100 جم)</p>
             
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px; gap: 20px;">
-                <button id="weight-minus-btn" style="background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 24px; cursor: pointer;">-</button>
-                <div style="font-size: 28px; font-weight: bold; min-width: 100px;">
-                    <span id="weight-display">100</span><span style="font-size: 16px; color: #666;">g</span>
-                </div>
-                <button id="weight-plus-btn" style="background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 24px; cursor: pointer;">+</button>
+            <div class="weight-controls">
+                <button class="weight-btn" id="btn-minus-weight">-</button>
+                <div style="font-size: 3rem; font-weight: 900;" id="weight-display">100<span style="font-size:1.5rem;">g</span></div>
+                <button class="weight-btn" id="btn-plus-weight">+</button>
             </div>
             
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
-                <span style="font-size: 1.1em; color: #555;">السعر الإجمالي: </span>
-                <span id="weight-price-display" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</span>
+            <p style="font-size: 1.5rem; margin-bottom: 2rem;">الإجمالي: <span id="weight-total-price" style="color: var(--primary-color); font-weight:900;">0</span> جنيه</p>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button id="cancel-weight-btn" class="btn-primary" style="flex:1; background:#333;">إلغاء</button>
+                <button id="confirm-weight-btn" class="btn-primary" style="flex:2;">إضافة للسلة</button>
             </div>
-
-            <button id="confirm-weight-btn" class="checkout-btn" style="width: 100%;">تأكيد وإضافة للسلة</button>
         </div>
     </div>
-
-        <!-- Addons Modal -->
+    
+    <!-- Addons Modal (If used in POS) -->
     <div id="addons-modal" class="modal hidden">
-        <div class="modal-content" style="padding: 25px; max-height: 80vh; display: flex; flex-direction: column;">
-            <span class="close-btn" id="close-addons-modal">&times;</span>
-            <h2 id="addons-item-name" style="color: var(--primary-color); margin-bottom: 5px;">اسم الصنف</h2>
-            <p id="addons-free-limit-text" style="color: #64748b; font-size: 0.9em; margin-bottom: 15px;"></p>
-            
-            <div id="addons-list" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; text-align: right; padding-right: 5px;">
-                <!-- Addons checkboxes injected here via JS -->
-            </div>
-            
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
-                <span style="font-size: 1.1em; color: #555;">الإجمالي: </span>
-                <span id="addons-price-display" style="font-size: 1.5em; font-weight: bold; color: var(--primary-color);">0.00 ج.م</span>
-            </div>
-
-            <button id="confirm-addons-btn" class="checkout-btn" style="width: 100%;">تأكيد وإضافة للسلة</button>
+        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">الإضافات</h2>
+            <div id="addons-container" style="text-align: right; margin-bottom: 2rem;"></div>
+            <button id="confirm-addons-btn" class="btn-primary" style="width: 100%;">تأكيد وإضافة للسلة</button>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast hidden">تم إضافة الصنف للسلة</div>
-
-    <!-- Social Media Footer -->
-    <footer id="social-footer" class="social-footer hidden">
-        <p class="footer-title">تابعنا لمعرفة أحدث العروض!</p>
-        <div class="social-icons">
-            <a id="link-facebook" href="#" target="_blank" class="social-icon hidden" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a id="link-instagram" href="#" target="_blank" class="social-icon hidden" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <!-- Bottom Navigation Bar (Mobile) -->
+    <!-- Bottom Navigation Bar (Mobile) -->
     <nav class="bottom-nav">
         <a href="index.html" class="bottom-nav-item">
             <i class="fa-solid fa-house"></i>
@@ -214,44 +182,23 @@
             </div>
             <span>السلة</span>
         </a>
-        <a href="#profile" class="bottom-nav-item">
-            <i class="fa-solid fa-user"></i>
-            <span>حسابي</span>
-        </a>
     </nav>
 
-    <!-- Floating CTA (Hidden if needed on mobile) -->
-    <a href="#" class="floating-cta cart-trigger">
-        <i class="fa-solid fa-cart-shopping"></i> <span class="cart-count badge" style="background: white; color: var(--primary-color); padding: 2px 6px; border-radius: 10px; font-size: 0.8rem; margin-right: 5px;">0</span>
-    </a>
-
-    <footer class="footer">
+    <footer style="text-align: center; padding: 3rem; margin-top: 5rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
         <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
-        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Powered by AlSafwah POS</p>
     </footer>
 
     <!-- GSAP & Lenis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
     
     <!-- Swiper -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-    <!-- Firebase config and App Logic -->
+    <!-- Custom Logic -->
     <script src="config.js"></script>
     <script src="desktop-interactions.js"></script>
     <script src="mobile-interactions.js"></script>
     <script src="app-core.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            AOS.init({
-                duration: 800,
-                once: true,
-                offset: 50
-            });
-        });
-    </script>
 </body>
 </html>

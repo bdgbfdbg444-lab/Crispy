@@ -3,228 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Sneaker Box BBQ - الرئيسية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>THE SNEAKER BOX BBQ</title>
     
-    <!-- Swiper -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- CSS Split -->
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" media="(min-width: 992px)" href="desktop.css">
     <link rel="stylesheet" media="(max-width: 991px)" href="mobile.css">
 </head>
-<body class="portfolio-body" id="home-page">
+<body id="home-page">
     <div id="toast" class="toast hidden"></div>
     
     <!-- Top Navbar -->
     <nav class="top-navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fa-solid fa-fire"></i> THE SNEAKER BOX
+        <a href="index.html" class="nav-logo">
+            <i class="fa-solid fa-fire"></i> THE SNEAKER BOX
+        </a>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="menu.html">المنيو</a>
+            <a href="#about">القصة</a>
+        </div>
+        <div class="nav-actions">
+            <div class="cart-trigger" style="position:relative;">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge cart-count" style="display:none; position:absolute; top:-10px; right:-10px; background:var(--primary-color); padding:2px 6px; border-radius:10px; font-size:12px; font-weight:bold;">0</span>
             </div>
-            
-            <!-- Mobile Menu Toggle -->
-            <input type="checkbox" id="mobile-menu-toggle" class="mobile-menu-toggle-checkbox">
-            <label for="mobile-menu-toggle" class="mobile-menu-btn">
-                <i class="fa-solid fa-bars"></i>
-            </label>
-
-            <div class="nav-links">
-                <a href="#" class="active">الرئيسية</a>
-                <a href="menu.html">المنيو</a>
-                <a href="#best-sellers">الأكثر مبيعاً</a>
-                <a href="#story">قصتنا</a>
-            </div>
-            <div class="nav-actions">
-                <button class="nav-icon cart-trigger"><i class="fa-solid fa-cart-shopping"></i><span class="cart-count">0</span></button>
-                <a href="menu.html" class="btn-primary nav-order-btn">اطلب الآن</a>
-            </div>
+            <a href="menu.html" class="btn-primary" style="padding: 0.5rem 1.5rem; font-size: 1rem;">اطلب الآن</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero-section" id="hero-section">
-        <!-- Radial glow effect is in CSS -->
-        <div class="hero-container container">
-            
-            <!-- Content Side (Right in RTL) -->
-            <div class="hero-content" data-aos="fade-left" data-aos-duration="1000">
-                <h1 class="hero-title">
-                    نقدم لك <span class="highlight">أوقاتاً مليئة بالنكهة</span> مباشرة إلى باب بيتك
-                </h1>
-                <p class="hero-subtitle">
-                    أصالة الباربيكيو المدخن، شغف في كل قطعة. تُطهى لحومنا ببطء وشغف لنقدم لك تجربة لا تُنسى.
-                </p>
-                
-                <div class="hero-buttons">
-                    <a href="menu.html" class="btn-primary hero-btn-solid">اطلب الآن</a>
-                    <a href="menu.html" class="btn-secondary hero-btn-outline">عرض المنيو</a>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
-                        <i class="fa-regular fa-star"></i>
-                        <h4>تقييم 4.9</h4>
-                        <p>آراء ممتازة</p>
-                    </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
-                        <i class="fa-solid fa-users"></i>
-                        <h4>+1000</h4>
-                        <p>عميل سعيد</p>
-                    </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
-                        <i class="fa-solid fa-drumstick-bite"></i>
-                        <h4>100%</h4>
-                        <p>لحوم فاخرة ومدخنة</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right side (RTL -> Image is on the left visually) -->
-            <div class="hero-image-wrapper hero-3d-container" data-aos="zoom-in" data-aos-duration="1200">
-                <!-- Spline 3D Placeholder Scene -->
-                <spline-viewer url="https://prod.spline.design/qK320aF9qU4h-5O6/scene.splinecode"></spline-viewer>
-            </div>
-            
+    <header class="hero-section">
+        <!-- Floating Image -->
+        <div class="hero-image-wrapper">
+            <img src="https://purepng.com/public/uploads/large/purepng.com-barbecuefood-meat-barbecue-94152464197478jbe.png" alt="Epic BBQ" class="hero-img-float">
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="text-massive">
+                تذوق <br> <span class="highlight">اللحم المدخن</span>
+            </h1>
+            <a href="menu.html" class="btn-primary" style="margin-top: 2rem;">تصفح المنيو المذهل</a>
         </div>
     </header>
 
-    <!-- Video Section -->
-    <section class="video-section">
-        <div class="container">
-            <div class="video-container">
-                <!-- Autoplay muted handled by GSAP when scrolled into view -->
-                <video id="promo-video" muted playsinline style="width: 100%; height: auto; display: block;">
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <button class="mute-btn" id="mute-btn">
-                    <i class="fa-solid fa-volume-xmark"></i>
-                </button>
-            </div>
+    <!-- Marquee Section -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <span>لحوم فاخرة</span>
+            <span>مدخنة ببطء</span>
+            <span>نكهة لا تقاوم</span>
+            <span>شغف حقيقي</span>
+            <span>لحوم فاخرة</span>
+            <span>مدخنة ببطء</span>
+            <span>نكهة لا تقاوم</span>
+            <span>شغف حقيقي</span>
+            <span>لحوم فاخرة</span>
+            <span>مدخنة ببطء</span>
+            <span>نكهة لا تقاوم</span>
+            <span>شغف حقيقي</span>
         </div>
-    </section>
+    </div>
 
-    <!-- Our Story Section -->
-    <section class="story-section">
-        <div class="container text-center">
-            <h2 class="section-title" data-aos="fade-up">قصتنا ببساطة</h2>
-            <div class="story-content" id="story-text-preview" data-aos="fade-up" data-aos-delay="100">
-                بدأت رحلتنا من شغف حقيقي باللحوم المدخنة بالطريقة الأمريكية الأصيلة (Texas Style). 
-                نستخدم أفضل أنواع حطب التفاح والبلوط للتدخين البطيء الذي يستمر لأكثر من 16 ساعة، 
-                لضمان قوام يذوب في الفم ونكهة تدخين متوازنة وغنية. نحن لا نقدم مجرد طعام، بل نقدم تجربة!
+    <!-- Info Grid -->
+    <section class="container" style="padding: 5rem 5%; text-align: center;">
+        <h2 style="font-size: var(--font-h2); margin-bottom: 2rem;">جودة تصنع الفارق</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; text-align: right;">
+            <div>
+                <i class="fa-solid fa-fire" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">شغف التدخين</h3>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">نستخدم أجود أنواع الأخشاب لتدخين اللحوم ببطء تام، لضمان نكهة قوية وقوام يذوب في الفم.</p>
             </div>
-            <div class="story-features">
-                <div class="feature-item" data-aos="fade-up" data-aos-delay="200">
-                    <i class="fa-solid fa-fire-flame-curved feature-icon"></i>
-                    <h3>تدخين على الحطب</h3>
-                    <p>نكهة مدخنة أصيلة وطبيعية 100%</p>
-                </div>
-                <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
-                    <i class="fa-solid fa-cow feature-icon"></i>
-                    <h3>لحوم فاخرة</h3>
-                    <p>نختار أفضل وأجود قطع اللحم الطازجة</p>
-                </div>
-                <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
-                    <i class="fa-solid fa-clock feature-icon"></i>
-                    <h3>طهي بطيء</h3>
-                    <p>تُطهى ببطء لساعات لتذوب في الفم</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Best Sellers Section (Dynamic) -->
-    <section class="best-sellers-section bg-light">
-        <div class="container">
-            <h2 class="section-title text-center">الأكثر مبيعاً <i class="fa-solid fa-fire" style="color:#ef4444;"></i></h2>
-            <div id="loader" class="loader">
-                <i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل الأصناف...
-            </div>
-            
-            <div id="best-sellers-grid" class="best-sellers-grid" style="display: none;" data-aos="fade-up">
-                <!-- Populated dynamically via app.js -->
-            </div>
-            
-            <div class="text-center" style="margin-top: 3rem;">
-                <a href="menu.html" class="btn-outline">عرض القائمة الكاملة <i class="fa-solid fa-arrow-left"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- BBQ Gallery Section -->
-    <section class="gallery-section">
-        <div class="container text-center">
-            <h2 class="section-title">من كواليس التحضير</h2>
-            <div class="gallery-grid" id="gallery-grid">
-                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 1" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1544025162-8111142156d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 2" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 3" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1558030006-450675393462?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BBQ Image 4" class="gallery-img">
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section bg-light">
-        <div class="container text-center">
-            <h2 class="section-title">آراء عملائنا</h2>
-            <div class="testimonials-grid" id="testimonials-grid">
-                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="100">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"أفضل بريسكت ممكن تدوقه! اللحمة دايبة وطعم التدخين فيها خيالي. تجربة لا تُنسى بصراحة."</p>
-                    <p class="testimonial-author">- أحمد م.</p>
-                </div>
-                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="200">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"جودة اللحوم ممتازة والبهارات موزونة بالملي. طلبت أكتر من مرة وكل مرة نفس الجودة العالية."</p>
-                    <p class="testimonial-author">- كريم س.</p>
-                </div>
-                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="300">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"شغل احترافي جداً والاهتمام بالتفاصيل واضح. من أحسن مطاعم الباربيكيو اللي جربتها."</p>
-                    <p class="testimonial-author">- محمد ع.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Location & Hours Section -->
-    <section class="location-section">
-        <div class="container">
-            <h2 class="section-title text-center">موقعنا ومواعيد العمل</h2>
-            <div class="location-content">
-                <div class="location-info">
-                    <div class="info-item">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <div>
-                            <h3>العنوان</h3>
-                            <p id="location-address-preview">المعادي، شارع 9، القاهرة (مثال)</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fa-regular fa-clock"></i>
-                        <div>
-                            <h3>مواعيد العمل</h3>
-                            <p id="location-hours-preview" style="white-space: pre-line;">يومياً: 1:00 ظهراً - 1:00 صباحاً
-الجمعة: 2:00 ظهراً - 2:00 صباحاً</p>
-                        </div>
-                    </div>
-                    <div class="info-item" id="location-phone-container">
-                        <i class="fa-solid fa-phone"></i>
-                        <div>
-                            <h3>للاتصال</h3>
-                            <p id="location-phone-preview">01012345678</p>
-                        </div>
-                    </div>
-                    <a href="menu.html" class="btn-primary" style="display:inline-block; margin-top:20px; padding: 10px 20px; text-decoration:none; border-radius:30px; font-weight:bold;">الاستلام من الفرع</a>
-                </div>
-                <div class="map-container" id="map-iframe-preview">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3456.2577717467645!2d31.259902315113423!3d29.961300981912952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145847e38eb4d58f%3A0xf64f3d1b712c77d5!2sMaadi%20as%20Sarayat%20Al%20Gharbeyah%2C%20Maadi%2C%20Cairo%20Governorate!5e0!3m2!1sen!2seg!4v1689264427506!5m2!1sen!2seg" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
+            <div>
+                <i class="fa-solid fa-cow" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">لحوم فاخرة</h3>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">نختار قطعيات اللحم بعناية فائقة، لتصلك تجربة باربيكيو أصيلة لا تُنسى من أول قضمة.</p>
             </div>
         </div>
     </section>
@@ -246,45 +103,35 @@
             </div>
             <span>السلة</span>
         </a>
-        <a href="#profile" class="bottom-nav-item">
-            <i class="fa-solid fa-user"></i>
-            <span>حسابي</span>
-        </a>
     </nav>
 
-    <!-- Floating CTA (Hidden if needed on mobile) -->
-    <a href="menu.html" class="floating-cta">
-        <i class="fa-solid fa-utensils"></i> اطلب الآن
-    </a>
-
-    <footer class="footer portfolio-footer">
+    <footer style="text-align: center; padding: 3rem; margin-top: 5rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
         <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
-        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Powered by AlSafwah POS</p>
+        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Powered by AlSafwah POS</p>
     </footer>
 
     <!-- GSAP & Lenis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
     
-    <!-- Swiper & Spline -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
-
-    <!-- Firebase config and App Logic -->
+    <!-- Custom Logic -->
     <script src="config.js"></script>
     <script src="desktop-interactions.js"></script>
     <script src="mobile-interactions.js"></script>
     <script src="app-core.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            AOS.init({
-                duration: 800,
-                once: true,
-                offset: 100
+        // Simple GSAP float for the hero image
+        if (typeof gsap !== 'undefined') {
+            gsap.to('.hero-img-float', {
+                y: -30,
+                rotation: 5,
+                duration: 3,
+                yoyo: true,
+                repeat: -1,
+                ease: "sine.inOut"
             });
-        });
+        }
     </script>
 </body>
 </html>
