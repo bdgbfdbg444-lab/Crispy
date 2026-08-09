@@ -306,28 +306,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const totalPrice = (currentWeightProduct.sellingPrice / 1000) * currentWeight;
                 
-                // Create a virtual product for the cart
                 const customProduct = {
                     ...currentWeightProduct,
                     name: `${currentWeightProduct.name} - ${currentWeight}g`,
                     sellingPrice: totalPrice,
-                    isSoldByWeight: false // Since we've already calculated it
+                    isSoldByWeight: false, // Since we've already calculated it
+                    IsSoldByWeight: false
                 };
 
-                const existing = cart.find(item => item.product.name === customProduct.name);
-                if (existing) {
-                    existing.quantity += 1;
-                } else {
-                    cart.push({ product: customProduct, quantity: 1 });
-                }
-                
-                updateCartUI();
-                showToast(`تمت إضافة ${customProduct.name} للسلة`);
                 weightModal.classList.add('hidden');
+                
+                // Now pass the modified product back to addToCart
+                // This allows it to check for modifiers (if any) or just add to cart
+                window.addToCart(customProduct);
             };
         }
 
         window.addToCart = (product) => {
+            if (product.isSoldByWeight || product.IsSoldByWeight) {
+                currentWeightProduct = product;
+                currentWeight = 100;
+                weightItemName.textContent = product.name;
+                updateWeightUI();
+                weightModal.classList.remove('hidden');
+                return;
+            }
+
             if (product.autoShowModifiers && windowGlobalAddons.length > 0) {
                 
                 const validAddons = windowGlobalAddons.filter(addon => {
@@ -384,14 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (product.isSoldByWeight || product.IsSoldByWeight) {
-                currentWeightProduct = product;
-                currentWeight = 100;
-                weightItemName.textContent = product.name;
-                updateWeightUI();
-                weightModal.classList.remove('hidden');
-                return;
-            }
 
             const existing = cart.find(item => item.product.name === product.name);
             if (existing) {
