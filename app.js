@@ -281,11 +281,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Find Hot Items
                 let hotItems = [];
-                if (data.Categories) {
-                    data.Categories.forEach(c => {
-                        if (c.Products) {
-                            c.Products.forEach(p => {
-                                if (p.isHotItem) {
+                const categories = data.categories || data.Categories;
+                if (categories) {
+                    categories.forEach(c => {
+                        const products = c.products || c.Products;
+                        if (products) {
+                            products.forEach(p => {
+                                if (p.isHotItem || p.IsHotItem) {
                                     hotItems.push(p);
                                 }
                             });
@@ -694,7 +696,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 checkoutBtn.disabled = false;
             }
         };
-    }
 
     // --- Rating Logic ---
     const ratingFab = document.getElementById('rating-fab');
