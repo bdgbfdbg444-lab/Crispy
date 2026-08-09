@@ -350,17 +350,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 let val = data.googleMapsIframe.trim();
                 if (val.toLowerCase().startsWith('<iframe')) {
                     mapEl.innerHTML = val;
-                } else if (val.startsWith('http') || val.includes('goo.gl') || val.includes('google.com/maps')) {
-                    if (!val.startsWith('http')) val = 'https://' + val;
-                    mapEl.innerHTML = `
-                        <a href="${val}" target="_blank" style="display:block; width:100%; height:350px; position:relative; border-radius:12px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.1); text-decoration:none; cursor:pointer;">
-                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" style="width:100%; height:100%; object-fit:cover; filter: contrast(0.9);" alt="Map View" />
-                            <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.2);"></div>
-                            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:12px 24px; border-radius:30px; color:#d9480f; font-weight:bold; font-size:16px; display:flex; align-items:center; gap:8px; box-shadow:0 4px 15px rgba(0,0,0,0.15); transition:transform 0.2s;">
-                                <i class="fa-solid fa-map-location-dot"></i> فتح الخريطة (Google Maps)
-                            </div>
-                        </a>
-                    `;
+                } else if (val.startsWith('http') || val.includes('goo.gl') || val.includes('google.com/maps') || val.includes('!3d')) {
+                    // Try to extract coordinates from URL
+                    let lat = '', lng = '';
+                    let match = val.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+                    if (match) {
+                        lat = match[1]; lng = match[2];
+                    } else {
+                        match = val.match(/3d(-?\d+\.\d+).*?4d(-?\d+\.\d+)/);
+                        if (match) { lat = match[1]; lng = match[2]; }
+                    }
+
+                    let query = (lat && lng) ? `${lat},${lng}` : (data.locationAddress || 'Restaurant');
+                    let embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&hl=ar&z=15&output=embed`;
+
+                    mapEl.innerHTML = `<iframe src="${embedUrl}" width="100%" height="350" style="border:0; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
                 } else {
                     mapEl.innerHTML = val;
                 }
