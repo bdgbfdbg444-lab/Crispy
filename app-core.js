@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.innerHTML = `<p style="color: red; text-align: center; font-weight: bold;">${message}</p>`;
     };
 
-    const isHomePage = document.body.id === 'home-page';
+    const isHomePage = document.body.id === 'home-page' || document.body.id === 'about-page';
 
     if(FIREBASE_DB_URL.includes("YOUR-FIREBASE-PROJECT")) {
         showError('يرجى تحديث رابط config.js لربطه بقاعدة Firebase الخاصة بك.');
@@ -448,6 +448,52 @@ document.addEventListener('DOMContentLoaded', () => {
                         galleryEl.appendChild(img);
                     });
                 }
+            }
+        }
+        
+        // B-Roll Video
+        if (data.bRollVideoUrl) {
+            const brollSection = document.getElementById('broll-section');
+            const indexBrollSection = document.getElementById('index-broll-section');
+            const videoHtml = `<video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0;"><source src="${data.bRollVideoUrl}" type="video/mp4"></video>`;
+            
+            if (brollSection) {
+                brollSection.innerHTML = videoHtml + brollSection.innerHTML;
+            }
+            if (indexBrollSection) {
+                indexBrollSection.innerHTML = videoHtml + indexBrollSection.innerHTML;
+                indexBrollSection.classList.remove('hidden');
+            }
+        }
+
+        // Social Links
+        const socialFooter = document.getElementById('social-footer');
+        let hasSocials = false;
+        
+        const updateSocialLink = (id, url) => {
+            const el = document.getElementById(id);
+            if (el) {
+                if (url && url.trim() !== '') {
+                    el.href = url.startsWith('http') ? url : 'https://' + url;
+                    el.classList.remove('hidden');
+                    hasSocials = true;
+                } else {
+                    el.classList.add('hidden');
+                }
+            }
+        };
+
+        updateSocialLink('link-facebook', data.facebookLink);
+        updateSocialLink('link-instagram', data.instagramLink);
+        updateSocialLink('link-tiktok', data.tikTokLink || data.tiktokLink);
+        updateSocialLink('link-whatsapp', data.whatsAppLink || data.whatsappLink);
+        updateSocialLink('link-googlemaps', data.googleMapsIframe && data.googleMapsIframe.startsWith('http') ? data.googleMapsIframe : null);
+
+        if (socialFooter) {
+            if (hasSocials) {
+                socialFooter.classList.remove('hidden');
+            } else {
+                socialFooter.classList.add('hidden');
             }
         }
         
