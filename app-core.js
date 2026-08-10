@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let cart = [];
     let currentMarketing = null;
+    let cloudinaryConfig = null;
     let dbUrl = FIREBASE_DB_URL;
     if (!dbUrl.endsWith('/')) {
         dbUrl += '/';
@@ -80,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data) {
                 if (data.addOns || data.addons) {
                     windowGlobalAddons = data.addOns || data.addons || [];
+                }
+                if (data.config || data.Config) {
+                    cloudinaryConfig = data.config || data.Config;
                 }
                 
                 if (data.restaurant) {
@@ -310,11 +314,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
                 renderBestSellers(hotItems);
+                
+                if (menuData.config || menuData.Config) {
+                    cloudinaryConfig = menuData.config || menuData.Config;
+                }
             }
 
             if (websiteData) {
                 applyWebsiteData(websiteData);
             }
+
+            fetchApprovedReviews();
         })
         .catch(error => {
             console.error('Error fetching home data:', error);
@@ -326,6 +336,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Theme Colors
         if (data.primaryThemeColor) {
             document.documentElement.style.setProperty('--primary-color', data.primaryThemeColor);
+        }
+
+        // Reviews Toggle
+        const reviewFab = document.getElementById('review-fab');
+        if (reviewFab) {
+            if (data.enableReviewsIcon === false) {
+                reviewFab.classList.add('hidden');
+            } else {
+                reviewFab.classList.remove('hidden');
+            }
         }
 
         // Dark Mode
@@ -432,6 +452,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Testimonials can be added similarly if JSON parsed
+    }
+
+    async function fetchApprovedReviews() {
+        try {
+            const response = await fetchWithVersion(`${dbUrl}ApprovedReviews.json`);
+            if (response.ok) {
+                const data = await response.json();
+                const section = document.getElementById('testimonials-section');
+                const grid = document.getElementById('testimonials-grid');
+                if (data && section && grid) {
+                    const reviewsArray = Object.values(data).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 6);
+                    if (reviewsArray.length > 0) {
+                        grid.innerHTML = '';
+                        reviewsArray.forEach(review => {
+                            const stars = Array(5).fill('<i class="fa-regular fa-star"></i>');
+                            for (let i = 0; i < review.rating; i++) {
+                                stars[i] = '<i class="fa-solid fa-star" style="color: #F97316;"></i>';
+                            }
+                            
+                            let imgHtml = '';
+                            if (review.imageUrl) {
+                                imgHtml = `<img src="${review.imageUrl}" alt="Review Image" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">`;
+                            }
+                            
+                            grid.innerHTML += `
+                                <div class="glass-effect" style="padding: 1.5rem; border-radius: 12px; text-align: right; border: 1px solid rgba(255,255,255,0.1);">
+                                    ${imgHtml}
+                                    <div style="margin-bottom: 1rem; direction: ltr; display: inline-block;">
+                                        ${stars.join('')}
+                                    </div>
+                                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">"${review.comment}"</p>
+                                    <h4 style="color: var(--primary-color);">${review.customerName}</h4>
+                                </div>
+                            `;
+                        });
+                        section.style.display = 'block';
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Error fetching reviews:', e);
+        }
     }
 
     function renderBestSellers(items) {
@@ -948,83 +1010,131 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-    // --- Rating Logic ---
-    const ratingFab = document.getElementById('rating-fab');
-    const ratingModal = document.getElementById('rating-modal');
-    const closeRatingBtn = document.getElementById('close-rating');
-    const submitRatingBtn = document.getElementById('submit-rating-btn');
-    const stars = document.querySelectorAll('.stars-container i');
-    const ratingComment = document.getElementById('rating-comment');
-    let selectedRating = 0;
+    // --- Review Logic ---
+    const reviewFab = document.getElementById('review-fab');
+    const reviewModal = document.getElementById('review-modal');
+    const openReviewModalBtn = document.getElementById('open-review-modal');
+    const closeReviewModalBtn = document.getElementById('close-review-modal');
+    const submitReviewBtn = document.getElementById('submit-review-btn');
+    const starIcons = document.querySelectorAll('#star-rating i');
+    const reviewImageInput = document.getElementById('review-image');
+    const reviewImageName = document.getElementById('review-image-name');
+    
+    let reviewRating = 0;
 
-    if (ratingFab) {
-        ratingFab.onclick = () => {
-            ratingModal.classList.remove('hidden');
+    if (openReviewModalBtn && reviewModal) {
+        openReviewModalBtn.onclick = () => {
+            reviewModal.classList.remove('hidden');
         };
     }
 
-    if (closeRatingBtn) {
-        closeRatingBtn.onclick = () => {
-            ratingModal.classList.add('hidden');
+    if (closeReviewModalBtn && reviewModal) {
+        closeReviewModalBtn.onclick = () => {
+            reviewModal.classList.add('hidden');
         };
     }
 
-    stars.forEach(star => {
+    if (reviewImageInput && reviewImageName) {
+        reviewImageInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files.length > 0) {
+                reviewImageName.textContent = e.target.files[0].name;
+            } else {
+                reviewImageName.textContent = '';
+            }
+        });
+    }
+
+    starIcons.forEach(star => {
         star.onclick = (e) => {
-            selectedRating = parseInt(e.target.getAttribute('data-value'));
-            stars.forEach(s => {
-                if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
+            reviewRating = parseInt(e.target.getAttribute('data-rating'));
+            starIcons.forEach(s => {
+                if (parseInt(s.getAttribute('data-rating')) <= reviewRating) {
                     s.classList.add('active');
+                    s.style.color = '#F97316';
                 } else {
                     s.classList.remove('active');
+                    s.style.color = '#444';
                 }
             });
         };
     });
 
-    if (submitRatingBtn) {
-        submitRatingBtn.onclick = async () => {
-            if (selectedRating === 0) {
+    if (submitReviewBtn) {
+        submitReviewBtn.onclick = async () => {
+            if (reviewRating === 0) {
                 alert('يرجى اختيار عدد النجوم للتقييم!');
                 return;
             }
 
-            const custName = localStorage.getItem('lastCustomerName') || 'عميل غير مسجل';
-            const custPhone = localStorage.getItem('lastCustomerPhone') || 'غير محدد';
+            const custName = document.getElementById('review-name').value.trim() || 'عميل';
+            const reviewComment = document.getElementById('review-comment').value.trim();
+            const file = reviewImageInput.files[0];
 
-            submitRatingBtn.textContent = 'جاري الإرسال...';
-            submitRatingBtn.disabled = true;
+            submitReviewBtn.textContent = 'جاري الإرسال...';
+            submitReviewBtn.disabled = true;
+
+            let imageUrl = '';
+            
+            // Upload to Cloudinary if file exists and config is ready
+            if (file) {
+                if (cloudinaryConfig && cloudinaryConfig.cloudinaryCloudName && cloudinaryConfig.cloudinaryUploadPreset) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('upload_preset', cloudinaryConfig.cloudinaryUploadPreset);
+                    
+                    try {
+                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudinaryCloudName}/image/upload`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const cloudData = await cloudRes.json();
+                        if (cloudData.secure_url) {
+                            imageUrl = cloudData.secure_url;
+                        }
+                    } catch (e) {
+                        console.error('Cloudinary upload error:', e);
+                        alert('حدث خطأ أثناء رفع الصورة، سيتم إرسال التقييم بدون صورة.');
+                    }
+                } else {
+                    alert('لم يتم إعداد بيانات الرفع للصور. سيتم إرسال التقييم بدون صورة.');
+                }
+            }
 
             const reviewData = {
                 customerName: custName,
-                customerPhone: custPhone,
-                rating: selectedRating,
-                comment: ratingComment.value.trim(),
-                createdAt: new Date().toISOString()
+                rating: reviewRating,
+                comment: reviewComment,
+                imageUrl: imageUrl,
+                createdAt: new Date().toISOString(),
+                isRead: false
             };
 
             try {
-                const response = await fetch(`${dbUrl}Reviews.json`, {
+                const response = await fetch(`${dbUrl}PendingReviews.json`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(reviewData)
                 });
 
                 if (response.ok) {
-                    ratingModal.classList.add('hidden');
-                    showToast('تم إرسال تقييمك بنجاح. شكراً لك!');
+                    reviewModal.classList.add('hidden');
+                    showToast('تم إرسال تقييمك لمدير المطعم بنجاح. شكراً لك!');
+                    
                     // Reset
-                    selectedRating = 0;
-                    stars.forEach(s => s.classList.remove('active'));
-                    ratingComment.value = '';
+                    reviewRating = 0;
+                    starIcons.forEach(s => { s.classList.remove('active'); s.style.color = '#444'; });
+                    document.getElementById('review-name').value = '';
+                    document.getElementById('review-comment').value = '';
+                    reviewImageInput.value = '';
+                    reviewImageName.textContent = '';
                 } else {
                     alert('حدث خطأ أثناء إرسال التقييم.');
                 }
             } catch (error) {
                 alert('تعذر الاتصال بالإنترنت.');
             } finally {
-                submitRatingBtn.textContent = 'إرسال التقييم';
-                submitRatingBtn.disabled = false;
+                submitReviewBtn.textContent = 'إرسال التقييم';
+                submitReviewBtn.disabled = false;
             }
         };
     }
