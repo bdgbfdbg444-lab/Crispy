@@ -73,21 +73,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- GSAP Parallax Ingredients ---
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
-        const ingredients = document.querySelectorAll('.parallax-ingredient');
-        ingredients.forEach(ing => {
-            const speed = parseFloat(ing.getAttribute('data-speed')) || 0.5;
-            gsap.to(ing, {
-                y: -150 * speed,
-                rotation: 45 * speed,
+        
+        // Main Burger Parallax
+        const mainImg = document.querySelector('.hero-main-img');
+        if (mainImg) {
+            gsap.to(mainImg, {
+                y: -100,
+                scale: 0.9,
                 ease: "none",
                 scrollTrigger: {
                     trigger: "#hero-section",
                     start: "top top",
                     end: "bottom top",
-                    scrub: true
+                    scrub: 1
+                }
+            });
+        }
+        
+        const ingredients = document.querySelectorAll('.parallax-ingredient');
+        ingredients.forEach(ing => {
+            const speed = parseFloat(ing.getAttribute('data-speed')) || 0.5;
+            const rot = parseFloat(ing.getAttribute('data-rotation')) || 45;
+            gsap.to(ing, {
+                y: -200 * speed,
+                x: 100 * speed,
+                rotation: rot,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1
                 }
             });
         });
+        
+        // B-Roll Zoom Animation
+        const brollContainer = document.getElementById('full-broll-section');
+        const brollVideo = document.getElementById('broll-video-container');
+        if (brollContainer && brollVideo) {
+            gsap.to(brollVideo, {
+                scale: 1, // scales down from 1.2 to 1 on scroll
+                ease: "none",
+                scrollTrigger: {
+                    trigger: brollContainer,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        }
     }
 
     // UI Elements
@@ -539,16 +574,18 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // B-Roll Video
         if (data.bRollVideoUrl) {
-            const brollSection = document.getElementById('broll-section');
-            const indexBrollSection = document.getElementById('index-broll-section');
+            const brollSection = document.getElementById('broll-section'); // For about page
+            const fullBrollSection = document.getElementById('full-broll-section'); // For index page
+            const brollVideoContainer = document.getElementById('broll-video-container'); // For index page
+            
             const videoHtml = `<video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0;"><source src="${data.bRollVideoUrl}" type="video/mp4"></video>`;
             
             if (brollSection) {
                 brollSection.innerHTML = videoHtml + brollSection.innerHTML;
             }
-            if (indexBrollSection) {
-                indexBrollSection.innerHTML = videoHtml + indexBrollSection.innerHTML;
-                indexBrollSection.classList.remove('hidden');
+            if (fullBrollSection && brollVideoContainer) {
+                brollVideoContainer.innerHTML = videoHtml;
+                fullBrollSection.classList.remove('hidden');
             }
         }
 

@@ -48,70 +48,65 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Modern Grid/Flex Design) -->
-    <header class="hero-section" id="hero-section" style="position: relative; display: flex; align-items: center; min-height: 100vh; overflow: hidden; padding-top: 80px;">
+    <!-- Hero Section (Spacious & Cinematic) -->
+    <header class="hero-section" id="hero-section" style="position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 100px;">
         
         <!-- Fire Sparks Background (Added by JS) -->
         <div id="fire-sparks-container" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></div>
 
-        <div class="container hero-grid" style="position: relative; z-index: 2;">
+        <!-- Glowing background for image -->
+        <div style="position: absolute; width: 80vw; height: 80vw; max-width: 800px; max-height: 800px; background: radial-gradient(circle, var(--primary-color) 0%, transparent 60%); opacity: 0.15; filter: blur(60px); z-index: 1;"></div>
+        
+        <!-- Parallax Floating Ingredients (Back layer, z-index: 2) -->
+        <img src="https://pngimg.com/d/lettuce_PNG52.png" alt="Lettuce" class="parallax-ingredient" data-speed="0.2" data-rotation="-45" style="width: 120px; top: 15%; left: 10%; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8)) blur(2px);">
+        <img src="https://pngimg.com/d/tomato_PNG12595.png" alt="Tomato" class="parallax-ingredient" data-speed="0.4" data-rotation="30" style="width: 100px; top: 25%; right: 15%; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8)) blur(1px);">
+        
+        <div class="container hero-content-wrapper" style="position: relative; z-index: 5; text-align: center; display: flex; flex-direction: column; align-items: center;">
             
-            <!-- Right side: Text & CTA -->
-            <div class="hero-content" style="text-align: right;" data-aos="fade-left">
-                <h1 class="text-massive" style="text-align: right; line-height: 1.1;">
-                    تذوق <br> <span class="highlight">اللحم المدخن</span>
-                </h1>
-                <p style="font-size: 1.5rem; color: #ddd; margin-top: 1rem; margin-bottom: 2rem; max-width: 500px;">
-                    اكتشف النكهة الأصلية للشواء ببطء. لحوم فاخرة ومذاق لا ينسى.
-                </p>
-                <a href="menu.html" class="btn-primary" style="font-size: 1.3rem; padding: 1.2rem 3rem;">اطلب الآن</a>
-            </div>
-
-            <!-- Left side: Huge transparent image & Floating ingredients -->
-            <div class="hero-image-wrapper" style="position: relative; height: 100%; display: flex; justify-content: center; align-items: center;" data-aos="zoom-in">
-                
-                <!-- Glowing background for image -->
-                <div style="position: absolute; width: 60%; height: 60%; background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%); opacity: 0.3; filter: blur(50px); z-index: 0;"></div>
-                
-                <!-- Main Meal Image (Transparent) -->
-                <img src="https://pngimg.com/d/burger_sandwich_PNG4114.png" alt="Epic BBQ" class="hero-main-img" style="position: relative; z-index: 2; width: 100%; max-width: 600px; transform: scale(1.1); filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));">
-                
-                <!-- Parallax Floating Ingredients (Transparent) -->
-                <!-- We will position them around the main image and let ScrollTrigger animate them -->
-                <img src="https://pngimg.com/d/lettuce_PNG52.png" alt="Lettuce" class="parallax-ingredient" data-speed="0.5" style="width: 100px; top: 5%; right: -5%;">
-                <img src="https://pngimg.com/d/tomato_PNG12595.png" alt="Tomato" class="parallax-ingredient" data-speed="-0.3" style="width: 120px; bottom: 10%; left: 0%;">
-                <img src="https://pngimg.com/d/meat_PNG47.png" alt="Meat" class="parallax-ingredient" data-speed="0.8" style="width: 150px; top: 15%; left: -10%;">
+            <h1 class="text-massive hero-title" style="margin-bottom: 0; line-height: 1; z-index: 10; position: relative;">
+                تذوق <br> <span class="highlight" style="background: linear-gradient(45deg, #FF3300, #FF9900); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">اللحم المدخن</span>
+            </h1>
+            
+            <!-- Main Meal Image (Floating Idle & Parallax Scroll) -->
+            <div id="main-hero-img-wrapper" style="position: relative; margin-top: -50px; z-index: 5;">
+                <img src="https://pngimg.com/d/burger_sandwich_PNG4114.png" alt="Epic BBQ" class="hero-main-img float-idle" style="width: 100%; max-width: 700px; filter: drop-shadow(0 40px 50px rgba(0,0,0,0.9));">
             </div>
             
+            <div style="margin-top: -20px; z-index: 10; position: relative;">
+                <a href="menu.html" class="btn-primary" style="font-size: 1.5rem; padding: 1.5rem 4rem; box-shadow: 0 10px 30px rgba(255, 51, 0, 0.4);">اطلب الآن</a>
+            </div>
         </div>
+
+        <!-- Parallax Floating Ingredients (Front layer, z-index: 8) -->
+        <img src="https://pngimg.com/d/meat_PNG47.png" alt="Meat" class="parallax-ingredient" data-speed="-0.5" data-rotation="60" style="width: 180px; bottom: 10%; right: 10%; z-index: 8; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
+        <img src="https://pngimg.com/d/lettuce_PNG52.png" alt="Lettuce" class="parallax-ingredient" data-speed="-0.3" data-rotation="-20" style="width: 140px; bottom: 15%; left: 5%; z-index: 8; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
+        
     </header>
 
     <!-- Marquee Section -->
-    <div class="marquee-wrapper">
-        <div class="marquee-content">
-            <span>لحوم فاخرة</span>
-            <span>مدخنة ببطء</span>
-            <span>نكهة لا تقاوم</span>
-            <span>شغف حقيقي</span>
-            <span>لحوم فاخرة</span>
-            <span>مدخنة ببطء</span>
-            <span>نكهة لا تقاوم</span>
-            <span>شغف حقيقي</span>
-            <span>لحوم فاخرة</span>
-            <span>مدخنة ببطء</span>
-            <span>نكهة لا تقاوم</span>
-            <span>شغف حقيقي</span>
+    <div class="marquee-wrapper" style="margin: 0; transform: rotate(-2deg) scale(1.05); z-index: 20; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+        <div class="marquee-content" style="animation-duration: 30s;">
+            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
+            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
+            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
+            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
+            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
+            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
         </div>
     </div>
 
-    <!-- B-Roll Cinematic Section -->
-    <section id="index-broll-section" class="hidden" style="position: relative; width: 100%; height: 60vh; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111; border-bottom: 1px solid rgba(255,255,255,0.05);">
-        <div class="broll-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1;"></div>
-        <div style="position: relative; z-index: 2; text-align: center;" data-aos="zoom-in">
-            <h2 style="font-size: 3rem; text-shadow: 2px 2px 15px rgba(0,0,0,0.9); color: white; letter-spacing: 2px;">
+    <!-- B-Roll Cinematic Section (Full Width, Zoom-in) -->
+    <section id="full-broll-section" style="position: relative; width: 100%; height: 100vh; overflow: hidden; background: #000; margin-top: -20px;">
+        <!-- Video Container (will be zoomed in via JS) -->
+        <div id="broll-video-container" style="position: absolute; top:0; left:0; width: 100%; height: 100%; transform: scale(1.2);">
+            <!-- Video injected by JS -->
+        </div>
+        <div class="broll-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%); z-index: 1;"></div>
+        <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+            <h2 class="text-massive" style="text-shadow: 2px 2px 20px rgba(0,0,0,0.9); margin-bottom: 2rem;">
                 اكتشف <span class="highlight">التجربة</span>
             </h2>
-            <a href="about.html" class="btn-primary" style="margin-top: 1.5rem; background: transparent; border: 2px solid var(--primary-color);">شاهد كواليسنا</a>
+            <a href="about.html" class="btn-primary" style="background: transparent; border: 2px solid var(--primary-color); backdrop-filter: blur(5px);">شاهد كواليسنا</a>
         </div>
     </section>
 

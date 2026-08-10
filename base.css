@@ -242,12 +242,11 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center; justify-content: center;
     flex-direction: column;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
 }
 
 .global-preloader.hidden {
-    opacity: 0;
-    visibility: hidden;
+    transform: translateY(-100%);
     pointer-events: none;
 }
 
@@ -261,8 +260,8 @@ h1, h2, h3, h4 {
 }
 
 @keyframes smokePulse {
-    0% { transform: scale(1); opacity: 0.5; }
-    100% { transform: scale(1.1); opacity: 0.8; }
+    0% { transform: scale(1); opacity: 0.3; }
+    100% { transform: scale(1.1); opacity: 0.6; }
 }
 
 .preloader-content {
@@ -335,5 +334,15 @@ h1, h2, h3, h4 {
     z-index: 1;
     pointer-events: none;
     filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+}
+
+.float-idle {
+    animation: floatIdle 6s ease-in-out infinite;
+}
+
+@keyframes floatIdle {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
 }
 
