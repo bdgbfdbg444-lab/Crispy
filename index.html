@@ -74,9 +74,13 @@
             <spline-viewer url="https://prod.spline.design/placeholder-url/scene.splinecode"></spline-viewer>
         </div>
         
-        <!-- Parallax Floating Ingredients (Back layer, z-index: 2) -->
-        <img src="images/pickles.png" alt="Pickle" class="parallax-ingredient" data-speed="0.2" data-rotation="-45" style="width: 120px; top: 15%; left: 10%; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8)) blur(2px);">
-        <img src="images/pickles.png" alt="Pickle" class="parallax-ingredient" data-speed="0.4" data-rotation="30" style="width: 100px; top: 25%; right: 15%; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8)) blur(1px);">
+        <!-- Parallax Floating Ingredients (Back layer - behind burger, z-index: 2) -->
+        <!-- Brisket Cubes - top left -->
+        <img src="images/brisket_cubes.jpg" alt="Brisket Cubes" class="parallax-ingredient" data-speed="0.3" data-rotation="-25" style="width: 160px; top: 12%; left: 8%; z-index: 2; border-radius: 20px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));">
+        <!-- Chicken Tenders - top right -->
+        <img src="images/chicken_tenders.jpg" alt="Chicken Tenders" class="parallax-ingredient" data-speed="0.5" data-rotation="20" style="width: 150px; top: 18%; right: 8%; z-index: 2; border-radius: 20px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));">
+        <!-- Pickles - mid left back -->
+        <img src="images/pickles.png" alt="Pickles" class="parallax-ingredient" data-speed="0.2" data-rotation="-40" style="width: 100px; top: 55%; left: 5%; z-index: 2; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
         
         <div class="container hero-content-wrapper" style="position: relative; z-index: 5; text-align: center; display: flex; flex-direction: column; align-items: center;">
             
@@ -84,19 +88,25 @@
                 تذوق <br> <span class="highlight" style="background: linear-gradient(45deg, #FF3300, #FF9900); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">اللحم المدخن</span>
             </h1>
             
-            <!-- Main Meal Image (Floating Idle & Parallax Scroll) -->
-            <div id="main-hero-img-wrapper" style="position: relative; margin-top: -50px; z-index: 5;">
-                <img src="images/brisket_slice.png" alt="Epic BBQ" class="hero-main-img float-idle" style="width: 100%; max-width: 700px; filter: drop-shadow(0 40px 50px rgba(0,0,0,0.9)); transform: scale(1.2);">
+            <!-- Main Hero Image: DOUBLE BURGER (center, floating) -->
+            <div id="main-hero-img-wrapper" style="position: relative; margin-top: -40px; z-index: 5;">
+                <img src="images/double_burger.jpg" alt="Double Smash Burger" class="hero-main-img float-idle" style="width: 100%; max-width: 550px; border-radius: 30px; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.95));">
             </div>
             
-            <div style="margin-top: -20px; z-index: 10; position: relative;">
+            <div style="margin-top: -10px; z-index: 10; position: relative;">
                 <a href="menu.html" class="btn-primary" style="font-size: 1.5rem; padding: 1.5rem 4rem; box-shadow: 0 10px 30px rgba(255, 51, 0, 0.4);">اطلب الآن</a>
             </div>
         </div>
 
-        <!-- Parallax Floating Ingredients (Front layer, z-index: 8) -->
-        <img src="images/brisket_slice.png" alt="Brisket" class="parallax-ingredient" data-speed="-0.5" data-rotation="60" style="width: 180px; bottom: 10%; right: 10%; z-index: 8; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
-        <img src="images/pickles.png" alt="Pickle" class="parallax-ingredient" data-speed="-0.3" data-rotation="-20" style="width: 140px; bottom: 15%; left: 5%; z-index: 8; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
+        <!-- Parallax Floating Ingredients (Front layer - in front of burger, z-index: 8) -->
+        <!-- Brisket Slice - bottom right (signature item!) -->
+        <img src="images/brisket_slice.png" alt="Brisket Slice" class="parallax-ingredient" data-speed="-0.5" data-rotation="15" style="width: 220px; bottom: 8%; right: 5%; z-index: 8; filter: drop-shadow(0 25px 40px rgba(0,0,0,0.95));">
+        <!-- Pickles - bottom left -->
+        <img src="images/pickles.png" alt="Pickles" class="parallax-ingredient" data-speed="-0.3" data-rotation="-30" style="width: 120px; bottom: 20%; left: 8%; z-index: 8; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.9));">
+        <!-- Chicken Tenders - mid right -->
+        <img src="images/chicken_tenders.jpg" alt="Chicken Tenders" class="parallax-ingredient" data-speed="-0.4" data-rotation="35" style="width: 140px; bottom: 35%; right: 3%; z-index: 8; border-radius: 15px; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.9));">
+        <!-- Brisket Cubes - bottom center-left -->
+        <img src="images/brisket_cubes.jpg" alt="Brisket Cubes" class="parallax-ingredient" data-speed="-0.6" data-rotation="-15" style="width: 130px; bottom: 5%; left: 30%; z-index: 8; border-radius: 15px; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.9));">
         
     </header>
 
