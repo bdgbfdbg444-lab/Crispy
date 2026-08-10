@@ -123,6 +123,110 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+        
+        // Velocity Marquee
+        const marqueeContent = document.querySelector('.marquee-content');
+        if (marqueeContent) {
+            marqueeContent.style.animation = 'none';
+            marqueeContent.innerHTML += marqueeContent.innerHTML;
+            
+            const marqueeTween = gsap.to(marqueeContent, {
+                xPercent: -50,
+                repeat: -1,
+                duration: 20,
+                ease: "none"
+            });
+            
+            ScrollTrigger.create({
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                onUpdate: (self) => {
+                    const velocity = Math.abs(self.getVelocity());
+                    const targetTimeScale = 1 + (velocity / 200);
+                    gsap.to(marqueeTween, {
+                        timeScale: Math.min(targetTimeScale, 8),
+                        duration: 0.5,
+                        overwrite: true
+                    });
+                    
+                    gsap.delayedCall(0.5, () => {
+                        gsap.to(marqueeTween, { timeScale: 1, duration: 1 });
+                    });
+                }
+            });
+        }
+    }
+    
+    // Thermometer Scroll
+    const thermometerFill = document.getElementById('thermometer-fill');
+    if (thermometerFill) {
+        window.addEventListener('scroll', () => {
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollable > 0) {
+                const percent = (scrolled / scrollable) * 100;
+                thermometerFill.style.height = `${percent}%`;
+            }
+        });
+    }
+    
+    // --- Smoke Cursor (Desktop Only) ---
+    if (window.innerWidth >= 992) {
+        const canvas = document.getElementById('smoke-cursor-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            let particles = [];
+            let mouse = { x: -1000, y: -1000 };
+            
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                for(let i=0; i<2; i++){
+                    particles.push({
+                        x: mouse.x,
+                        y: mouse.y,
+                        size: Math.random() * 20 + 10,
+                        speedX: Math.random() * 2 - 1,
+                        speedY: Math.random() * -2 - 1,
+                        life: 1,
+                        color: `rgba(150, 150, 150, ${Math.random() * 0.2 + 0.1})`
+                    });
+                }
+            });
+            
+            function animateSmoke() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    let p = particles[i];
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.size += 0.2;
+                    p.life -= 0.02;
+                    p.color = p.color.replace(/[^,]+(?=\))/, Math.max(0, p.life * 0.3));
+                    
+                    if (p.life <= 0) {
+                        particles.splice(i, 1);
+                        i--;
+                    }
+                }
+                requestAnimationFrame(animateSmoke);
+            }
+            animateSmoke();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
     }
 
     // UI Elements
