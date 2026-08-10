@@ -638,98 +638,100 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         window.addToCart = (product, event) => {
-            if (window.triggerHapticFeedback) window.triggerHapticFeedback();
-            
-            if (product.isSoldByWeight || product.IsSoldByWeight) {
-                currentWeightProduct = product;
-                currentWeight = 100;
-                weightItemName.textContent = product.name;
-                updateWeightUI();
-                weightModal.classList.remove('hidden');
+            try {
+                if (window.triggerHapticFeedback) window.triggerHapticFeedback();
                 
-                // store event for later use
-                if(event) {
-                    weightModal.dataset.sourceX = event.clientX;
-                    weightModal.dataset.sourceY = event.clientY;
-                }
-                return;
-            }
-
-            if (product.autoShowModifiers && windowGlobalAddons.length > 0) {
-                
-                const validAddons = windowGlobalAddons.filter(addon => {
-                    if (!addon.linkedProductIds || addon.linkedProductIds.trim() === '') return false;
-                    const ids = addon.linkedProductIds.split(',').map(s => s.trim());
-                    const pId = (product.id || product.Id || '').toString();
-                    return ids.includes(pId);
-                });
-
-                if (validAddons.length > 0) {
-                    currentAddonProduct = product;
-                    addonsItemName.textContent = product.name;
+                if (product.isSoldByWeight || product.IsSoldByWeight) {
+                    currentWeightProduct = product;
+                    currentWeight = 100;
+                    weightItemName.textContent = product.name || product.Name;
+                    updateWeightUI();
+                    weightModal.classList.remove('hidden');
                     
-                    const limit = product.freeModifiersLimit || 0;
-                    if (limit > 0) {
-                        addonsFreeLimitText.textContent = `مسموح لك بـ ${limit} إضافات مجانية`;
-                    } else {
-                        addonsFreeLimitText.textContent = '';
-                    }
-                    
-                    addonsList.innerHTML = '';
-                    validAddons.forEach(addon => {
-                    const div = document.createElement('div');
-                    div.style.marginBottom = '10px';
-                    
-                    const label = document.createElement('label');
-                    label.style.display = 'flex';
-                    label.style.alignItems = 'center';
-                    label.style.gap = '10px';
-                    label.style.cursor = 'pointer';
-                    
-                    const cb = document.createElement('input');
-                    cb.type = 'checkbox';
-                    cb.value = addon.id;
-                    cb.dataset.price = addon.price || 0;
-                    cb.dataset.name = addon.name;
-                    cb.dataset.group = addon.group || 'Free'; // Free or Paid
-                    cb.className = 'addon-checkbox';
-                    
-                    cb.onchange = calculateAddonsPrice;
-                    
-                    const text = document.createElement('span');
-                    text.textContent = `${addon.name} (+${addon.price} ج.م)`;
-                    text.style.color = '#333';
-                    
-                    label.appendChild(cb);
-                        label.appendChild(text);
-                        div.appendChild(label);
-                        addonsList.appendChild(div);
-                    });
-                    
-                    calculateAddonsPrice();
-                    addonsModal.classList.remove('hidden');
-                    
-                    // store event
                     if(event) {
-                        addonsModal.dataset.sourceX = event.clientX;
-                        addonsModal.dataset.sourceY = event.clientY;
+                        weightModal.dataset.sourceX = event.clientX;
+                        weightModal.dataset.sourceY = event.clientY;
                     }
                     return;
                 }
-            }
 
+                const shouldShowModifiers = product.autoShowModifiers || product.AutoShowModifiers;
+                if (shouldShowModifiers && windowGlobalAddons.length > 0) {
+                    const validAddons = windowGlobalAddons.filter(addon => {
+                        if (!addon.linkedProductIds || addon.linkedProductIds.trim() === '') return false;
+                        const ids = addon.linkedProductIds.split(',').map(s => s.trim());
+                        const pId = (product.id || product.Id || '').toString();
+                        return ids.includes(pId);
+                    });
 
-            const existing = cart.find(item => item.product.name === product.name);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ product: { ...product }, quantity: 1 });
-            }
-            updateCartUI();
-            showToast(`تمت إضافة ${product.name} للسلة`);
-            
-            if(event) {
-                flyToCart(event);
+                    if (validAddons.length > 0) {
+                        currentAddonProduct = product;
+                        addonsItemName.textContent = product.name || product.Name;
+                        
+                        const limit = product.freeModifiersLimit || product.FreeModifiersLimit || 0;
+                        if (limit > 0) {
+                            addonsFreeLimitText.textContent = `مسموح لك بـ ${limit} إضافات مجانية`;
+                        } else {
+                            addonsFreeLimitText.textContent = '';
+                        }
+                        
+                        addonsList.innerHTML = '';
+                        validAddons.forEach(addon => {
+                            const div = document.createElement('div');
+                            div.style.marginBottom = '10px';
+                            
+                            const label = document.createElement('label');
+                            label.style.display = 'flex';
+                            label.style.alignItems = 'center';
+                            label.style.gap = '10px';
+                            label.style.cursor = 'pointer';
+                            
+                            const cb = document.createElement('input');
+                            cb.type = 'checkbox';
+                            cb.value = addon.id || addon.Id;
+                            cb.dataset.price = addon.price || addon.Price || 0;
+                            cb.dataset.name = addon.name || addon.Name;
+                            cb.dataset.group = addon.group || addon.Group || 'Free'; 
+                            cb.className = 'addon-checkbox';
+                            cb.onchange = calculateAddonsPrice;
+                            
+                            const text = document.createElement('span');
+                            text.textContent = `${addon.name || addon.Name} (+${addon.price || addon.Price || 0} ج.م)`;
+                            text.style.color = '#333';
+                            
+                            label.appendChild(cb);
+                            label.appendChild(text);
+                            div.appendChild(label);
+                            addonsList.appendChild(div);
+                        });
+                        
+                        calculateAddonsPrice();
+                        addonsModal.classList.remove('hidden');
+                        
+                        if(event) {
+                            addonsModal.dataset.sourceX = event.clientX;
+                            addonsModal.dataset.sourceY = event.clientY;
+                        }
+                        return;
+                    }
+                }
+
+                const prodName = product.name || product.Name || 'منتج';
+                const existing = cart.find(item => (item.product.name || item.product.Name) === prodName);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({ product: { ...product }, quantity: 1 });
+                }
+                updateCartUI();
+                showToast(`تمت إضافة ${prodName} للسلة`);
+                
+                if(event) {
+                    flyToCart(event);
+                }
+            } catch (err) {
+                alert("Error in addToCart: " + err.message);
+                console.error(err);
             }
         };
 
