@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800); // 800ms for cinematic feel
         }
     });
+    
+    // Fallback if load event already fired
+    if (document.readyState === 'complete') {
+        const preloader = document.getElementById('global-preloader');
+        if (preloader && !preloader.classList.contains('hidden')) {
+            setTimeout(() => { preloader.classList.add('hidden'); }, 800);
+        }
+    }
 
     const links = document.querySelectorAll('a[href]');
     const curtain = document.getElementById('page-transition-curtain');
@@ -452,17 +460,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1500);
         }
 
-        // Hero
+        // Hero (Clean Background)
         if (data.heroMediaUrl) {
-            const heroEl = document.getElementById('hero-section');
-            if (heroEl) {
-                // Determine if video or image
-                if (data.heroMediaUrl.match(/\.(mp4|webm)$/i)) {
-                    heroEl.innerHTML = `<video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0;"><source src="${data.heroMediaUrl}" type="video/mp4"></video>` + heroEl.innerHTML;
-                    heroEl.style.backgroundImage = 'none';
-                } else {
-                    heroEl.style.backgroundImage = `url('${data.heroMediaUrl}')`;
-                }
+            const heroImg = document.querySelector('.hero-main-img');
+            if (heroImg && !data.heroMediaUrl.match(/\.(mp4|webm)$/i)) {
+                // Only update the main transparent image if it's an image, do not inject video background
+                heroImg.src = data.heroMediaUrl;
             }
         }
         
