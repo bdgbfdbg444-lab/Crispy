@@ -176,6 +176,17 @@
                 <!-- Items injected here -->
             </div>
             
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: var(--radius-sm); cursor: pointer; text-align: center; border: 1px solid var(--primary-color);">
+                    <input type="radio" name="orderType" value="Delivery" checked />
+                    الدفع كاش (توصيل/بالمطعم)
+                </label>
+                <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: var(--radius-sm); cursor: pointer; text-align: center; border: 1px solid var(--primary-color);">
+                    <input type="radio" name="orderType" value="PickUp" />
+                    تحويل بنكي / فودافون كاش
+                </label>
+            </div>
+
             <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
                 <input type="text" id="customer-name" placeholder="الاسم الكريم" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
                 <input type="tel" id="customer-phone" placeholder="رقم الهاتف" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
@@ -186,6 +197,29 @@
                 الإجمالي: <span id="cart-total-price" style="color: var(--primary-color);">0</span> جنيه
             </div>
             <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content" style="text-align: center;">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 2.5rem;">تم استلام طلبك!</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">سنتواصل معك قريباً لتأكيد طلبك وتجهيزه.</p>
+            <button id="close-success" class="btn-primary" style="width: 100%;">حسناً</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal (WhatsApp) -->
+    <div id="payment-modal" class="modal hidden">
+        <div class="modal-content" style="text-align: center;">
+            <h2 style="margin-bottom: 1rem;">تأكيد الدفع</h2>
+            <p>يرجى تحويل المبلغ التالي على المحفظة:</p>
+            <h3 id="payment-amount" style="color: var(--primary-color); font-size: 2.5rem; margin: 1rem 0;">0</h3>
+            <p>رقم المحفظة (فودافون كاش / إنستا باي):</p>
+            <h3 id="payment-wallet" style="font-size: 1.8rem; margin: 1rem 0; letter-spacing: 2px;"></h3>
+            <p style="font-size: 0.9rem; color: #888; margin-bottom: 2rem;">بعد إتمام التحويل، اضغط الزر أدناه لإرسال الإيصال إلينا عبر الواتساب لتأكيد طلبك.</p>
+            <button id="whatsapp-confirm-btn" class="btn-primary" style="width: 100%; background: #25D366; border-color: #25D366; margin-bottom: 1rem;">إرسال الإيصال (WhatsApp)</button>
+            <button id="close-payment" class="btn-primary" style="width: 100%; background: transparent; color: white;">إلغاء</button>
         </div>
     </div>
 
