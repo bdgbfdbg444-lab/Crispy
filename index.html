@@ -115,10 +115,17 @@
             <div id="cart-items" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; max-height: 50vh; overflow-y: auto;">
                 <!-- Items injected here -->
             </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                <input type="text" id="customer-name" placeholder="الاسم الكريم" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
+                <input type="tel" id="customer-phone" placeholder="رقم الهاتف" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
+                <textarea id="order-notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;"></textarea>
+            </div>
+
             <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
                 الإجمالي: <span id="cart-total-price" style="color: var(--primary-color);">0</span> جنيه
             </div>
-            <button class="btn-primary" style="width: 100%;" onclick="alert('Checkout integration pending')">إتمام الطلب</button>
+            <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
         </div>
     </div>
 

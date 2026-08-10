@@ -505,6 +505,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = event.target || event.currentTarget;
         if (!button) return;
         
+        const cartIcon = document.querySelector('.desktop-nav .cart-trigger') || document.querySelector('.cart-trigger');
+        if (!cartIcon) return;
+        
         const card = button.closest('.product-card');
         if (!card) return;
         
@@ -804,9 +807,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const updateCartUI = () => {
-            if (!cartCount || !cartItemsContainer || !cartTotalPrice) return;
+            if (!cartItemsContainer || !cartTotalPrice) return;
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
+            if (cartCount) cartCount.textContent = totalItems;
                         if (totalItems > 0) {
                 // We use standard badges in the new layout
                 const badges = document.querySelectorAll('.cart-count');
