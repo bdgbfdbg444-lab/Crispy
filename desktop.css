@@ -104,3 +104,6 @@ html.lenis {
     gap: 2rem;
     margin-top: 3rem;
 }
+
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; text-align: right; }
+

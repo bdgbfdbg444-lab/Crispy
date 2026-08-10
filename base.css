@@ -228,5 +228,112 @@ h1, h2, h3, h4 {
     .modal-content {
         padding: 1.5rem;
         width: 95%;
-    }
 }
+
+/* ==========================================================================
+   PRELOADER & PAGE TRANSITIONS (Custom Fade)
+   ========================================================================== */
+.global-preloader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #000;
+    z-index: 999999;
+    display: flex;
+    align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.global-preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.smoke-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, rgba(30,30,30,0.8) 0%, rgba(0,0,0,1) 100%);
+    opacity: 0.6;
+    animation: smokePulse 4s infinite alternate ease-in-out;
+}
+
+@keyframes smokePulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.preloader-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.glow-logo {
+    font-size: 5rem;
+    color: var(--primary-color);
+    animation: glowPulse 2s infinite alternate;
+    margin-bottom: 1rem;
+}
+
+.glow-text {
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 5px;
+    animation: glowPulse 2s infinite alternate 0.5s;
+}
+
+@keyframes glowPulse {
+    0% { text-shadow: 0 0 10px rgba(255, 51, 0, 0.5), 0 0 20px rgba(255, 51, 0, 0.3); transform: scale(0.98); }
+    100% { text-shadow: 0 0 20px rgba(255, 51, 0, 0.9), 0 0 40px rgba(255, 51, 0, 0.6); transform: scale(1.02); }
+}
+
+.page-curtain {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #000;
+    z-index: 999998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    pointer-events: none;
+}
+
+.page-curtain.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   FIRE SPARKS PARTICLES
+   ========================================================================== */
+.fire-spark {
+    position: absolute;
+    bottom: -10px;
+    width: 4px; height: 4px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-color), 0 0 20px #FF9900;
+    opacity: 0;
+    animation: flyUp 4s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes flyUp {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-300px) translateX(30px) scale(0); opacity: 0; }
+}
+
+.parallax-ingredient {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+}
+

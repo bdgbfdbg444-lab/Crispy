@@ -15,6 +15,18 @@
     <link rel="stylesheet" media="(max-width: 991px)" href="mobile.css">
 </head>
 <body id="home-page">
+    <!-- Global Preloader -->
+    <div id="global-preloader" class="global-preloader">
+        <div class="smoke-bg"></div>
+        <div class="preloader-content">
+            <i class="fa-solid fa-fire glow-logo"></i>
+            <h2 class="glow-text">THE SNEAKER BOX</h2>
+        </div>
+    </div>
+    
+    <!-- Page Transition Curtain -->
+    <div id="page-transition-curtain" class="page-curtain"></div>
+
     <div id="toast" class="toast hidden"></div>
     
     <!-- Top Navbar -->
@@ -36,18 +48,41 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="hero-section">
-        <!-- Floating Image -->
-        <div class="hero-image-wrapper">
-            <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" style="border-radius: 50%; object-fit: cover; width: 300px; height: 300px; border: 4px solid var(--primary-color);" alt="Epic BBQ" class="hero-img-float">
-        </div>
+    <!-- Hero Section (Modern Grid/Flex Design) -->
+    <header class="hero-section" id="hero-section" style="position: relative; display: flex; align-items: center; min-height: 100vh; overflow: hidden; padding-top: 80px;">
         
-        <div class="hero-content">
-            <h1 class="text-massive">
-                تذوق <br> <span class="highlight">اللحم المدخن</span>
-            </h1>
-            <a href="menu.html" class="btn-primary" style="margin-top: 2rem;">تصفح المنيو المذهل</a>
+        <!-- Fire Sparks Background (Added by JS) -->
+        <div id="fire-sparks-container" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></div>
+
+        <div class="container hero-grid" style="position: relative; z-index: 2;">
+            
+            <!-- Right side: Text & CTA -->
+            <div class="hero-content" style="text-align: right;" data-aos="fade-left">
+                <h1 class="text-massive" style="text-align: right; line-height: 1.1;">
+                    تذوق <br> <span class="highlight">اللحم المدخن</span>
+                </h1>
+                <p style="font-size: 1.5rem; color: #ddd; margin-top: 1rem; margin-bottom: 2rem; max-width: 500px;">
+                    اكتشف النكهة الأصلية للشواء ببطء. لحوم فاخرة ومذاق لا ينسى.
+                </p>
+                <a href="menu.html" class="btn-primary" style="font-size: 1.3rem; padding: 1.2rem 3rem;">اطلب الآن</a>
+            </div>
+
+            <!-- Left side: Huge transparent image & Floating ingredients -->
+            <div class="hero-image-wrapper" style="position: relative; height: 100%; display: flex; justify-content: center; align-items: center;" data-aos="zoom-in">
+                
+                <!-- Glowing background for image -->
+                <div style="position: absolute; width: 80%; height: 80%; background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%); opacity: 0.2; filter: blur(40px); z-index: 0;"></div>
+                
+                <!-- Main Meal Image (Transparent) -->
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Epic BBQ" class="hero-main-img" style="position: relative; z-index: 2; width: 100%; max-width: 600px; transform: scale(1.1); filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8)); border-radius: 20px;">
+                
+                <!-- Parallax Floating Ingredients (Placeholders) -->
+                <!-- We will position them around the main image and let ScrollTrigger animate them -->
+                <img src="https://images.unsplash.com/photo-1596484552834-8a58f7eb0fa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Lettuce" class="parallax-ingredient" data-speed="0.5" style="width: 100px; top: 10%; right: -10%; border-radius: 50%;">
+                <img src="https://images.unsplash.com/photo-1592323067716-e5c9b7dafc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Tomato" class="parallax-ingredient" data-speed="-0.3" style="width: 120px; bottom: 15%; left: -5%; border-radius: 50%;">
+                <img src="https://images.unsplash.com/photo-1603048297172-c92544798d5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Meat" class="parallax-ingredient" data-speed="0.8" style="width: 150px; top: 20%; left: -15%; border-radius: 50%;">
+            </div>
+            
         </div>
     </header>
 
@@ -258,6 +293,7 @@
 
     <!-- GSAP & Lenis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
     
     <!-- Custom Logic -->

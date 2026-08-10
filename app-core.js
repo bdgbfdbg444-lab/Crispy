@@ -1,4 +1,87 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Preloader & Transitions ---
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('global-preloader');
+        if (preloader) {
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, 800); // 800ms for cinematic feel
+        }
+    });
+
+    const links = document.querySelectorAll('a[href]');
+    const curtain = document.getElementById('page-transition-curtain');
+    
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && !href.startsWith('#') && !href.startsWith('http') && !href.startsWith('javascript')) {
+                if (curtain) {
+                    e.preventDefault();
+                    curtain.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 500); // Wait for curtain to close
+                }
+            }
+        });
+    });
+
+    // --- Fire Sparks ---
+    function initFireSparks() {
+        const containers = document.querySelectorAll('#hero-section, #index-broll-section, #broll-section');
+        containers.forEach(container => {
+            if (!container) return;
+            // Create a wrapper for sparks to keep things clean
+            let sparkWrapper = container.querySelector('.sparks-wrapper');
+            if (!sparkWrapper) {
+                sparkWrapper = document.createElement('div');
+                sparkWrapper.className = 'sparks-wrapper';
+                sparkWrapper.style.position = 'absolute';
+                sparkWrapper.style.top = '0';
+                sparkWrapper.style.left = '0';
+                sparkWrapper.style.width = '100%';
+                sparkWrapper.style.height = '100%';
+                sparkWrapper.style.pointerEvents = 'none';
+                sparkWrapper.style.overflow = 'hidden';
+                sparkWrapper.style.zIndex = '1';
+                container.appendChild(sparkWrapper);
+            }
+            
+            for (let i = 0; i < 20; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'fire-spark';
+                spark.style.left = Math.random() * 100 + '%';
+                spark.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                spark.style.animationDelay = Math.random() * 5 + 's';
+                spark.style.width = (Math.random() * 4 + 2) + 'px';
+                spark.style.height = spark.style.width;
+                sparkWrapper.appendChild(spark);
+            }
+        });
+    }
+    initFireSparks();
+
+    // --- GSAP Parallax Ingredients ---
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        const ingredients = document.querySelectorAll('.parallax-ingredient');
+        ingredients.forEach(ing => {
+            const speed = parseFloat(ing.getAttribute('data-speed')) || 0.5;
+            gsap.to(ing, {
+                y: -150 * speed,
+                rotation: 45 * speed,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+    }
+
     // UI Elements
     const loader = document.getElementById('loader');
     const menuContainer = document.getElementById('menu-container');

@@ -122,3 +122,6 @@ body {
 .products-swiper {
     padding-bottom: 2rem;
 }
+
+.hero-grid { display: flex; flex-direction: column-reverse; align-items: center; gap: 2rem; text-align: center; } .hero-grid .hero-content { text-align: center !important; } .hero-grid .text-massive { text-align: center !important; } .hero-grid .hero-main-img { max-width: 80% !important; }
+
