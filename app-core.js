@@ -484,7 +484,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize cart triggers
     const cartTriggers = document.querySelectorAll('.cart-trigger');
     cartTriggers.forEach(trigger => {
-        trigger.onclick = () => {
+        trigger.onclick = (e) => {
+            e.preventDefault();
+            if (cart.length === 0) {
+                showToast("السلة فارغة حالياً");
+                return;
+            }
             if (cartModal) cartModal.classList.remove('hidden');
         };
     });
@@ -622,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 weightModal.classList.add('hidden');
                 
                 // Now pass the modified product back to addToCart
-                // This allows it to check for modifiers (if any) or just add to cart
+                window.addToCart(customProduct);
                 
                 if (weightModal.dataset.sourceX && weightModal.dataset.sourceY) {
                     flyToCartSynthetic(weightModal.dataset.sourceX, weightModal.dataset.sourceY);
