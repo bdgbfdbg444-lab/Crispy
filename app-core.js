@@ -660,7 +660,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const validAddons = windowGlobalAddons.filter(addon => {
                     if (!addon.linkedProductIds || addon.linkedProductIds.trim() === '') return false;
                     const ids = addon.linkedProductIds.split(',').map(s => s.trim());
-                    return ids.includes(product.id.toString());
+                    const pId = (product.id || product.Id || '').toString();
+                    return ids.includes(pId);
                 });
 
                 if (validAddons.length > 0) {
