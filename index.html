@@ -59,108 +59,157 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Spacious & Cinematic) -->
-    <header class="hero-section" id="hero-section" style="position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 100px;">
+    <!-- ========== HERO SECTION (Clean & Cinematic) ========== -->
+    <header class="hero-section" id="hero-section" style="position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 120px 20px 60px;">
         
-        <!-- Fire Sparks Background (Added by JS) -->
-        <div id="fire-sparks-container" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></div>
-
-        <!-- Glowing background for image -->
-        <div style="position: absolute; width: 80vw; height: 80vw; max-width: 800px; max-height: 800px; background: radial-gradient(circle, var(--primary-color) 0%, transparent 60%); opacity: 0.15; filter: blur(60px); z-index: 1;"></div>
+        <!-- Ambient Glow -->
+        <div style="position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,51,0,0.15) 0%, transparent 70%); filter: blur(80px); z-index: 0;"></div>
         
-        <!-- Spline 3D Box Reveal (Placeholder) -->
-        <!-- URL will be replaced by user's optimized spline design -->
-        <div id="spline-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.8;">
-            <spline-viewer url="https://prod.spline.design/placeholder-url/scene.splinecode"></spline-viewer>
-        </div>
+        <!-- Desktop-only Parallax Ingredients -->
+        <img src="images/pickles.png" alt="Pickles" class="parallax-ingredient desktop-only-parallax" data-speed="0.3" data-rotation="-30" style="width: 90px; top: 20%; left: 5%; z-index: 2;">
+        <img src="images/brisket_slice.png" alt="Brisket" class="parallax-ingredient desktop-only-parallax" data-speed="-0.4" data-rotation="20" style="width: 160px; bottom: 15%; right: 5%; z-index: 2;">
+        <img src="images/pickles.png" alt="Pickles" class="parallax-ingredient desktop-only-parallax" data-speed="0.5" data-rotation="45" style="width: 70px; top: 60%; right: 8%; z-index: 2;">
         
-        <!-- Parallax Floating Ingredients (Back layer - behind burger, z-index: 2) -->
-        <!-- Brisket Cubes - top left -->
-        <img src="images/brisket_cubes.jpg" alt="Brisket Cubes" class="parallax-ingredient" data-speed="0.3" data-rotation="-25" style="width: 160px; top: 12%; left: 8%; z-index: 2; border-radius: 20px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));">
-        <!-- Chicken Tenders - top right -->
-        <img src="images/chicken_tenders.jpg" alt="Chicken Tenders" class="parallax-ingredient" data-speed="0.5" data-rotation="20" style="width: 150px; top: 18%; right: 8%; z-index: 2; border-radius: 20px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));">
-        <!-- Pickles - mid left back -->
-        <img src="images/pickles.png" alt="Pickles" class="parallax-ingredient" data-speed="0.2" data-rotation="-40" style="width: 100px; top: 55%; left: 5%; z-index: 2; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
-        
-        <div class="container hero-content-wrapper" style="position: relative; z-index: 5; text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <!-- Main Content -->
+        <div style="position: relative; z-index: 5; text-align: center; display: flex; flex-direction: column; align-items: center; max-width: 800px;">
             
-            <h1 class="text-massive hero-title" style="margin-bottom: 0; line-height: 1; z-index: 10; position: relative;">
-                تذوق <br> <span class="highlight" style="background: linear-gradient(45deg, #FF3300, #FF9900); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">اللحم المدخن</span>
+            <p style="font-size: 1rem; color: var(--primary-color); letter-spacing: 8px; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.9;">TEXAS STYLE BBQ</p>
+            
+            <h1 style="font-size: clamp(3rem, 10vw, 7rem); font-weight: 900; line-height: 0.95; margin-bottom: 0; color: #fff;">
+                تذوق<br>
+                <span style="background: linear-gradient(135deg, #FF3300, #FF6600, #FF9900); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">اللحم المدخن</span>
             </h1>
             
-            <!-- Main Hero Image: DOUBLE BURGER (center, floating) -->
-            <div id="main-hero-img-wrapper" style="position: relative; margin-top: -40px; z-index: 5;">
-                <img src="images/double_burger.jpg" alt="Double Smash Burger" class="hero-main-img float-idle" style="width: 100%; max-width: 550px; border-radius: 30px; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.95));">
+            <div id="main-hero-img-wrapper" style="position: relative; margin: -20px 0 -10px; z-index: 5;">
+                <img src="images/double_burger.jpg" alt="Smash Burger" class="hero-main-img float-idle" style="width: 85vw; max-width: 480px; border-radius: 24px; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.9));">
             </div>
             
-            <div style="margin-top: -10px; z-index: 10; position: relative;">
-                <a href="menu.html" class="btn-primary" style="font-size: 1.5rem; padding: 1.5rem 4rem; box-shadow: 0 10px 30px rgba(255, 51, 0, 0.4);">اطلب الآن</a>
-            </div>
+            <p style="font-size: 1.1rem; color: rgba(255,255,255,0.6); margin-bottom: 2rem; max-width: 400px; line-height: 1.8;">
+                لحوم فاخرة مدخنة ببطء لأكثر من 14 ساعة. نكهة تكساس الأصلية في كل قضمة.
+            </p>
+            
+            <a href="menu.html" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 3.5rem; box-shadow: 0 10px 40px rgba(255, 51, 0, 0.3); border-radius: 50px;">
+                <i class="fa-solid fa-fire" style="margin-left: 8px;"></i> تصفح المنيو
+            </a>
         </div>
-
-        <!-- Parallax Floating Ingredients (Front layer - in front of burger, z-index: 8) -->
-        <!-- Brisket Slice - bottom right (signature item!) -->
-        <img src="images/brisket_slice.png" alt="Brisket Slice" class="parallax-ingredient" data-speed="-0.5" data-rotation="15" style="width: 220px; bottom: 8%; right: 5%; z-index: 8; filter: drop-shadow(0 25px 40px rgba(0,0,0,0.95));">
-        <!-- Pickles - bottom left -->
-        <img src="images/pickles.png" alt="Pickles" class="parallax-ingredient" data-speed="-0.3" data-rotation="-30" style="width: 120px; bottom: 20%; left: 8%; z-index: 8; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.9));">
-        <!-- Chicken Tenders - mid right -->
-        <img src="images/chicken_tenders.jpg" alt="Chicken Tenders" class="parallax-ingredient" data-speed="-0.4" data-rotation="35" style="width: 140px; bottom: 35%; right: 3%; z-index: 8; border-radius: 15px; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.9));">
-        <!-- Brisket Cubes - bottom center-left -->
-        <img src="images/brisket_cubes.jpg" alt="Brisket Cubes" class="parallax-ingredient" data-speed="-0.6" data-rotation="-15" style="width: 130px; bottom: 5%; left: 30%; z-index: 8; border-radius: 15px; filter: drop-shadow(0 20px 35px rgba(0,0,0,0.9));">
-        
     </header>
 
-    <!-- Marquee Section -->
-    <div class="marquee-wrapper" style="margin: 0; transform: rotate(-2deg) scale(1.05); z-index: 20; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-        <div class="marquee-content" style="animation-duration: 30s;">
-            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
-            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
-            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
-            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
-            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
-            <span>100% SMOKED TEXAS BBQ ★ PREMIUM QUALITY</span>
+    <!-- ========== MARQUEE ========== -->
+    <div class="marquee-wrapper" style="margin: 0; transform: rotate(-1deg) scale(1.02); z-index: 20; position: relative;">
+        <div class="marquee-content" style="animation-duration: 25s;">
+            <span>★ 100% SMOKED</span><span>★ TEXAS BBQ</span><span>★ PREMIUM QUALITY</span><span>★ SLOW COOKED</span>
+            <span>★ 100% SMOKED</span><span>★ TEXAS BBQ</span><span>★ PREMIUM QUALITY</span><span>★ SLOW COOKED</span>
+            <span>★ 100% SMOKED</span><span>★ TEXAS BBQ</span><span>★ PREMIUM QUALITY</span><span>★ SLOW COOKED</span>
         </div>
     </div>
 
-    <!-- B-Roll Cinematic Section (Full Width, Zoom-in) -->
-    <section id="full-broll-section" style="position: relative; width: 100%; height: 100vh; overflow: hidden; background: #000; margin-top: -20px;">
-        <!-- Video Container (will be zoomed in via JS) -->
-        <div id="broll-video-container" style="position: absolute; top:0; left:0; width: 100%; height: 100%; transform: scale(1.2);">
-            <!-- Video injected by JS -->
+    <!-- ========== FEATURED ITEMS ========== -->
+    <section id="featured-section" style="padding: 6rem 5%; background: #0a0a0a;">
+        <div class="container" style="text-align: center;">
+            <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 0.5rem;">THE MENU</p>
+            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 3rem; color: #fff;">أصنافنا <span style="color: var(--primary-color);">المميزة</span></h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+                
+                <div class="featured-card" style="background: linear-gradient(145deg, #1a1a1a, #111); border-radius: 24px; padding: 2rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer;">
+                    <div style="overflow: hidden; border-radius: 16px; margin-bottom: 1.5rem;">
+                        <img src="images/double_burger.jpg" alt="Smash Burger" style="width: 100%; height: 220px; object-fit: cover; border-radius: 16px; transition: transform 0.6s ease;">
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff;">سماش برجر</h3>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.7;">قطعتين لحم سماش مع جبنة أمريكية ذايبة، في خبز بريوش محمص.</p>
+                    <a href="menu.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-color); font-weight: 700; text-decoration: none;">اطلب الآن ←</a>
+                </div>
+                
+                <div class="featured-card" style="background: linear-gradient(145deg, #1a1a1a, #111); border-radius: 24px; padding: 2rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer;">
+                    <div style="overflow: hidden; border-radius: 16px; margin-bottom: 1.5rem;">
+                        <img src="images/brisket_slice.png" alt="Brisket" style="width: 100%; height: 220px; object-fit: cover; border-radius: 16px; transition: transform 0.6s ease; background: #1a1a1a;">
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff;">بريسكت مدخن</h3>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.7;">شريحة بريسكت مدخنة 14 ساعة على حطب البلوط. ذوبان حقيقي.</p>
+                    <a href="menu.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-color); font-weight: 700; text-decoration: none;">اطلب الآن ←</a>
+                </div>
+                
+                <div class="featured-card" style="background: linear-gradient(145deg, #1a1a1a, #111); border-radius: 24px; padding: 2rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer;">
+                    <div style="overflow: hidden; border-radius: 16px; margin-bottom: 1.5rem;">
+                        <img src="images/chicken_tenders.jpg" alt="Chicken Tenders" style="width: 100%; height: 220px; object-fit: cover; border-radius: 16px; transition: transform 0.6s ease;">
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff;">تشيكن تندرز</h3>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.7;">قطع دجاج مقرمشة بتتبيلة حارة خاصة، مع صوص الباربيكيو السري.</p>
+                    <a href="menu.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-color); font-weight: 700; text-decoration: none;">اطلب الآن ←</a>
+                </div>
+            </div>
         </div>
-        <div class="broll-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%); z-index: 1;"></div>
-        <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
-            <h2 class="text-massive" style="text-shadow: 2px 2px 20px rgba(0,0,0,0.9); margin-bottom: 2rem;">
-                اكتشف <span class="highlight">التجربة</span>
+    </section>
+
+    <!-- ========== SMOKING PROCESS ========== -->
+    <section id="process-section" style="padding: 6rem 5%; background: #000; position: relative; overflow: hidden;">
+        <div class="container" style="text-align: center; max-width: 900px; margin: 0 auto;">
+            <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 0.5rem;">OUR PROCESS</p>
+            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 4rem; color: #fff;">رحلة <span style="color: var(--primary-color);">التدخين</span></h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(255,51,0,0.15); border: 2px solid var(--primary-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">01</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">اختيار اللحم</h3>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.8;">نختار أجود القطعيات من مصادر موثوقة</p>
+                </div>
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(255,51,0,0.15); border: 2px solid var(--primary-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">02</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">التتبيل الخاص</h3>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.8;">خلطة توابل سرية مع ملح خشن وفلفل أسود</p>
+                </div>
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(255,51,0,0.15); border: 2px solid var(--primary-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">03</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">تدخين 14 ساعة</h3>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.8;">على حطب البلوط بحرارة منخفضة وصبر طويل</p>
+                </div>
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(255,51,0,0.15); border: 2px solid var(--primary-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">04</div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">تقديم ساخن</h3>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.8;">يُقطع أمام عينيك ويُقدم طازجاً</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== B-ROLL VIDEO ========== -->
+    <section id="full-broll-section" style="position: relative; width: 100%; height: 80vh; overflow: hidden; background: #000;">
+        <div id="broll-video-container" style="position: absolute; top:0; left:0; width: 100%; height: 100%; transform: scale(1.15);"></div>
+        <div class="broll-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.8) 100%); z-index: 1;"></div>
+        <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 0 20px;">
+            <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 1rem;">BEHIND THE SMOKE</p>
+            <h2 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; text-shadow: 2px 2px 30px rgba(0,0,0,0.9); margin-bottom: 2rem; color: #fff;">
+                اكتشف <span style="color: var(--primary-color);">التجربة</span>
             </h2>
-            <a href="about.html" class="btn-primary" style="background: transparent; border: 2px solid var(--primary-color); backdrop-filter: blur(5px);">شاهد كواليسنا</a>
+            <a href="about.html" class="btn-primary" style="background: transparent; border: 2px solid var(--primary-color); backdrop-filter: blur(10px); border-radius: 50px; padding: 1rem 3rem;">شاهد كواليسنا</a>
         </div>
     </section>
 
-    <!-- Info Grid -->
-    <section class="container" style="padding: 5rem 5%; text-align: center;">
-        <h2 style="font-size: var(--font-h2); margin-bottom: 2rem;">جودة تصنع الفارق</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; text-align: right;">
-            <div>
-                <i class="fa-solid fa-fire" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
-                <h3 style="font-size: 2rem; margin-bottom: 1rem;">شغف التدخين</h3>
-                <p style="color: var(--text-muted); font-size: 1.2rem;">نستخدم أجود أنواع الأخشاب لتدخين اللحوم ببطء تام، لضمان نكهة قوية وقوام يذوب في الفم.</p>
+    <!-- ========== BRISKET HIGHLIGHT ========== -->
+    <section style="padding: 6rem 5%; background: #0a0a0a; overflow: hidden;">
+        <div class="container" style="display: flex; flex-wrap: wrap; align-items: center; gap: 3rem; max-width: 1000px; margin: 0 auto;">
+            <div style="flex: 1; min-width: 280px;">
+                <img src="images/brisket_cubes.jpg" alt="Burnt Ends" style="width: 100%; border-radius: 24px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));">
             </div>
-            <div>
-                <i class="fa-solid fa-cow" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
-                <h3 style="font-size: 2rem; margin-bottom: 1rem;">لحوم فاخرة</h3>
-                <p style="color: var(--text-muted); font-size: 1.2rem;">نختار قطعيات اللحم بعناية فائقة، لتصلك تجربة باربيكيو أصيلة لا تُنسى من أول قضمة.</p>
+            <div style="flex: 1; min-width: 280px;">
+                <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 0.5rem;">SIGNATURE DISH</p>
+                <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 1.5rem; color: #fff;">بيرنت إندز</h2>
+                <p style="color: rgba(255,255,255,0.5); font-size: 1.1rem; line-height: 2; margin-bottom: 2rem;">مكعبات البريسكت المدخنة والمكرملة بصوص الباربيكيو. كل قطعة هي انفجار نكهات مدخنة وحلوة في نفس اللحظة.</p>
+                <a href="menu.html" class="btn-primary" style="border-radius: 50px; padding: 1rem 3rem;">اطلب الآن</a>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="container" id="testimonials-section" style="padding: 3rem 5%; display: none;">
-        <h2 style="font-size: var(--font-h2); margin-bottom: 2rem; text-align: center;">آراء عملائنا المميزة</h2>
-        <div id="testimonials-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <!-- Rendered by JS -->
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="container" id="testimonials-section" style="padding: 5rem 5%; display: none;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 0.5rem;">REVIEWS</p>
+            <h2 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #fff;">آراء عملائنا <span style="color: var(--primary-color);">المميزة</span></h2>
         </div>
+        <div id="testimonials-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"></div>
     </section>
+
+
 
     <!-- Bottom Navigation Bar (Mobile) -->
     <nav class="bottom-nav">
