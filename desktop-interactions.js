@@ -1,4 +1,4 @@
-// desktop-interactions.js (Zero to Production Rewrite)
+// desktop-interactions.js (Phase 7 - Cinematic Update)
 
 document.addEventListener('DOMContentLoaded', () => {
     // Only run on desktop
@@ -20,9 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(raf);
 
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
-        lenis.on('scroll', ScrollTrigger.update);
+        if (!prefersReducedMotion) {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => lenis.raf(time * 1000));
         gsap.ticker.lagSmoothing(0, 0);
 
@@ -30,124 +33,133 @@ document.addEventListener('DOMContentLoaded', () => {
         // 01. GLOBAL HEADER SCROLL
         // ==========================================
         const header = document.querySelector('.global-header');
-        ScrollTrigger.create({
-            start: 'top -50',
-            end: 99999,
-            toggleClass: { className: 'scrolled', targets: header }
-        });
+        if (header) {
+            ScrollTrigger.create({
+                start: 'top -50',
+                end: 99999,
+                toggleClass: { className: 'scrolled', targets: header }
+            });
+        }
 
         // ==========================================
-        // 02. HERO ANIMATIONS (Initial Load & Scroll)
+        // 02. HERO PARALLAX (Scroll Depth)
         // ==========================================
-        // Initial Entry
-        const tlHero = gsap.timeline();
-        tlHero.from('.hero-title', { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" })
-              .from('#main-hero-food', { scale: 0.8, opacity: 0, rotationY: 15, duration: 1.5, ease: "power3.out" }, "-=1")
-              .from('.hero-float', { y: 50, opacity: 0, duration: 1, stagger: 0.2, ease: "back.out(1.5)" }, "-=1");
-
-        // Scroll Parallax (Depth Effect)
-        gsap.to('.hero-title', {
-            y: 300,
-            scale: 0.9,
-            opacity: 0,
-            scrollTrigger: {
-                trigger: '#hero-section',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true
-            }
-        });
-
-        gsap.to('#main-hero-food', {
-            y: -150,
-            scale: 1.1,
-            scrollTrigger: {
-                trigger: '#hero-section',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true
-            }
+        const heroLayers = document.querySelectorAll('.hero-layer');
+        heroLayers.forEach(layer => {
+            const speed = parseFloat(layer.getAttribute('data-speed')) || 0;
+            gsap.to(layer, {
+                y: window.innerHeight * speed,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: '.hero-cinematic',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
         });
 
         // ==========================================
         // 03. HERO MOUSE INTERACTION (Physics)
         // ==========================================
-        const heroSection = document.getElementById('hero-section');
-        const mainFood = document.getElementById('main-hero-food');
-        const floats = document.querySelectorAll('.hero-float');
+        const heroSection = document.querySelector('.hero-cinematic');
+        const tiltElements = document.querySelectorAll('.parallax-tilt');
+        const tiltOpposite = document.querySelectorAll('.parallax-tilt-opposite');
         
-        if (heroSection && mainFood) {
+        if (heroSection) {
             heroSection.addEventListener('mousemove', (e) => {
                 const rect = heroSection.getBoundingClientRect();
                 const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2); // -1 to 1
                 const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2); // -1 to 1
                 
-                // Tilt & Move main food
-                gsap.to(mainFood, {
-                    rotationX: -y * 10,
-                    rotationY: x * 10,
-                    x: x * 20,
-                    y: y * 20,
+                // Tilt main
+                gsap.to(tiltElements, {
+                    rotationX: -y * 15,
+                    rotationY: x * 15,
+                    x: x * 30,
+                    y: y * 30,
                     duration: 1,
                     ease: "power2.out"
                 });
 
-                // Move floating elements inversely and faster for depth
-                floats.forEach(float => {
-                    const isFast = float.classList.contains('float-fast');
-                    const multiplier = isFast ? -40 : -20;
-                    gsap.to(float, {
-                        x: x * multiplier,
-                        y: y * multiplier,
-                        rotation: x * 15,
-                        duration: 1.5,
-                        ease: "power2.out"
-                    });
+                // Tilt secondary opposite
+                gsap.to(tiltOpposite, {
+                    rotationX: y * 10,
+                    rotationY: -x * 10,
+                    x: -x * 40,
+                    y: -y * 40,
+                    duration: 1.5,
+                    ease: "power2.out"
                 });
             });
             
             heroSection.addEventListener('mouseleave', () => {
-                gsap.to([mainFood, ...floats], {
-                    rotationX: 0, rotationY: 0, x: 0, y: 0, rotation: 0,
+                gsap.to([...tiltElements, ...tiltOpposite], {
+                    rotationX: 0, rotationY: 0, x: 0, y: 0,
                     duration: 1.5,
-                    ease: "elastic.out(1, 0.5)"
+                    ease: "power3.out"
                 });
             });
         }
 
         // ==========================================
-        // 04. EDITORIAL MENU (Card Hover Depth)
+        // 04. SCROLL FADE UP ANIMATIONS
         // ==========================================
-        const editCards = document.querySelectorAll('.editorial-card');
-        editCards.forEach(card => {
-            const img = card.querySelector('img');
-            
-            card.addEventListener('mouseenter', () => {
-                gsap.to(card, { y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', duration: 0.4, ease: "power2.out" });
-                gsap.to(img, { scale: 1.15, y: -20, rotationZ: 5, duration: 0.5, ease: "back.out(1.5)" });
+        const fadeElements = document.querySelectorAll('.scroll-fade-up');
+        fadeElements.forEach(el => {
+            gsap.fromTo(el, 
+                { y: 50, opacity: 0 },
+                { 
+                    y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // ==========================================
+        // 05. LOW & SLOW ZOOM EFFECT
+        // ==========================================
+        const lowSlowBg = document.querySelector('.low-slow-bg img');
+        if (lowSlowBg) {
+            gsap.to(lowSlowBg, {
+                scale: 1.15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: '.scroll-zoom-section',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
             });
+        }
+        
+        const parallaxTexts = document.querySelectorAll('.parallax-text');
+        parallaxTexts.forEach(txt => {
+            const speed = parseFloat(txt.getAttribute('data-speed')) || 0.2;
+            // Find closest parent section to act as trigger
+            const triggerEl = txt.closest('section') || '.scroll-zoom-section';
             
-            card.addEventListener('mouseleave', () => {
-                gsap.to(card, { y: 0, boxShadow: 'none', duration: 0.4, ease: "power2.out" });
-                gsap.to(img, { scale: 1, y: 0, rotationZ: 0, duration: 0.5, ease: "power2.out" });
+            gsap.to(txt, {
+                y: -100 * speed,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: triggerEl,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
             });
         });
+        
+        } // End of prefersReducedMotion check
     }
 
-    // Export function for dynamic cards (from app-core)
+    // Export function for dynamic cards (from app-core) if we need specific hover JS
     window.initDesktop3DMenu = function() {
-        // Redefined for dynamic injection if needed
-        const editCards = document.querySelectorAll('.editorial-card');
-        editCards.forEach(card => {
-            const img = card.querySelector('img');
-            card.addEventListener('mouseenter', () => {
-                gsap.to(card, { y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', duration: 0.4, ease: "power2.out" });
-                gsap.to(img, { scale: 1.15, y: -20, rotationZ: 5, duration: 0.5, ease: "back.out(1.5)" });
-            });
-            card.addEventListener('mouseleave', () => {
-                gsap.to(card, { y: 0, boxShadow: 'none', duration: 0.4, ease: "power2.out" });
-                gsap.to(img, { scale: 1, y: 0, rotationZ: 0, duration: 0.5, ease: "power2.out" });
-            });
-        });
+        // Handled mostly by CSS for the new signature cards.
     };
 });

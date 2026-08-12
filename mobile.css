@@ -1,58 +1,98 @@
 /* ==========================================================================
-   MOBILE ONLY (max-width: 991px)
+   MOBILE ONLY (max-width: 991px) Phase 7 Cinematic
    ========================================================================== */
 body {
     padding-bottom: 80px; /* Space for bottom nav */
 }
 
-/* Navbar */
-.top-navbar .nav-links,
-.top-navbar .nav-actions {
-    display: none !important;
-}
-.top-navbar {
-    justify-content: center;
-    padding: 1rem 5%;
-}
-.nav-logo {
-    font-size: 1.2rem;
-}
-
-/* HERO SECTION (Mobile) */
-.hero-section {
-    min-height: 85vh;
+/* --- HERO MOBILE --- */
+.hero-cinematic {
+    height: auto;
+    min-height: 85vh; /* leave room for nav */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding-top: 80px;
+    justify-content: flex-start;
+    padding-top: 100px; /* clear header */
+    padding-bottom: 50px;
     position: relative;
     overflow: hidden;
 }
 
-.hero-image-wrapper {
-    width: 100%;
-    max-width: 350px;
-    margin-bottom: -50px;
-    z-index: 1;
+/* Background stays absolute */
+.hero-bg-layer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
 }
-.hero-image-wrapper img {
+
+/* Hide heavy effects & secondary clutter */
+.hero-smoke-layer, 
+.hero-embers-layer,
+.parallax-tilt-opposite {
+    display: none !important;
+}
+
+/* Convert remaining layers to relative flow elements */
+.hero-layer:not(.hero-bg-layer),
+.hero-content {
+    position: relative;
+    top: auto; left: auto; right: auto; bottom: auto;
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
-}
-
-.hero-content {
+    transform: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     z-index: 2;
+}
+
+/* Visual Order: Food -> Headline -> Content */
+.hero-food-layer { order: 1; margin-bottom: -30px; z-index: 3; }
+.hero-type-layer { order: 2; z-index: 2; margin-bottom: 10px; }
+.hero-content { order: 3; z-index: 4; text-align: center; }
+
+/* Fluid Typography */
+.hero-oversized-text {
+    font-size: clamp(3.5rem, 15vw, 5rem);
+    line-height: 0.9;
     text-align: center;
-    padding: 0 5%;
+}
+.hero-subtitle {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    margin-bottom: 20px;
+}
+.hero-cta {
+    width: 90%;
+    max-width: 300px;
+    padding: 15px 20px;
+    font-size: 1.1rem;
 }
 
-.text-massive {
-    font-size: 3rem;
+/* Food Image Sizing */
+.parallax-tilt {
+    position: relative !important;
+    width: 85vw !important;
+    max-width: 320px !important;
+    margin: 0 auto;
+}
+.hero-main-food {
+    width: 100% !important;
+    position: relative !important;
+    top: auto;
+    transform: none;
 }
 
-/* BOTTOM NAVIGATION BAR */
+/* --- LOW & SLOW MOBILE --- */
+.low-slow-cinematic {
+    height: 70vh;
+}
+.huge-text {
+    font-size: clamp(3rem, 15vw, 6rem);
+}
+
+/* --- BOTTOM NAVIGATION BAR --- */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -75,26 +115,27 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.3);
     font-size: 0.75rem;
     font-weight: 700;
     gap: 4px;
     flex: 1;
     transition: color 0.2s;
     text-transform: uppercase;
+    text-decoration: none;
 }
 .bottom-nav-item i {
     font-size: 1.4rem;
 }
 .bottom-nav-item.active {
-    color: var(--primary-color);
+    color: var(--color-brand-primary, #FF4500);
 }
 .bottom-nav-item .badge {
     position: absolute;
     top: -5px;
     right: 50%;
     transform: translateX(15px);
-    background: var(--primary-color);
+    background: var(--color-brand-primary, #FF4500);
     color: white;
     font-size: 0.65rem;
     padding: 2px 6px;
@@ -102,26 +143,7 @@ body {
     display: none; /* hidden if 0 */
 }
 
-/* SWIPER CARDS (Mobile Menu) */
-.product-card {
-    background: var(--surface-color);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    border: 1px solid rgba(255,255,255,0.05);
+/* Global Header Hide Order Button */
+.global-header .btn-primary {
+    display: none;
 }
-.product-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: var(--radius-sm);
-}
-
-.products-swiper {
-    padding-bottom: 2rem;
-}
-
-.hero-grid { display: flex; flex-direction: column-reverse; align-items: center; gap: 2rem; text-align: center; } .hero-grid .hero-content { text-align: center !important; } .hero-grid .text-massive { text-align: center !important; } .hero-grid .hero-main-img { max-width: 80% !important; }
-

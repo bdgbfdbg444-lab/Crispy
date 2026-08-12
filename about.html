@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THE SNEAKER BOX BBQ - قصتنا</title>
+    <title>THE SNEAKER BOX BBQ - القصّة</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
@@ -20,93 +20,109 @@
         <div class="smoke-bg"></div>
         <div class="preloader-content">
             <i class="fa-solid fa-fire glow-logo"></i>
-            <h2 class="glow-text">THE SNEAKER BOX</h2>
+            <h2 class="glow-text" id="restaurant-title">THE SNEAKER BOX</h2>
         </div>
     </div>
     
-    <!-- Page Transition Curtain -->
-    <div id="page-transition-curtain" class="page-curtain"></div>
-
     <div id="toast" class="toast hidden"></div>
     
-    <!-- Top Navbar -->
-    <nav class="top-navbar">
-        <a href="index.html" class="nav-logo">
-            <i class="fa-solid fa-fire"></i> THE SNEAKER BOX
+    <!-- Global Header -->
+    <header class="global-header">
+        <a href="index.html" class="brand-logo">
+            <i class="fa-solid fa-fire" style="color: var(--color-brand-primary);"></i>
+            <span id="header-brand-name">SNEAKER BOX BBQ</span>
         </a>
-        <div class="nav-links">
-            <a href="index.html">الرئيسية</a>
-            <a href="menu.html">المنيو</a>
-            <a href="about.html">القصة</a>
-        </div>
-        <div class="nav-actions">
-            <div class="cart-trigger" style="position:relative;">
+        <div class="header-actions">
+            <div class="cart-trigger" onclick="document.getElementById('cart-modal').classList.remove('hidden')">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="badge cart-count" style="display:none; position:absolute; top:-10px; right:-10px; background:var(--primary-color); padding:2px 6px; border-radius:10px; font-size:12px; font-weight:bold;">0</span>
+                <span class="cart-count badge" style="display:none;">0</span>
             </div>
-            <a href="menu.html" class="btn-primary" style="padding: 0.5rem 1.5rem; font-size: 1rem;">اطلب الآن</a>
+            <a href="menu.html" class="btn-primary">اطلب الآن</a>
         </div>
-    </nav>
+    </header>
 
-    <!-- B-Roll Cinematic Section -->
-    <section id="broll-section" style="position: relative; width: 100%; height: 70vh; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111;">
-        <!-- Video injected by JS if exists, otherwise fallback to dark background -->
-        <div class="broll-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1;"></div>
-        <div style="position: relative; z-index: 2; text-align: center;" data-aos="zoom-in">
-            <h1 class="text-massive" style="text-shadow: 2px 2px 10px rgba(0,0,0,0.8);">قصتنا <span class="highlight">وشغفنا</span></h1>
-        </div>
-    </section>
-
-    <!-- Our Story Section (Glassmorphism) -->
-    <section class="container" style="padding: 5rem 5%;">
-        <div class="glass-effect" style="padding: 3rem; border-radius: 20px; max-width: 900px; margin: 0 auto; text-align: center; border: 1px solid rgba(255,255,255,0.1);" data-aos="fade-up">
-            <i class="fa-solid fa-book-open" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1.5rem;"></i>
-            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">وراء كل قطعة لحم.. حكاية</h2>
-            <p id="story-text-preview" style="font-size: 1.2rem; line-height: 2; color: #ddd;">
-                نحن في THE SNEAKER BOX BBQ نؤمن بأن الشواء ليس مجرد طبخ، بل فن وشغف. بدأنا رحلتنا من حبنا للحوم المدخنة ببطء والبحث عن النكهة الأصلية التي لا تُنسى.
-            </p>
+    <!-- Cinematic B-Roll Hero -->
+    <!-- app-core.js injects video with z-index: 0 inside this container -->
+    <section id="broll-section" class="broll-cinematic">
+        <div class="broll-overlay"></div>
+        <div class="broll-content">
+            <h1 class="hero-oversized-text parallax-text" data-speed="0.3">OUR<br>STORY</h1>
+            <p class="hero-subtitle parallax-text" data-speed="0.5">قصتنا وشغفنا</p>
         </div>
     </section>
 
-    <!-- Gallery Grid -->
-    <section class="container" style="padding: 3rem 5%; text-align: center;">
-        <h2 style="font-size: var(--font-h2); margin-bottom: 2rem;" data-aos="fade-up">كواليس التحضير</h2>
-        <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;" data-aos="fade-up">
-            <!-- Images injected by JS -->
+    <!-- Editorial Story Section -->
+    <section class="story-editorial-section section-padding dark-surface">
+        <div class="container story-container">
+            <div class="story-decorative-text scroll-fade-up">HERITAGE</div>
+            <div class="story-content-block scroll-fade-up" style="transition-delay: 150ms;">
+                <h2 class="text-display-large">وراء كل قطعة لحم.. حكاية</h2>
+                <!-- Dynamic text injected here by POS/app-core.js -->
+                <p id="story-text-preview" class="text-body"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Gallery Grid -->
+    <section class="gallery-section section-padding">
+        <div class="container">
+            <div class="section-header center scroll-fade-up">
+                <h2 class="text-display-large">كواليس التحضير</h2>
+            </div>
+            <!-- Images dynamically injected by app-core.js as .gallery-img -->
+            <div id="gallery-grid" class="editorial-gallery scroll-fade-up" style="transition-delay: 200ms;">
+            </div>
         </div>
     </section>
 
     <!-- Location & Contact -->
-    <section class="container" style="padding: 5rem 5%;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
-            <div class="glass-effect" style="padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);" data-aos="fade-right">
-                <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary-color);"><i class="fa-solid fa-location-dot"></i> زورونا في فروعنا</h3>
-                <p id="location-address-preview" style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">العنوان غير محدد بعد.</p>
+    <section class="contact-section section-padding dark-surface">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Location Details -->
+                <div class="contact-info scroll-fade-up">
+                    <h2 class="text-display-large" style="margin-bottom: var(--space-md);">الموقع والزيارة</h2>
+                    
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot" style="color: var(--color-brand-primary); font-size: 1.5rem; margin-top: 5px;"></i>
+                        <div>
+                            <h3 class="text-subheading" style="margin-bottom: 0.5rem;">العنوان</h3>
+                            <p id="location-address-preview" class="text-body">جاري تحميل العنوان...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fa-solid fa-clock" style="color: var(--color-brand-primary); font-size: 1.5rem; margin-top: 5px;"></i>
+                        <div>
+                            <h3 class="text-subheading" style="margin-bottom: 0.5rem;">ساعات العمل</h3>
+                            <p id="location-hours-preview" class="text-body">جاري التحميل...</p>
+                        </div>
+                    </div>
+                    
+                    <div id="social-footer" class="social-links-footer hidden" style="margin-top: var(--space-md);">
+                        <h3 class="text-subheading" style="margin-bottom: 1rem;">تواصل معنا</h3>
+                        <div class="social-flex" style="display: flex; gap: 1.5rem; font-size: 1.8rem;">
+                            <a id="link-facebook" href="#" target="_blank" class="hidden" style="color: white; transition: color 0.3s;"><i class="fa-brands fa-facebook"></i></a>
+                            <a id="link-instagram" href="#" target="_blank" class="hidden" style="color: white; transition: color 0.3s;"><i class="fa-brands fa-instagram"></i></a>
+                            <a id="link-tiktok" href="#" target="_blank" class="hidden" style="color: white; transition: color 0.3s;"><i class="fa-brands fa-tiktok"></i></a>
+                            <a id="link-whatsapp" href="#" target="_blank" class="hidden" style="color: white; transition: color 0.3s;"><i class="fa-brands fa-whatsapp"></i></a>
+                            <a id="link-googlemaps" href="#" target="_blank" class="hidden" style="color: white; transition: color 0.3s;"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </div>
+                    </div>
+                </div>
                 
-                <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary-color);"><i class="fa-solid fa-clock"></i> ساعات العمل</h3>
-                <p id="location-hours-preview" style="font-size: 1.1rem; line-height: 1.8;">ساعات العمل غير محددة بعد.</p>
-            </div>
-            
-            <div id="map-iframe-preview" class="glass-effect" style="padding: 1rem; border-radius: 15px; min-height: 350px; display: flex; align-items: center; justify-content: center;" data-aos="fade-left">
-                <p style="color: #666;">جاري تحميل الخريطة...</p>
+                <!-- Map -->
+                <!-- app-core.js replaces the inside of this with an iframe -->
+                <div id="map-iframe-preview" class="map-wrapper scroll-fade-up" style="transition-delay: 150ms;">
+                    <p style="color: #666; text-align:center; padding: 2rem;">جاري تحميل الخريطة...</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Social Media Footer -->
-    <footer style="text-align: center; padding: 4rem 5%; margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); background: #111;">
-        <div id="social-footer" class="hidden" style="margin-bottom: 2rem;">
-            <h3 style="margin-bottom: 1.5rem; color: white;">تابعنا على السوشيال ميديا</h3>
-            <div style="display: flex; justify-content: center; gap: 1.5rem; font-size: 2rem;">
-                <a id="link-facebook" href="#" target="_blank" class="hidden" style="color: #1877F2; transition: transform 0.3s;"><i class="fa-brands fa-facebook"></i></a>
-                <a id="link-instagram" href="#" target="_blank" class="hidden" style="color: #E4405F; transition: transform 0.3s;"><i class="fa-brands fa-instagram"></i></a>
-                <a id="link-tiktok" href="#" target="_blank" class="hidden" style="color: #FFF; transition: transform 0.3s;"><i class="fa-brands fa-tiktok"></i></a>
-                <a id="link-whatsapp" href="#" target="_blank" class="hidden" style="color: #25D366; transition: transform 0.3s;"><i class="fa-brands fa-whatsapp"></i></a>
-                <a id="link-googlemaps" href="#" target="_blank" class="hidden" style="color: #EA4335; transition: transform 0.3s;"><i class="fa-solid fa-map-location-dot"></i></a>
-            </div>
-        </div>
-        
-        <p>© 2026 THE SNEAKER BOX BBQ. جميع الحقوق محفوظة.</p>
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 3rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); background: var(--color-bg-base);">
+        <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
         <p style="font-size: 0.8rem; margin-top: 0.5rem; color: #555;">Powered by AlSafwah POS</p>
     </footer>
 
@@ -126,17 +142,73 @@
         </a>
     </nav>
 
-    <!-- Cart Modal Placeholder (Needed for functionality without errors) -->
-    <div id="cart-modal" class="modal hidden"></div>
+    <!-- Cart Modal Placeholder (Preserving POS functionality across pages) -->
+    <div id="modals-container">
+        <!-- Cart Modal -->
+        <div id="cart-modal" class="modal hidden">
+            <div class="modal-content" style="text-align: right;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 2rem;">السلة</h2>
+                    <button id="close-cart" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="cart-items" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; max-height: 50vh; overflow-y: auto;">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: 8px; cursor: pointer; text-align: center; border: 1px solid #d9480f;">
+                        <input type="radio" name="orderType" value="Delivery" checked /> الدفع كاش
+                    </label>
+                    <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: 8px; cursor: pointer; text-align: center; border: 1px solid #d9480f;">
+                        <input type="radio" name="orderType" value="PickUp" /> فودافون كاش
+                    </label>
+                </div>
 
-    <!-- GSAP & Lenis -->
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                    <input type="text" id="customer-name" placeholder="الاسم الكريم" style="padding: 1rem; border-radius: 8px; border: none; background: #2A2A2A; color: white; width: 100%;" />
+                    <input type="tel" id="customer-phone" placeholder="رقم الهاتف" style="padding: 1rem; border-radius: 8px; border: none; background: #2A2A2A; color: white; width: 100%;" />
+                    <textarea id="order-notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" style="padding: 1rem; border-radius: 8px; border: none; background: #2A2A2A; color: white; width: 100%;"></textarea>
+                </div>
+
+                <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                    الإجمالي: <span id="cart-total-price" style="color: #d9480f;">0</span> جنيه
+                </div>
+                <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
+            </div>
+        </div>
+        <!-- Weight Modal -->
+        <div id="weight-modal" class="modal hidden">
+            <!-- (Preserved for app-core.js safety) -->
+        </div>
+        <!-- Addons Modal -->
+        <div id="addons-modal" class="modal hidden">
+            <!-- (Preserved for app-core.js safety) -->
+        </div>
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal hidden">
+            <div class="modal-content" style="text-align: center;">
+                <h2 style="color: #d9480f; margin-bottom: 1rem; font-size: 2.5rem;">تم استلام طلبك!</h2>
+                <button id="close-success" class="btn-primary" style="width: 100%;">حسناً</button>
+            </div>
+        </div>
+        <!-- Payment Modal -->
+        <div id="payment-modal" class="modal hidden">
+            <div class="modal-content" style="text-align: center;">
+                <h2 style="margin-bottom: 1rem;">تأكيد الدفع</h2>
+                <h3 id="payment-amount" style="color: #d9480f; font-size: 2.5rem; margin: 1rem 0;">0</h3>
+                <h3 id="payment-wallet" style="font-size: 1.8rem; margin: 1rem 0; letter-spacing: 2px;"></h3>
+                <button id="whatsapp-confirm-btn" class="btn-primary" style="width: 100%; background: #25D366; border-color: #25D366; margin-bottom: 1rem;">إرسال الإيصال (WhatsApp)</button>
+                <button id="close-payment" class="btn-primary" style="width: 100%; background: transparent; color: white;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP & JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
-    <!-- Custom Logic -->
     <script src="config.js"></script>
     <script src="desktop-interactions.js"></script>
     <script src="mobile-interactions.js"></script>
-    <script src="app-core.js?v=7"></script>
+    <script src="app-core.js?v=8"></script>
 </body>
 </html>

@@ -13,9 +13,6 @@
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" media="(min-width: 992px)" href="desktop.css">
     <link rel="stylesheet" media="(max-width: 991px)" href="mobile.css">
-    
-    <!-- Spline 3D Viewer -->
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
 </head>
 <body id="home-page">
     <!-- Global Preloader -->
@@ -23,145 +20,269 @@
         <div class="smoke-bg"></div>
         <div class="preloader-content">
             <i class="fa-solid fa-fire glow-logo"></i>
-            <h2 class="glow-text">THE SNEAKER BOX</h2>
+            <h2 class="glow-text" id="restaurant-title">THE SNEAKER BOX</h2>
         </div>
     </div>
     
-    <!-- Thermometer Scroll -->
-    <div id="thermometer-scroll">
-        <div id="thermometer-fill"></div>
-    </div>
-    
-    <!-- Smoke Cursor Canvas -->
-    <canvas id="smoke-cursor-canvas"></canvas>
-    
-    <!-- Page Transition Curtain -->
-    <div id="page-transition-curtain" class="page-curtain"></div>
-
+    <!-- Toast & Cart UI (unchanged logic) -->
     <div id="toast" class="toast hidden"></div>
     
     <!-- Global Header -->
     <header class="global-header">
         <a href="index.html" class="brand-logo">
             <i class="fa-solid fa-fire" style="color: var(--color-brand-primary);"></i>
-            SNEAKER BOX BBQ
+            <span id="header-brand-name">SNEAKER BOX BBQ</span>
         </a>
         <div class="header-actions">
             <div class="cart-trigger" onclick="document.getElementById('cart-modal').classList.remove('hidden')">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="cart-count" style="display:none;">0</span>
+                <span class="cart-count badge" style="display:none;">0</span>
             </div>
-            <a href="#menu-section" class="btn-primary">اطلب الآن</a>
+            <a href="#signature-menu" class="btn-primary">اطلب الآن</a>
         </div>
     </header>
 
     <!-- 01: Cinematic Masterpiece Hero -->
-    <section id="hero-section" style="position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-        <div class="hero-bg" style="position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(255, 69, 0, 0.05) 0%, transparent 70%); pointer-events: none;"></div>
+    <section id="hero-section" class="hero-cinematic">
+        <!-- Parallax Background Layer -->
+        <div class="hero-layer hero-bg-layer" data-speed="0.1">
+            <picture>
+                <source media="(max-width: 768px)" srcset="images/hero-bg-mobile.jpg">
+                <img src="images/hero-bg.jpg" alt="Cinematic BBQ Atmosphere">
+            </picture>
+        </div>
         
-        <div class="hero-content-wrapper" style="position: relative; z-index: 10; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: 1500px;">
-            
-            <h1 class="text-display-huge hero-title" style="position: absolute; z-index: 1; color: rgba(255,255,255,0.03); white-space: nowrap; pointer-events: none;">
-                BRISKET
-            </h1>
+        <!-- Parallax Smoke Layer -->
+        <div class="hero-layer hero-smoke-layer" data-speed="0.3">
+            <img src="images/hero-smoke-overlay.jpg" alt="Smoke" style="mix-blend-mode: screen; opacity: 0.8;">
+        </div>
+        
+        <!-- Typography Layer -->
+        <div class="hero-layer hero-type-layer" data-speed="0.5">
+            <h1 class="hero-oversized-text">TEXAS<br>BBQ</h1>
+        </div>
 
-            <div class="hero-food-group" style="position: relative; z-index: 5; transform-style: preserve-3d;">
-                <!-- Main Brisket Image -->
-                <img src="images/brisket_slice.png" id="main-hero-food" data-admin-bind="HeroMediaUrl" alt="Smoked Brisket" style="width: 80vw; max-width: 600px; filter: drop-shadow(var(--shadow-deep));">
-                
-                <!-- Floating Elements -->
-                <img src="images/pickles.png" class="hero-float float-fast" alt="Pickles" style="position: absolute; width: 100px; top: -10%; right: -5%; z-index: 6; filter: blur(2px);">
-                <img src="images/brisket_cubes.jpg" class="hero-float float-slow" alt="Burnt Ends" style="position: absolute; width: 150px; bottom: -5%; left: -10%; z-index: 4; border-radius: 12px; filter: brightness(0.7);">
+        <!-- Parallax 3D Food Layers -->
+        <div class="hero-layer hero-food-layer" data-speed="0.7">
+            <div class="temp-jpeg-asset parallax-tilt" style="position: absolute; width: 80vw; max-width: 700px; display:flex; justify-content:center;">
+                <img src="images/hero-brisket-main.jpg" alt="Smoked Brisket" class="hero-main-food temp-jpeg-image" style="position: relative; width: 100%;">
             </div>
-
-            <div style="position: absolute; z-index: 10; bottom: 10%; text-align: center;">
-                <p class="text-subheading" style="margin-bottom: var(--space-md);">تدخين بطيء. طعم عميق.</p>
-                <a href="#menu-section" class="btn-primary">استكشف المنيو</a>
+            <div class="temp-jpeg-asset parallax-tilt-opposite" style="position: absolute; width: 40vw; max-width: 350px; bottom: 5%; left: 10%; display:flex; justify-content:center;">
+                <img src="images/hero-burger-main.jpg" alt="Smash Burger" class="hero-secondary-food temp-jpeg-image" style="position: relative; width: 100%;">
             </div>
+        </div>
+        
+        <!-- Embers Layer -->
+        <div class="hero-layer hero-embers-layer" data-speed="1.2">
+            <img src="images/hero-embers.jpg" alt="Embers" style="mix-blend-mode: screen;">
+        </div>
+        
+        <!-- Hero Content / CTA -->
+        <div class="hero-content">
+            <p class="hero-subtitle">14 ساعة من التدخين البطيء. نكهة تكساس الأصلية وصلت الإسكندرية.</p>
+            <a href="#signature-menu" class="btn-primary hero-cta">اطلب الآن</a>
         </div>
     </section>
 
-    <!-- 02: Editorial Brand Statement -->
-    <section class="section-padding" style="background: var(--color-bg-base); text-align: center; position: relative; z-index: 20;">
+    <!-- 02: The Craft -->
+    <section id="craft-section" class="section-padding dark-surface">
         <div class="container">
-            <h2 class="text-display-large text-gradient" style="margin-bottom: var(--space-md); max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2;">
-                لا توجد طرق مختصرة لبريسكت حقيقي.
-            </h2>
-            <p class="text-body" style="margin: 0 auto;">نبدأ بخشب البلوط، وننتهي بلحم يذوب في الفم. 14 ساعة من التدخين البطيء لنقدم لك تجربة تكساس الأصلية.</p>
-        </div>
-    </section>
-
-    <!-- 03: The Craft Sequence -->
-    <section id="craft-sequence" class="section-padding" style="background: var(--color-bg-surface); position: relative; overflow: hidden;">
-        <div class="container" style="display: flex; flex-direction: column; gap: var(--space-xl);">
-            
-            <div class="craft-step" style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); justify-content: space-between;">
-                <div style="flex: 1; min-width: 300px;">
-                    <p class="text-subheading">01. الخشب</p>
-                    <h3 class="text-heading" style="margin-bottom: var(--space-sm);">نار هادئة، خشب صلب.</h3>
-                    <p class="text-body">سر النكهة يبدأ هنا. نختار أخشاب البلوط بعناية لنضمن احتراقاً بطيئاً يغلف اللحم بدخان غني ومعتدل.</p>
+            <div class="section-header center">
+                <h2 class="text-display-large">THE CRAFT</h2>
+                <p class="text-subheading">الفن، الصبر، والنار.. رحلة اللحم لـ 14 ساعة</p>
+            </div>
+            <div class="craft-grid">
+                <!-- Wood -->
+                <div class="craft-card scroll-fade-up">
+                    <img src="images/craft-wood.jpg" alt="Oak Wood">
+                    <h3>01. الحطب</h3>
+                    <p>أخشاب فاخرة مختارة بعناية لتدخين يبرز عمق النكهة.</p>
                 </div>
-                <div style="flex: 1; min-width: 300px; text-align: left;">
-                    <img src="images/brisket_cubes.jpg" alt="Wood" style="width: 100%; max-width: 500px; border-radius: var(--radius-lg); filter: grayscale(50%) contrast(1.2);">
+                <!-- Fire -->
+                <div class="craft-card scroll-fade-up" style="transition-delay: 100ms;">
+                    <img src="images/craft-fire.jpg" alt="Wood Fire">
+                    <h3>02. النار</h3>
+                    <p>نار هادئة، حرارة موزونة، واهتمام بكل تفصيلة.</p>
+                </div>
+                <!-- Time -->
+                <div class="craft-card scroll-fade-up" style="transition-delay: 200ms;">
+                    <img src="images/craft-time.jpg" alt="Time">
+                    <h3>03. الوقت</h3>
+                    <p>14 ساعة من التدخين البطيء لنذوب في أول قضة.</p>
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- 04: Low & Slow Centerpiece -->
-    <section id="low-slow-centerpiece" style="height: 100vh; background: var(--color-bg-base); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-        <h2 class="text-display-huge low-slow-bg-text" style="position: absolute; color: rgba(255,255,255,0.02); white-space: nowrap; z-index: 1;">LOW & SLOW</h2>
-        <div style="position: relative; z-index: 5; text-align: center;">
-            <img src="images/brisket_slice.png" class="centerpiece-img" alt="Brisket" style="width: 90vw; max-width: 700px; filter: drop-shadow(var(--shadow-deep));">
+    <!-- 03: Low & Slow Centerpiece -->
+    <section id="low-slow-section" class="low-slow-cinematic scroll-zoom-section">
+        <picture class="low-slow-bg">
+            <source media="(max-width: 768px)" srcset="images/low-and-slow-brisket-mob.jpg">
+            <img src="images/low-and-slow-brisket.jpg" alt="Low & Slow Brisket Crust">
+        </picture>
+        <div class="low-slow-content">
+            <h2 class="huge-text parallax-text" data-speed="0.2">LOW & SLOW</h2>
+            <p class="parallax-text" data-speed="0.4">14 ساعة من التدخين البطيء</p>
         </div>
     </section>
 
-    <!-- 05: Editorial Signature Menu (POS Connected) -->
-    <section id="menu-section" class="section-padding" style="background: var(--color-bg-surface);">
+    <!-- 04: Signature Menu (Connected to POS) -->
+    <section id="signature-menu" class="section-padding">
         <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-xl);">
-                <p class="text-subheading">المنيو</p>
-                <h2 class="text-display-large">الأصناف <span class="text-gradient">المميزة</span></h2>
+            <div class="section-header center">
+                <p class="text-subheading">الأصناف المميزة</p>
+                <h2 class="text-display-large">Signature Menu</h2>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-lg);">
-                
-                <!-- Product Card 1 -->
-                <div class="editorial-card product-card" style="background: var(--color-bg-base); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid rgba(255,255,255,0.03); transition: var(--transition-medium); cursor: pointer;">
-                    <div class="card-img-wrapper" style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: var(--space-md); perspective: 1000px;">
-                        <img src="images/double_burger.jpg" alt="Smash Burger" style="width: 100%; max-width: 220px; border-radius: var(--radius-md); transition: var(--transition-medium);">
-                    </div>
-                    <div>
-                        <h3 class="text-heading" style="font-size: 1.8rem; margin-bottom: 0.5rem;">سماش برجر</h3>
-                        <p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">قطعتين لحم سماش، جبنة، صوص مدخن.</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 1.5rem; font-weight: 900; color: #fff;">180 ج.م</span>
-                            <button class="btn-primary add-to-cart-btn" data-id="p1" data-name="سماش برجر" data-price="180" style="padding: 0.8rem 1.5rem; font-size: 1rem;">أضف</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 2 -->
-                <div class="editorial-card product-card" style="background: var(--color-bg-base); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid rgba(255,255,255,0.03); transition: var(--transition-medium); cursor: pointer;">
-                    <div class="card-img-wrapper" style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: var(--space-md); perspective: 1000px;">
-                        <img src="images/brisket_slice.png" alt="Brisket" style="width: 100%; max-width: 220px; transition: var(--transition-medium);">
-                    </div>
-                    <div>
-                        <h3 class="text-heading" style="font-size: 1.8rem; margin-bottom: 0.5rem;">بريسكت تكساس</h3>
-                        <p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">لحم مدخن 14 ساعة على حطب البلوط.</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 1.5rem; font-weight: 900; color: #fff;">250 ج.م</span>
-                            <button class="btn-primary add-to-cart-btn" data-id="p2" data-name="بريسكت مدخن" data-price="250" style="padding: 0.8rem 1.5rem; font-size: 1rem;">أضف</button>
-                        </div>
-                    </div>
-                </div>
-
+            <div id="signature-menu-grid" class="signature-grid">
+                <!-- JS will inject verified POS products here -->
             </div>
         </div>
     </section>
 
+    <!-- Cart & Modals Wrapper (Preserved exact HTML for business logic) -->
+    <div id="modals-container">
+        <!-- Product Details Panel -->
+<div id="product-details-panel" class="sliding-panel hidden">
+    <div class="panel-overlay" onclick="closeProductDetails()"></div>
+    <div class="panel-content">
+        <button class="panel-close-btn" onclick="closeProductDetails()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="panel-scroll-area">
+            <div class="panel-hero-image">
+                <img id="pd-image" src="" alt="Product Image">
+            </div>
+            <div class="panel-body">
+                <h2 id="pd-name" class="pd-title"></h2>
+                <p id="pd-price" class="pd-price"></p>
+                <p id="pd-desc" class="pd-desc"></p>
+                
+                <div id="pd-ingredients" class="pd-section hidden">
+                    <h3>المكونات</h3>
+                    <p id="pd-ingredients-text"></p>
+                </div>
 
+                <div id="pd-weight-section" class="pd-section hidden">
+                    <h3>حدد الوزن</h3>
+                    <p class="pd-muted">أقل كمية 100 جم</p>
+                    <div class="weight-controls">
+                        <button id="btn-pd-minus-weight" class="weight-btn" onclick="updatePDWeight(-50)">-</button>
+                        <div id="pd-weight-display">100<span style="font-size:1.2rem;">g</span></div>
+                        <button class="weight-btn" onclick="updatePDWeight(50)">+</button>
+                    </div>
+                </div>
+
+                <div id="pd-addons-section" class="pd-section hidden">
+                    <h3>الإضافات</h3>
+                    <p id="pd-addons-limit" class="pd-muted"></p>
+                    <div id="pd-addons-list" class="pd-addons-list"></div>
+                </div>
+                
+
+                <div id="pd-quantity-section" class="pd-section" style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="margin:0;">الكمية</h3>
+                    <div class="weight-controls" style="margin:0;">
+                        <button id="btn-pd-minus-quantity" class="weight-btn" onclick="updatePDQuantity(-1)">-</button>
+                        <div id="pd-quantity-display" style="min-width:30px; text-align:center; font-size:1.2rem; font-weight:bold;">1</div>
+                        <button class="weight-btn" onclick="updatePDQuantity(1)">+</button>
+                    </div>
+                </div>
+                
+                <div id="pd-recommendations-section" class="pd-section hidden">
+                    <h3>قد يعجبك أيضاً</h3>
+                    <div id="pd-recommendations-list" class="pd-recommendations-carousel"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="panel-total">الإجمالي: <span id="pd-total-price">0</span> ج.م</div>
+            <button id="pd-add-to-cart-btn" class="btn-primary pd-cta" onclick="confirmProductDetails()">إضافة للسلة</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Cart Modal -->
+        <div id="cart-modal" class="sliding-panel cart-panel hidden">
+            <div class="panel-overlay" id="cart-overlay"></div>
+            <div class="panel-content" style="text-align: right; padding: 2rem; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 2rem; margin: 0;">السلة</h2>
+                    <button id="close-cart" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div id="cart-items" style="display: flex; flex-direction: column; margin-bottom: 2rem;">
+                </div>
+                
+                <div id="cart-checkout-form">
+                    <div class="order-type-toggle">
+                        <label class="order-type-btn">
+                            <input type="radio" name="orderType" value="Delivery" checked />
+                            <span class="order-type-label">الدفع كاش</span>
+                        </label>
+                        <label class="order-type-btn">
+                            <input type="radio" name="orderType" value="PickUp" />
+                            <span class="order-type-label">فودافون كاش</span>
+                        </label>
+                    </div>
+
+                    <div class="checkout-form-group">
+                        <input type="text" id="customer-name" class="checkout-input" placeholder="الاسم الكريم" />
+                        <input type="tel" id="customer-phone" class="checkout-input" placeholder="رقم الهاتف" />
+                        <textarea id="order-notes" class="checkout-input" placeholder="ملاحظات إضافية (اختياري)" rows="2"></textarea>
+                    </div>
+
+                    <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                        الإجمالي: <span id="cart-total-price" style="color: #d9480f;">0</span> جنيه
+                    </div>
+                    <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
+                </div>
+            </div>
+        </div>
+        <!-- Weight Modal -->
+        <div id="weight-modal" class="modal hidden">
+            <div class="modal-content" style="text-align: center;">
+                <h2 id="weight-item-name" style="font-size: 2rem; margin-bottom: 1rem;"></h2>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                    <button id="btn-minus-weight" class="btn-primary" style="background: #333; border:none;">-</button>
+                    <div id="weight-display" style="font-size: 2.5rem; font-weight: 900; color: #d9480f;">100g</div>
+                    <button id="btn-plus-weight" class="btn-primary" style="background: #333; border:none;">+</button>
+                </div>
+                <div style="font-size: 1.5rem; margin-bottom: 2rem;">السعر: <span id="weight-total-price" style="color: #d9480f;">0.00</span> ج.م</div>
+                <button id="confirm-weight-btn" class="btn-primary" style="width: 100%; margin-bottom: 1rem;">تأكيد وإضافة للسلة</button>
+                <button id="cancel-weight-btn" class="btn-primary" style="width: 100%; background: transparent; color: white;">إلغاء</button>
+            </div>
+        </div>
+        <!-- Addons Modal -->
+        <div id="addons-modal" class="modal hidden">
+            <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+                <h2 id="addons-item-name" style="font-size: 2rem; margin-bottom: 0.5rem;"></h2>
+                <p id="addons-free-limit-text" style="color: #d9480f; margin-bottom: 1.5rem;"></p>
+                <div id="addons-container" style="text-align: right; margin-bottom: 2rem; font-size: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem;"></div>
+                <div style="font-size: 1.5rem; margin-bottom: 2rem; text-align: center; border-top: 1px solid #333; padding-top: 1rem;">
+                    الإجمالي: <span id="addons-price-display" style="color: #d9480f;">0.00 ج.م</span>
+                </div>
+                <button id="confirm-addons-btn" class="btn-primary" style="width: 100%; margin-bottom: 1rem;">تأكيد وإضافة للسلة</button>
+                <button id="close-addons-modal" class="btn-primary" style="width: 100%; background: transparent; color: white;">إلغاء</button>
+            </div>
+        </div>
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal hidden">
+            <div class="modal-content" style="text-align: center;">
+                <h2 style="color: #d9480f; margin-bottom: 1rem; font-size: 2.5rem;">تم استلام طلبك!</h2>
+                <button id="close-success" class="btn-primary" style="width: 100%;">حسناً</button>
+            </div>
+        </div>
+        <!-- Payment Modal -->
+        <div id="payment-modal" class="modal hidden">
+            <div class="modal-content" style="text-align: center;">
+                <h2 style="margin-bottom: 1rem;">تأكيد الدفع</h2>
+                <h3 id="payment-amount" style="color: #d9480f; font-size: 2.5rem; margin: 1rem 0;">0</h3>
+                <h3 id="payment-wallet" style="font-size: 1.8rem; margin: 1rem 0; letter-spacing: 2px;"></h3>
+                <button id="whatsapp-confirm-btn" class="btn-primary" style="width: 100%; background: #25D366; border-color: #25D366; margin-bottom: 1rem;">إرسال الإيصال (WhatsApp)</button>
+                <button id="close-payment" class="btn-primary" style="width: 100%; background: transparent; color: white;">إغلاق</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Bottom Navigation Bar (Mobile) -->
     <nav class="bottom-nav">
@@ -169,174 +290,27 @@
             <i class="fa-solid fa-house"></i>
             <span>الرئيسية</span>
         </a>
-        <a href="menu.html" class="bottom-nav-item">
-            <i class="fa-solid fa-utensils"></i>
-            <span>المنيو</span>
-        </a>
         <a href="javascript:void(0)" class="bottom-nav-item cart-trigger">
             <div style="position: relative;">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="badge cart-count">0</span>
+                <span class="badge cart-count" style="display:none;">0</span>
             </div>
             <span>السلة</span>
         </a>
     </nav>
 
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: right;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="font-size: 2rem;">السلة</h2>
-                <button id="close-cart" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="cart-items" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; max-height: 50vh; overflow-y: auto;">
-                <!-- Items injected here -->
-            </div>
-            
-            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: var(--radius-sm); cursor: pointer; text-align: center; border: 1px solid var(--primary-color);">
-                    <input type="radio" name="orderType" value="Delivery" checked />
-                    الدفع كاش (توصيل/بالمطعم)
-                </label>
-                <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: var(--radius-sm); cursor: pointer; text-align: center; border: 1px solid var(--primary-color);">
-                    <input type="radio" name="orderType" value="PickUp" />
-                    تحويل بنكي / فودافون كاش
-                </label>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-                <input type="text" id="customer-name" placeholder="الاسم الكريم" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
-                <input type="tel" id="customer-phone" placeholder="رقم الهاتف" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
-                <textarea id="order-notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;"></textarea>
-            </div>
-
-            <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-                الإجمالي: <span id="cart-total-price" style="color: var(--primary-color);">0</span> جنيه
-            </div>
-            <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
-        </div>
-    </div>
-
-    <!-- Modals (Weight, Addons, Success, Payment) -->
-    <!-- Weight Modal -->
-    <div id="weight-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: center;">
-            <h2 id="weight-item-name" style="font-size: 2rem; margin-bottom: 1rem;"></h2>
-            <p style="margin-bottom: 1rem; color: #888;">اختر الوزن المطلوب (بالجرام)</p>
-            <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
-                <button id="btn-minus-weight" class="btn-primary" style="padding: 0.5rem 1rem; background: #333; border:none;">-</button>
-                <div id="weight-display" style="font-size: 2.5rem; font-weight: 900; color: var(--primary-color);">100<span style="font-size:1.5rem;">g</span></div>
-                <button id="btn-plus-weight" class="btn-primary" style="padding: 0.5rem 1rem; background: #333; border:none;">+</button>
-            </div>
-            <div style="font-size: 1.5rem; margin-bottom: 2rem;">السعر: <span id="weight-total-price" style="color: var(--primary-color);">0.00</span> ج.م</div>
-            <button id="confirm-weight-btn" class="btn-primary" style="width: 100%; margin-bottom: 1rem;">تأكيد وإضافة للسلة</button>
-            <button id="cancel-weight-btn" class="btn-primary" style="width: 100%; background: transparent; color: white;">إلغاء</button>
-        </div>
-    </div>
-
-    <!-- Addons Modal -->
-    <div id="addons-modal" class="modal hidden">
-        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
-            <h2 id="addons-item-name" style="font-size: 2rem; margin-bottom: 0.5rem;"></h2>
-            <p id="addons-free-limit-text" style="color: var(--primary-color); margin-bottom: 1.5rem;"></p>
-            <div id="addons-container" style="text-align: right; margin-bottom: 2rem; font-size: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem;"></div>
-            <div style="font-size: 1.5rem; margin-bottom: 2rem; text-align: center; border-top: 1px solid #333; padding-top: 1rem;">
-                الإجمالي: <span id="addons-price-display" style="color: var(--primary-color);">0.00 ج.م</span>
-            </div>
-            <button id="confirm-addons-btn" class="btn-primary" style="width: 100%; margin-bottom: 1rem;">تأكيد وإضافة للسلة</button>
-            <button id="close-addons-modal" class="btn-primary" style="width: 100%; background: transparent; color: white;">إلغاء</button>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="success-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: center;">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 2.5rem;">تم استلام طلبك!</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem;">سنتواصل معك قريباً لتأكيد طلبك وتجهيزه.</p>
-            <button id="close-success" class="btn-primary" style="width: 100%;">حسناً</button>
-        </div>
-    </div>
-
-    <!-- Payment Modal (WhatsApp) -->
-    <div id="payment-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: center;">
-            <h2 style="margin-bottom: 1rem;">تأكيد الدفع</h2>
-            <p>يرجى تحويل المبلغ التالي على المحفظة:</p>
-            <h3 id="payment-amount" style="color: var(--primary-color); font-size: 2.5rem; margin: 1rem 0;">0</h3>
-            <p>رقم المحفظة (فودافون كاش / إنستا باي):</p>
-            <h3 id="payment-wallet" style="font-size: 1.8rem; margin: 1rem 0; letter-spacing: 2px;"></h3>
-            <p style="font-size: 0.9rem; color: #888; margin-bottom: 2rem;">بعد إتمام التحويل، اضغط الزر أدناه لإرسال الإيصال إلينا عبر الواتساب لتأكيد طلبك.</p>
-            <button id="whatsapp-confirm-btn" class="btn-primary" style="width: 100%; background: #25D366; border-color: #25D366; margin-bottom: 1rem;">إرسال الإيصال (WhatsApp)</button>
-        </div>
-    </div>
-
-    <!-- Review FAB -->
-    <div id="review-fab" class="fab-container hidden" style="position: fixed; bottom: 80px; left: 20px; z-index: 100;">
-        <button id="open-review-modal" class="btn-primary" style="border-radius: 50%; width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.5);">
-            <i class="fa-solid fa-star"></i>
-        </button>
-    </div>
-
-    <!-- Review Modal -->
-    <div id="review-modal" class="modal hidden">
-        <div class="modal-content glass-effect" style="text-align: center; max-width: 500px;">
-            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">شاركنا رأيك</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">رأيك يهمنا ويساعدنا في تحسين جودة خدماتنا.</p>
-            
-            <div id="star-rating" style="font-size: 2.5rem; color: #444; margin-bottom: 2rem; cursor: pointer; direction: ltr;">
-                <i class="fa-solid fa-star" data-rating="1"></i>
-                <i class="fa-solid fa-star" data-rating="2"></i>
-                <i class="fa-solid fa-star" data-rating="3"></i>
-                <i class="fa-solid fa-star" data-rating="4"></i>
-                <i class="fa-solid fa-star" data-rating="5"></i>
-            </div>
-            
-            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; text-align: right;">
-                <input type="text" id="review-name" placeholder="الاسم الكريم (اختياري)" style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; width: 100%;" />
-                <textarea id="review-comment" placeholder="تعليقك الجميل..." rows="3" style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; width: 100%;"></textarea>
-                
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem;">
-                    <label for="review-image" style="cursor: pointer; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fa-solid fa-camera"></i> إرفاق صورة الأوردر
-                    </label>
-                    <input type="file" id="review-image" accept="image/*" style="display: none;" />
-                    <span id="review-image-name" style="font-size: 0.8rem; color: #aaa;"></span>
-                </div>
-            </div>
-
-            <button id="submit-review-btn" class="btn-primary" style="width: 100%; margin-bottom: 1rem;">إرسال التقييم</button>
-            <button id="close-review-modal" class="btn-primary" style="width: 100%; background: transparent; color: white;">إلغاء</button>
-        </div>
-    </div>
-
     <footer style="text-align: center; padding: 3rem; margin-top: 5rem; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);">
         <p>© 2026 The Sneaker Box BBQ. جميع الحقوق محفوظة.</p>
-        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Powered by AlSafwah POS</p>
     </footer>
 
-    <!-- GSAP & Lenis -->
+    <!-- GSAP & JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
     
-    <!-- Custom Logic -->
     <script src="config.js"></script>
     <script src="desktop-interactions.js"></script>
     <script src="mobile-interactions.js"></script>
-    <script src="app-core.js?v=5"></script>
-
-    <script>
-        // Simple GSAP float for the hero image
-        if (typeof gsap !== 'undefined') {
-            gsap.to('.hero-img-float', {
-                y: -30,
-                rotation: 5,
-                duration: 3,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
-            });
-        }
-    </script>
+    <script src="app-core.js?v=7"></script>
 </body>
 </html>
+

@@ -482,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       const addBtn = document.createElement('button');
                       addBtn.className = 'add-to-cart-btn';
                       addBtn.textContent = 'إضافة للسلة +';
-                      addBtn.onclick = (e) => window.addToCart(product, e);
+                      addBtn.onclick = (e) => { e.preventDefault(); window.openProductDetails(product); };
                       info.appendChild(addBtn);
                   }
 
@@ -528,22 +528,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ])
         .then(([menuData, websiteData]) => {
             if (menuData) {
-                // Find Hot Items
-                let hotItems = [];
+                let allProducts = [];
                 const categories = menuData.categories || menuData.Categories;
                 if (categories) {
                     categories.forEach(c => {
                         const products = c.products || c.Products;
                         if (products) {
                             products.forEach(p => {
-                                if (p.isHotItem || p.IsHotItem) {
-                                    hotItems.push(p);
-                                }
+                                allProducts.push(p);
                             });
                         }
                     });
                 }
-                renderBestSellers(hotItems);
+                renderSignatureMenu(allProducts);
                 
                 if (menuData.config || menuData.Config) {
                     cloudinaryConfig = menuData.config || menuData.Config;
@@ -769,52 +766,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderBestSellers(items) {
+    function renderSignatureMenu(products) {
         if(loader) loader.style.display = 'none';
-        const grid = document.getElementById('best-sellers-grid');
+        const grid = document.getElementById('signature-menu-grid');
         if (!grid) return;
         
-        if (items.length === 0) {
-            grid.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">لا توجد أصناف مميزة حالياً.</p>';
-            grid.style.display = 'grid';
-            return;
-        }
+        // Define our fixed signature layout: ID -> Image mapping
+        const signatureSetup = [
+            { id: 1, image: 'images/menu-brisket.jpg', title: 'بريسكت تكساس', desc: 'لحم مدخن 14 ساعة على حطب البلوط.' },
+            { id: 2, image: 'images/menu-burger150.jpg', title: 'سماش برجر', desc: 'قطعتين لحم سماش، جبنة، صوص مدخن.' },
+            { id: 3, image: 'images/menu-milkshake.jpg', title: 'ميلك شيك شوكولاتة', desc: 'ميلك شيك شوكولاتة غني وكريمي مع كريمة مخفوقة.' }
+        ];
 
-        items.forEach(product => {
+        grid.innerHTML = '';
+        
+        signatureSetup.forEach(setup => {
+            // Find real product data from POS
+            const realProduct = products.find(p => (p.Id || p.id) == setup.id);
+            if (!realProduct) return; // Skip if it doesn't exist in POS
+            
             const card = document.createElement('div');
-            card.className = 'product-card';
-            card.setAttribute('data-aos', 'fade-up');
+            card.className = 'signature-card scroll-fade-up';
             
-            const imagePath = product.imagePath || product.ImagePath;
-            if (imagePath) {
-                const img = document.createElement('img');
-                img.src = imagePath;
-                img.className = 'product-image';
-                card.appendChild(img);
-            }
-            
-            const info = document.createElement('div');
-            info.className = 'product-info';
-            
-            const name = document.createElement('h3');
-            name.className = 'product-name';
-            name.textContent = product.Name || product.name;
-            
-            const price = document.createElement('p');
-            price.className = 'product-price';
-            const priceVal = product.SellingPrice || product.sellingPrice;
-            price.textContent = `${parseFloat(priceVal).toFixed(2)} ج.م`;
-            
-            info.appendChild(name);
-            info.appendChild(price);
-            
-            card.appendChild(info);
+            const priceVal = realProduct.SellingPrice || realProduct.sellingPrice;
+            const priceText = `${parseFloat(priceVal).toFixed(2)} ج.م`;
+            const nameText = realProduct.Name || realProduct.name || setup.title;
+
+            card.innerHTML = `
+                <div class="signature-img-wrapper">
+                    <img src="${setup.image}" alt="${nameText}">
+                </div>
+                <div class="signature-header">
+                    <span class="signature-price">${priceText}</span>
+                    <h3 class="text-heading" style="font-size: 1.5rem; margin:0; color: #fff;">${nameText}</h3>
+                </div>
+                <p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">${setup.desc}</p>
+                <button class="btn-primary" style="width: 100%;" onclick="window.openProductDetailsById(${setup.id})">أضف للسلة</button>
+            `;
             
             grid.appendChild(card);
         });
-        
-        grid.style.display = 'grid';
     }
+
+    window.addToCartById = (productId, event) => {
+        if(event) { event.preventDefault(); event.stopPropagation(); }
+        // We need to find the product object to pass to window.addToCart
+        fetchWithVersion(`${FIREBASE_DB_URL}/menu.json`).then(res => res.json()).then(data => {
+            if(data) {
+                const cats = data.categories || data.Categories;
+                let foundProduct = null;
+                cats.forEach(c => {
+                    const prods = c.products || c.Products;
+                    prods.forEach(p => {
+                        if((p.Id || p.id) == productId) foundProduct = p;
+                    });
+                });
+                if(foundProduct) {
+                    window.addToCart(foundProduct, event);
+                }
+            }
+        });
+    };
 
     // Initialize cart triggers
     const cartTriggers = document.querySelectorAll('.cart-trigger');
@@ -825,14 +837,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast("السلة فارغة حالياً");
                 return;
             }
-            if (cartModal) cartModal.classList.remove('hidden');
+            if (cartModal) {
+                cartModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
         };
     });
     if (closeCartBtn) {
         closeCartBtn.onclick = () => {
-            if (cartModal) cartModal.classList.add('hidden');
+            window.closeCartDrawer();
         };
     }
+    
+    window.closeCartDrawer = () => {
+        if (cartModal) cartModal.classList.add('hidden');
+        if (!document.getElementById('product-details-panel') || document.getElementById('product-details-panel').classList.contains('hidden')) {
+            document.body.style.overflow = '';
+        }
+    };
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const panel = document.getElementById('cart-modal');
+            if (panel && !panel.classList.contains('hidden')) {
+                window.closeCartDrawer();
+            }
+        }
+    });
+
     if (closeSuccessBtn) closeSuccessBtn.onclick = () => successModal.classList.add('hidden');
     const closeRatingEl = document.getElementById('close-rating');
     if (closeRatingEl && ratingModal) {
@@ -1149,50 +1181,86 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        window.removeFromCart = (productName) => {
+            const itemIndex = cart.findIndex(i => i.product.name === productName);
+            if (itemIndex > -1) {
+                cart.splice(itemIndex, 1);
+                updateCartUI();
+            }
+        };
+
         const updateCartUI = () => {
             if (!cartItemsContainer || !cartTotalPrice) return;
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             if (cartCount) cartCount.textContent = totalItems;
-                        if (totalItems > 0) {
-                // We use standard badges in the new layout
-                const badges = document.querySelectorAll('.cart-count');
+            
+            const badges = document.querySelectorAll('.cart-count');
+            const checkoutForm = document.getElementById('cart-checkout-form');
+            
+            if (totalItems > 0) {
                 badges.forEach(b => {
                     b.style.display = 'inline-block';
                     b.textContent = totalItems;
                 });
+                if (checkoutForm) checkoutForm.style.display = 'block';
             } else {
-                const badges = document.querySelectorAll('.cart-count');
                 badges.forEach(b => {
                     b.style.display = 'none';
                     b.textContent = 0;
                 });
-                if(cartModal) cartModal.classList.add('hidden');
+                if (checkoutForm) checkoutForm.style.display = 'none';
             }
 
             cartItemsContainer.innerHTML = '';
             let total = 0;
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty-state">
+                        <i class="fa-solid fa-cart-shopping cart-empty-icon"></i>
+                        <div class="cart-empty-text">السلة فارغة حالياً</div>
+                        <button class="btn-primary" onclick="window.closeCartDrawer()">استمر في التسوق</button>
+                    </div>
+                `;
+                cartTotalPrice.textContent = '0';
+                return;
+            }
 
             cart.forEach(item => {
                 const itemTotal = item.product.sellingPrice * item.quantity;
                 total += itemTotal;
+                
+                const imgSrc = item.product.imagePath || 'images/hero-bg.jpg';
 
                 const row = document.createElement('div');
-                row.className = 'cart-item';
+                row.className = 'cart-drawer-item';
                 row.innerHTML = `
-                    <div class="cart-item-info">
+                    <img src="${imgSrc}" class="cart-item-img" alt="${item.product.name}" />
+                    <div class="cart-item-details">
                         <div class="cart-item-title">${item.product.name}</div>
                         <div class="cart-item-price">${parseFloat(item.product.sellingPrice).toFixed(2)} ج.م</div>
-                    </div>
-                    <div class="cart-item-controls">
-                        <button class="qty-btn" onclick="updateCartQuantity('${item.product.name}', -1)">-</button>
-                        <span>${item.quantity}</span>
-                        <button class="qty-btn" onclick="updateCartQuantity('${item.product.name}', 1)">+</button>
+                        <div class="cart-item-controls-row">
+                            <div class="cart-qty-wrapper">
+                                <button class="cart-qty-btn" onclick="updateCartQuantity('${item.product.name}', -1)">-</button>
+                                <span class="cart-qty-value">${item.quantity}</span>
+                                <button class="cart-qty-btn" onclick="updateCartQuantity('${item.product.name}', 1)">+</button>
+                            </div>
+                            <button class="cart-remove-btn" onclick="removeFromCart('${item.product.name}')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
                 cartItemsContainer.appendChild(row);
             });
 
-            cartTotalPrice.textContent = total.toFixed(2);
+            const currentTotal = parseFloat(cartTotalPrice.textContent) || 0;
+            if (currentTotal !== total) {
+                cartTotalPrice.textContent = total.toFixed(2);
+                cartTotalPrice.classList.remove('price-pulse');
+                void cartTotalPrice.offsetWidth;
+                cartTotalPrice.classList.add('price-pulse');
+            }
         };
 
         if (checkoutBtn) checkoutBtn.onclick = async () => {
@@ -1243,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('customer-name').value = '';
                     document.getElementById('customer-phone').value = '';
                     document.getElementById('order-notes').value = '';
-                    cartModal.classList.add('hidden');
+                    window.closeCartDrawer();
                     
                     if (selectedOrderType === 'PickUp') {
                         paymentAmount.textContent = `${orderTotal.toFixed(2)} ج.م`;
@@ -1412,3 +1480,380 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 });
+// ======== PRODUCT DETAILS SLIDING PANEL LOGIC ========
+let pdCurrentProduct = null;
+let pdCurrentWeight = 100;
+let pdBasePrice = 0;
+let pdSelectedAddonsPrice = 0;
+let pdCurrentQuantity = 1;
+
+window.openProductDetailsById = (productId) => {
+    fetchWithVersion(dbUrl + 'menu.json').then(res => res.json()).then(data => {
+        if(data) {
+            const cats = data.categories || data.Categories;
+            let foundProduct = null;
+            cats.forEach(c => {
+                const prods = c.products || c.Products;
+                prods.forEach(p => {
+                    if((p.Id || p.id) == productId) foundProduct = p;
+                });
+            });
+            if(foundProduct) {
+                window.openProductDetails(foundProduct);
+            }
+        }
+    });
+};
+
+window.openProductDetails = (product) => {
+    pdCurrentProduct = product;
+    pdBasePrice = parseFloat(product.sellingPrice || product.SellingPrice || 0);
+    pdCurrentWeight = 100;
+    pdSelectedAddonsPrice = 0;
+    pdCurrentQuantity = 1;
+    document.getElementById('pd-quantity-display').textContent = '1';
+    
+    document.getElementById('pd-name').textContent = product.name || product.Name;
+    
+    // Determine price format (if by weight, calculate base 100g)
+    const isWeight = product.isSoldByWeight || product.IsSoldByWeight;
+    if (isWeight) {
+        document.getElementById('pd-price').textContent = (pdBasePrice / 10).toFixed(2) + ' ج.م / 100g';
+        document.getElementById('pd-weight-section').classList.remove('hidden');
+        document.getElementById('pd-weight-display').innerHTML = '100<span style="font-size:1.2rem;">g</span>';
+    } else {
+        document.getElementById('pd-price').textContent = pdBasePrice.toFixed(2) + ' ج.م';
+        document.getElementById('pd-weight-section').classList.add('hidden');
+    }
+
+    const descEl = document.getElementById('pd-desc');
+    const descText = product.description || product.Description || '';
+    if (descText.trim() !== '') {
+        descEl.textContent = descText;
+        descEl.style.display = 'block';
+    } else {
+        descEl.style.display = 'none';
+    }
+    
+    // Ingredients
+    const ingredients = product.ingredients || product.Ingredients;
+    if (ingredients && ingredients.trim() !== '') {
+        document.getElementById('pd-ingredients-text').textContent = ingredients;
+        document.getElementById('pd-ingredients').classList.remove('hidden');
+    } else {
+        document.getElementById('pd-ingredients').classList.add('hidden');
+    }
+
+    const imgEl = document.getElementById('pd-image');
+    if (product.imagePath && product.imagePath.trim() !== '') {
+        imgEl.src = product.imagePath;
+        imgEl.style.display = 'block';
+    } else {
+        imgEl.style.display = 'none';
+        // Hide the whole hero section if no image to make it look clean
+        document.querySelector('.panel-hero-image').style.display = 'none';
+    } else {
+        // Reset if there is an image
+        document.querySelector('.panel-hero-image').style.display = 'block';
+    }
+
+    // Modifiers / Addons
+    const shouldShowModifiers = product.autoShowModifiers || product.AutoShowModifiers;
+    const addonsList = document.getElementById('pd-addons-list');
+    addonsList.innerHTML = '';
+    
+    if (shouldShowModifiers && windowGlobalAddons.length > 0) {
+        const validAddons = windowGlobalAddons.filter(addon => {
+            if (!addon.linkedProductIds || addon.linkedProductIds.trim() === '') return false;
+            const ids = addon.linkedProductIds.split(',').map(s => s.trim());
+            const pId = (product.id || product.Id || '').toString();
+            return ids.includes(pId);
+        });
+
+        if (validAddons.length > 0) {
+            document.getElementById('pd-addons-section').classList.remove('hidden');
+            const limit = product.freeModifiersLimit || product.FreeModifiersLimit || 0;
+            const limitText = document.getElementById('pd-addons-limit');
+            if (limit > 0) {
+                limitText.textContent = مسموح لك بـ  + limit +  إضافات مجانية;
+            } else {
+                limitText.textContent = '';
+            }
+
+            validAddons.forEach(addon => {
+                const label = document.createElement('label');
+                label.className = 'pd-addon-item';
+                
+                const leftDiv = document.createElement('div');
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'pd-addon-name';
+                nameSpan.textContent = addon.name || addon.Name;
+                
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.className = 'pd-addon-checkbox';
+                input.value = addon.id || addon.Id;
+                input.dataset.price = addon.price || addon.Price || 0;
+                input.dataset.name = addon.name || addon.Name;
+                input.dataset.group = addon.group || addon.Group || 'Free';
+                input.onchange = window.calculatePDPrice;
+                
+                leftDiv.appendChild(nameSpan);
+                leftDiv.appendChild(input);
+                
+                const rightDiv = document.createElement('div');
+                rightDiv.className = 'pd-addon-price';
+                rightDiv.textContent = '+' + (addon.price || addon.Price || 0) + ' ج.م';
+                
+                label.appendChild(leftDiv);
+                label.appendChild(rightDiv);
+                addonsList.appendChild(label);
+            });
+        } else {
+            document.getElementById('pd-addons-section').classList.add('hidden');
+        }
+    } else {
+        document.getElementById('pd-addons-section').classList.add('hidden');
+    }
+
+    // Reset CTA state
+    const ctaBtn = document.getElementById('pd-add-to-cart-btn');
+    if (ctaBtn) {
+        ctaBtn.disabled = false;
+        ctaBtn.textContent = 'إضافة للسلة';
+    }
+
+    // Reset button states
+    const minusWeightBtn = document.getElementById('btn-pd-minus-weight');
+    if (minusWeightBtn) minusWeightBtn.disabled = (pdCurrentWeight <= 100);
+    const minusQtyBtn = document.getElementById('btn-pd-minus-quantity');
+    if (minusQtyBtn) minusQtyBtn.disabled = (pdCurrentQuantity <= 1);
+
+    // Recommendations logic
+    window.renderPDRecommendations();
+
+    window.calculatePDPrice();
+    const panel = document.getElementById('product-details-panel');
+    panel.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // prevent bg scroll
+    
+    // Accessibility: Focus CTA
+    if (ctaBtn) ctaBtn.focus();
+};
+
+// Global escape key listener
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const panel = document.getElementById('product-details-panel');
+        if (panel && !panel.classList.contains('hidden')) {
+            window.closeProductDetails();
+        }
+    }
+});
+
+window.closeProductDetails = () => {
+    document.getElementById('product-details-panel').classList.add('hidden');
+    document.body.style.overflow = '';
+};
+
+window.updatePDWeight = (change) => {
+    if (!pdCurrentProduct) return;
+    if (pdCurrentWeight + change >= 100) {
+        pdCurrentWeight += change;
+        document.getElementById('pd-weight-display').innerHTML = pdCurrentWeight + '<span style="font-size:1.2rem;">g</span>';
+        
+        const minusWeightBtn = document.getElementById('btn-pd-minus-weight');
+        if (minusWeightBtn) minusWeightBtn.disabled = (pdCurrentWeight <= 100);
+        
+        window.calculatePDPrice();
+    }
+};
+
+window.updatePDQuantity = (change) => {
+    if (!pdCurrentProduct) return;
+    if (pdCurrentQuantity + change >= 1) {
+        pdCurrentQuantity += change;
+        document.getElementById('pd-quantity-display').textContent = pdCurrentQuantity;
+        
+        const minusQtyBtn = document.getElementById('btn-pd-minus-quantity');
+        if (minusQtyBtn) minusQtyBtn.disabled = (pdCurrentQuantity <= 1);
+        
+        window.calculatePDPrice();
+    }
+};
+
+window.calculatePDPrice = () => {
+    if (!pdCurrentProduct) return;
+    
+    let itemPrice = pdBasePrice;
+    const isWeight = pdCurrentProduct.isSoldByWeight || pdCurrentProduct.IsSoldByWeight;
+    if (isWeight) {
+        itemPrice = (pdBasePrice / 1000) * pdCurrentWeight;
+    }
+
+    let totalAddonsPrice = 0;
+    const limit = pdCurrentProduct.freeModifiersLimit || pdCurrentProduct.FreeModifiersLimit || 0;
+    let freeCount = 0;
+    
+    const checkboxes = document.querySelectorAll('.pd-addon-checkbox');
+    checkboxes.forEach(cb => {
+        const label = cb.closest('label');
+        const rightDiv = label ? label.querySelector('.pd-addon-price') : null;
+        
+        if (cb.checked) {
+            const price = parseFloat(cb.dataset.price);
+            if (cb.dataset.group === 'Free') {
+                freeCount++;
+                if (freeCount > limit) {
+                    totalAddonsPrice += price;
+                    if (rightDiv) {
+                        rightDiv.textContent = '+' + price + ' ج.م';
+                        rightDiv.className = 'pd-addon-price paid';
+                    }
+                } else {
+                    if (rightDiv) {
+                        rightDiv.textContent = 'مجاناً';
+                        rightDiv.className = 'pd-addon-price free';
+                    }
+                }
+            } else {
+                totalAddonsPrice += price;
+                if (rightDiv) {
+                        rightDiv.textContent = '+' + price + ' ج.م';
+                        rightDiv.className = 'pd-addon-price paid';
+                }
+            }
+        } else {
+            // Reset visual to default if unchecked
+            if (rightDiv) {
+                const basePrice = parseFloat(cb.dataset.price);
+                rightDiv.textContent = '+' + basePrice + ' ج.م';
+                rightDiv.className = 'pd-addon-price';
+            }
+        }
+    });
+
+    pdSelectedAddonsPrice = totalAddonsPrice;
+    const total = (itemPrice + totalAddonsPrice) * pdCurrentQuantity;
+    
+    const totalEl = document.getElementById('pd-total-price');
+    if (totalEl.textContent !== total.toFixed(2)) {
+        totalEl.textContent = total.toFixed(2);
+        // Pulse animation
+        totalEl.classList.remove('price-pulse');
+        void totalEl.offsetWidth; // trigger reflow
+        totalEl.classList.add('price-pulse');
+    }
+};
+
+window.renderPDRecommendations = () => {
+    const recSection = document.getElementById('pd-recommendations-section');
+    const recList = document.getElementById('pd-recommendations-list');
+    recList.innerHTML = '';
+    
+    // Hardcoded logic for Phase 9: randomly pick 3 products from menu
+    fetchWithVersion(dbUrl + 'menu.json').then(res => res.json()).then(data => {
+        if(data) {
+            let allProds = [];
+            const cats = data.categories || data.Categories;
+            if(cats) {
+                cats.forEach(c => {
+                    const prods = c.products || c.Products;
+                    if(prods) allProds = allProds.concat(prods);
+                });
+            }
+            if (allProds.length > 0) {
+                const recIds = pdCurrentProduct.recommendationProductIds || pdCurrentProduct.RecommendationProductIds || [];
+                
+                if (recIds.length > 0) {
+                    const selected = allProds.filter(p => recIds.includes(p.Id || p.id));
+                    
+                    if (selected.length > 0) {
+                    selected.forEach(p => {
+                        const card = document.createElement('div');
+                        card.className = 'pd-rec-card';
+                        card.onclick = () => { window.openProductDetails(p); };
+                        
+                        const img = document.createElement('img');
+                        img.src = p.imagePath || 'images/hero-bg.jpg';
+                        
+                        const info = document.createElement('div');
+                        info.className = 'pd-rec-info';
+                        const name = document.createElement('div');
+                        name.className = 'pd-rec-name';
+                        name.textContent = p.name || p.Name;
+                        const price = document.createElement('div');
+                        price.className = 'pd-rec-price';
+                        price.textContent = (p.sellingPrice || p.SellingPrice || 0).toFixed(2) + ' ج.م';
+                        
+                        info.appendChild(name);
+                        info.appendChild(price);
+                        card.appendChild(img);
+                        card.appendChild(info);
+                        recList.appendChild(card);
+                    });
+                    recSection.classList.remove('hidden');
+                } else {
+                    recSection.classList.add('hidden');
+                }
+            } else {
+                recSection.classList.add('hidden');
+            }
+        }
+    });
+};
+
+window.confirmProductDetails = () => {
+    if (!pdCurrentProduct) return;
+    
+    window.calculatePDPrice(); // ensure latest price
+    
+    const isWeight = pdCurrentProduct.isSoldByWeight || pdCurrentProduct.IsSoldByWeight;
+    const itemPrice = isWeight ? (pdBasePrice / 1000) * pdCurrentWeight : pdBasePrice;
+    
+    let customName = pdCurrentProduct.name || pdCurrentProduct.Name;
+    if (isWeight) customName += ' - ' + pdCurrentWeight + 'g';
+    
+    const checkboxes = document.querySelectorAll('.pd-addon-checkbox:checked');
+    const selectedNames = Array.from(checkboxes).map(cb => cb.dataset.name);
+    if (selectedNames.length > 0) {
+        customName += ' | ' + selectedNames.join(', ');
+    }
+    
+    const ctaBtn = document.getElementById('pd-add-to-cart-btn');
+    if (ctaBtn) {
+        ctaBtn.disabled = true;
+        ctaBtn.textContent = 'جارِ الإضافة...';
+    }
+
+    const finalPrice = itemPrice + pdSelectedAddonsPrice;
+    
+    const customProduct = {
+        ...pdCurrentProduct,
+        name: customName,
+        sellingPrice: finalPrice,
+        autoShowModifiers: false,
+        isSoldByWeight: false,
+        IsSoldByWeight: false
+    };
+
+    const existing = cart.find(item => item.product.name === customProduct.name);
+    if (existing) {
+        existing.quantity += pdCurrentQuantity;
+    } else {
+        cart.push({ product: customProduct, quantity: pdCurrentQuantity });
+    }
+    
+    updateCartUI();
+    showToast('تمت إضافة ' + customName + ' للسلة');
+    
+    setTimeout(() => {
+        window.closeProductDetails();
+        
+        // Simulate fly-to-cart
+        const btnRect = ctaBtn ? ctaBtn.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2 };
+        flyToCartSynthetic(btnRect.left, btnRect.top);
+    }, 200); // slight delay for UX feel
+};
+// ======== END PRODUCT DETAILS SLIDING PANEL LOGIC ========
+

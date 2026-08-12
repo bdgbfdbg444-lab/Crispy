@@ -183,38 +183,101 @@
         </div>
     </div>
 
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: right;">
+    <!-- Product Details Panel -->
+<div id="product-details-panel" class="sliding-panel hidden">
+    <div class="panel-overlay" onclick="closeProductDetails()"></div>
+    <div class="panel-content">
+        <button class="panel-close-btn" onclick="closeProductDetails()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="panel-scroll-area">
+            <div class="panel-hero-image">
+                <img id="pd-image" src="" alt="Product Image">
+            </div>
+            <div class="panel-body">
+                <h2 id="pd-name" class="pd-title"></h2>
+                <p id="pd-price" class="pd-price"></p>
+                <p id="pd-desc" class="pd-desc"></p>
+                
+                <div id="pd-ingredients" class="pd-section hidden">
+                    <h3>المكونات</h3>
+                    <p id="pd-ingredients-text"></p>
+                </div>
+
+                <div id="pd-weight-section" class="pd-section hidden">
+                    <h3>حدد الوزن</h3>
+                    <p class="pd-muted">أقل كمية 100 جم</p>
+                    <div class="weight-controls">
+                        <button id="btn-pd-minus-weight" class="weight-btn" onclick="updatePDWeight(-50)">-</button>
+                        <div id="pd-weight-display">100<span style="font-size:1.2rem;">g</span></div>
+                        <button class="weight-btn" onclick="updatePDWeight(50)">+</button>
+                    </div>
+                </div>
+
+                <div id="pd-addons-section" class="pd-section hidden">
+                    <h3>الإضافات</h3>
+                    <p id="pd-addons-limit" class="pd-muted"></p>
+                    <div id="pd-addons-list" class="pd-addons-list"></div>
+                </div>
+                
+
+                <div id="pd-quantity-section" class="pd-section" style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="margin:0;">الكمية</h3>
+                    <div class="weight-controls" style="margin:0;">
+                        <button id="btn-pd-minus-quantity" class="weight-btn" onclick="updatePDQuantity(-1)">-</button>
+                        <div id="pd-quantity-display" style="min-width:30px; text-align:center; font-size:1.2rem; font-weight:bold;">1</div>
+                        <button class="weight-btn" onclick="updatePDQuantity(1)">+</button>
+                    </div>
+                </div>
+                
+                <div id="pd-recommendations-section" class="pd-section hidden">
+                    <h3>قد يعجبك أيضاً</h3>
+                    <div id="pd-recommendations-list" class="pd-recommendations-carousel"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="panel-total">الإجمالي: <span id="pd-total-price">0</span> ج.م</div>
+            <button id="pd-add-to-cart-btn" class="btn-primary pd-cta" onclick="confirmProductDetails()">إضافة للسلة</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Cart Modal -->
+    <div id="cart-modal" class="sliding-panel cart-panel hidden">
+        <div class="panel-overlay" id="cart-overlay"></div>
+        <div class="panel-content" style="text-align: right; padding: 2rem; overflow-y: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="font-size: 2rem;">السلة</h2>
+                <h2 style="font-size: 2rem; margin: 0;">السلة</h2>
                 <button id="close-cart" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="cart-items" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; max-height: 50vh; overflow-y: auto;">
+
+            <div id="cart-items" style="display: flex; flex-direction: column; margin-bottom: 2rem;">
                 <!-- Items injected here -->
             </div>
             
-            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: var(--radius-sm); cursor: pointer; text-align: center; border: 1px solid var(--primary-color);">
-                    <input type="radio" name="orderType" value="Delivery" checked />
-                    الدفع كاش (توصيل/بالمطعم)
-                </label>
-                <label style="flex: 1; padding: 1rem; background: #2A2A2A; border-radius: var(--radius-sm); cursor: pointer; text-align: center; border: 1px solid var(--primary-color);">
-                    <input type="radio" name="orderType" value="PickUp" />
-                    تحويل بنكي / فودافون كاش
-                </label>
-            </div>
+            <div id="cart-checkout-form">
+                <div class="order-type-toggle">
+                    <label class="order-type-btn">
+                        <input type="radio" name="orderType" value="Delivery" checked />
+                        <span class="order-type-label">الدفع كاش (توصيل/بالمطعم)</span>
+                    </label>
+                    <label class="order-type-btn">
+                        <input type="radio" name="orderType" value="PickUp" />
+                        <span class="order-type-label">تحويل بنكي / فودافون كاش</span>
+                    </label>
+                </div>
 
-            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-                <input type="text" id="customer-name" placeholder="الاسم الكريم" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
-                <input type="tel" id="customer-phone" placeholder="رقم الهاتف" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;" />
-                <textarea id="order-notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" style="padding: 1rem; border-radius: var(--radius-sm); border: none; background: #2A2A2A; color: white; width: 100%;"></textarea>
-            </div>
+                <div class="checkout-form-group">
+                    <input type="text" id="customer-name" class="checkout-input" placeholder="الاسم الكريم" />
+                    <input type="tel" id="customer-phone" class="checkout-input" placeholder="رقم الهاتف" />
+                    <textarea id="order-notes" class="checkout-input" placeholder="ملاحظات إضافية (اختياري)" rows="2"></textarea>
+                </div>
 
-            <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-                الإجمالي: <span id="cart-total-price" style="color: var(--primary-color);">0</span> جنيه
+                <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                    الإجمالي: <span id="cart-total-price" style="color: var(--primary-color);">0</span> جنيه
+                </div>
+                <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
             </div>
-            <button id="checkout-btn" class="btn-primary" style="width: 100%;">تأكيد وإرسال الطلب</button>
         </div>
     </div>
 
@@ -320,3 +383,4 @@
     <script src="app-core.js?v=5"></script>
 </body>
 </html>
+
