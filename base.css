@@ -418,3 +418,85 @@ h1, h2, h3, h4 {
     }
 }
 
+/* ==========================================
+   CINEMATIC REDESIGN STYLES (V2)
+========================================== */
+
+/* Typography & General */
+.hero-oversized-text {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+.reveal-text {
+    background: linear-gradient(90deg, #fff, #FF3300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* The Craft Section */
+.craft-images-container {
+    perspective: 1000px;
+}
+
+/* Low & Slow Section */
+.low-slow-text {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: -5px;
+    opacity: 0.8;
+}
+
+/* Premium Product Cards */
+.premium-card {
+    overflow: hidden;
+}
+
+.premium-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255,51,0,0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.premium-card:hover::before {
+    opacity: 1;
+}
+
+.premium-card-img {
+    transform-origin: center bottom;
+}
+
+/* Mobile Adjustments for Cinematic Sections */
+@media (max-width: 991px) {
+    .hero-oversized-text {
+        font-size: clamp(4rem, 15vw, 8rem) !important;
+        line-height: 0.9 !important;
+    }
+    
+    #hero-food-container {
+        margin-top: 100px !important;
+    }
+
+    .parallax-back, .parallax-front {
+        display: none !important; /* Hide complex parallax on mobile */
+    }
+
+    .craft-images-container {
+        height: 300px !important;
+    }
+
+    .low-slow-text {
+        font-size: 5rem !important;
+    }
+
+    .premium-card-img {
+        max-width: 200px !important;
+    }
+}
