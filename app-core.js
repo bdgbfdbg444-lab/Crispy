@@ -601,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Hero (Clean Background)
         if (data.heroMediaUrl) {
-            const heroImg = document.querySelector('.hero-main-img');
+            const heroImg = document.querySelector('[data-admin-bind="HeroMediaUrl"]');
             if (heroImg && !data.heroMediaUrl.match(/\.(mp4|webm)$/i)) {
                 // Only update the main transparent image if it's an image, do not inject video background
                 heroImg.src = data.heroMediaUrl;
