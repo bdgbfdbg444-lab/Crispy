@@ -247,6 +247,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const successModal = document.getElementById('success-modal');
     const closeSuccessBtn = document.getElementById('close-success');
     
+    // Review/Rating Modal
+    const ratingModal = document.getElementById('review-modal');
+
     // Payment Modal UI Elements
     const paymentModal = document.getElementById('payment-modal');
     const closePaymentBtn = document.getElementById('close-payment');
@@ -287,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchWithVersion(url) {
         try {
-            const vRes = await fetch(`${FIREBASE_DB_URL}/version.json?t=${new Date().getTime()}`);
+            const vRes = await fetch(`${dbUrl}version.json?t=${new Date().getTime()}`);
             if (vRes.ok) {
                 const vData = await vRes.json();
                 if (vData && vData.version) {
@@ -322,8 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.marketing) {
                     applyMarketing(data.marketing);
                 }
-                if (data.categories) {
-                    renderMenu(data.categories);
+                const categories = data.categories || data.Categories;
+                if (categories) {
+                    renderMenu(categories);
                 } else {
                     showError('لا يوجد أصناف حالياً.');
                 }
@@ -411,13 +415,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const renderMenu = (categories) => {
+    const renderMenu = (categoriesData) => {
         menuContainer.innerHTML = ''; 
         if (categoryNav) categoryNav.innerHTML = '';
+        
+        // Ensure categories is an array (Firebase might return an object if indices are non-sequential)
+        const categories = Array.isArray(categoriesData) ? categoriesData : Object.values(categoriesData);
 
         categories.forEach((category, index) => {
-            const products = category.products || [];
-            
+            let productsData = category.products || [];
+            const products = Array.isArray(productsData) ? productsData : Object.values(productsData);
+
             const categoryId = `cat-${index}`;
 
             // Create Nav Button
@@ -425,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const navBtn = document.createElement('button');
                 navBtn.className = 'category-nav-btn';
                 if (index === 0) navBtn.classList.add('active');
-                navBtn.textContent = category.name;
+                navBtn.textContent = category.name || category.Name;
                 navBtn.onclick = () => {
                     document.querySelectorAll('.category-nav-btn').forEach(btn => btn.classList.remove('active'));
                     navBtn.classList.add('active');
@@ -439,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
             section.id = categoryId;
             section.className = 'category-section';
             
-            section.innerHTML = `<h2 class="category-title">${category.name}</h2>`;
+            section.innerHTML = `<h2 class="category-title">${category.name || category.Name}</h2>`;
             
             const grid = document.createElement('div');
             grid.className = 'products-grid swiper-wrapper';
@@ -448,6 +456,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 grid.innerHTML = '<p class="text-center w-100 swiper-slide" style="color: #64748b;">لا توجد أصناف في هذا القسم حالياً.</p>';
             } else {
                 products.forEach(product => {
+                    if (!product) return; // Skip null products from sparse Firebase arrays
+                    
                     const card = document.createElement('div');
                     card.className = `product-card swiper-slide ${product.isSoldOut ? 'sold-out' : ''}`;
                     card.setAttribute('data-aos', 'fade-up');
@@ -541,11 +551,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(([menuData, websiteData]) => {
             if (menuData) {
                 let allProducts = [];
-                const categories = menuData.categories || menuData.Categories;
-                if (categories) {
+                let categoriesData = menuData.categories || menuData.Categories;
+                if (categoriesData) {
+                    const categories = Array.isArray(categoriesData) ? categoriesData : Object.values(categoriesData);
                     categories.forEach(c => {
-                        const products = c.products || c.Products;
-                        if (products) {
+                        let productsData = c.products || c.Products;
+                        if (productsData) {
+                            const products = Array.isArray(productsData) ? productsData : Object.values(productsData);
                             products.forEach(p => {
                                 allProducts.push(p);
                             });
@@ -852,14 +864,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // We need to find the product object to pass to window.addToCart
         fetchWithVersion(`${FIREBASE_DB_URL}/menu.json`).then(res => res.json()).then(data => {
             if(data) {
-                const cats = data.categories || data.Categories;
-                let foundProduct = null;
-                cats.forEach(c => {
-                    const prods = c.products || c.Products;
-                    prods.forEach(p => {
-                        if((p.Id || p.id) == productId) foundProduct = p;
+                let catsData = data.categories || data.Categories;
+                if(catsData) {
+                    const cats = Array.isArray(catsData) ? catsData : Object.values(catsData);
+                    let foundProduct = null;
+                    cats.forEach(c => {
+                        let prodsData = c.products || c.Products;
+                        if (prodsData) {
+                            const prods = Array.isArray(prodsData) ? prodsData : Object.values(prodsData);
+                            prods.forEach(p => {
+                                if((p.Id || p.id) == productId) foundProduct = p;
+                            });
+                        }
                     });
-                });
                 if(foundProduct) {
                     window.addToCart(foundProduct, event);
                 }
@@ -1535,13 +1552,18 @@ let pdCurrentQuantity = 1;
 window.openProductDetailsById = (productId) => {
     fetchWithVersion(dbUrl + 'menu.json').then(res => res.json()).then(data => {
         if(data) {
-            const cats = data.categories || data.Categories;
-            let foundProduct = null;
-            cats.forEach(c => {
-                const prods = c.products || c.Products;
-                prods.forEach(p => {
-                    if((p.Id || p.id) == productId) foundProduct = p;
-                });
+            let catsData = data.categories || data.Categories;
+            if(catsData) {
+                const cats = Array.isArray(catsData) ? catsData : Object.values(catsData);
+                let foundProduct = null;
+                cats.forEach(c => {
+                let prodsData = c.products || c.Products;
+                if (prodsData) {
+                    const prods = Array.isArray(prodsData) ? prodsData : Object.values(prodsData);
+                    prods.forEach(p => {
+                        if((p.Id || p.id) == productId) foundProduct = p;
+                    });
+                }
             });
             if(foundProduct) {
                 window.openProductDetails(foundProduct);
@@ -1800,11 +1822,15 @@ window.renderPDRecommendations = () => {
     fetchWithVersion(dbUrl + 'menu.json').then(res => res.json()).then(data => {
         if(data) {
             let allProds = [];
-            const cats = data.categories || data.Categories;
-            if(cats) {
+            let catsData = data.categories || data.Categories;
+            if(catsData) {
+                const cats = Array.isArray(catsData) ? catsData : Object.values(catsData);
                 cats.forEach(c => {
-                    const prods = c.products || c.Products;
-                    if(prods) allProds = allProds.concat(prods);
+                    let prodsData = c.products || c.Products;
+                    if(prodsData) {
+                        const prods = Array.isArray(prodsData) ? prodsData : Object.values(prodsData);
+                        allProds = allProds.concat(prods);
+                    }
                 });
             }
             if (allProds.length > 0) {
