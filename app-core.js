@@ -506,8 +506,11 @@ document.addEventListener('DOMContentLoaded', () => {
         menuContainer.style.display = 'block';
     };
     const showError = (message) => {
-        if (loader) {
-            loader.innerHTML = `<p style="color: red; text-align: center; font-weight: bold;">${message}</p>`;
+        if (loader) loader.style.display = 'none';
+        
+        if (menuContainer) {
+            menuContainer.style.display = 'block';
+            menuContainer.innerHTML = `<p style="color: red; text-align: center; font-weight: bold; padding: 2rem;">${message}</p>`;
         } else {
             console.error('Menu Error:', message);
             // Fallback: show error in the signature grid if on home page
@@ -883,6 +886,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCartBtn.onclick = () => {
             window.closeCartDrawer();
         };
+    }
+    const cartOverlay = document.getElementById('cart-overlay');
+    if (cartOverlay) {
+        cartOverlay.onclick = () => window.closeCartDrawer();
     }
     
     window.closeCartDrawer = () => {

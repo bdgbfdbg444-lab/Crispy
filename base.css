@@ -757,6 +757,9 @@ html, body {
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+.cart-panel {
+    justify-content: flex-start;
+}
 .cart-panel .panel-content {
     transform: translateX(-100%);
     box-shadow: 10px 0 30px rgba(0,0,0,0.8);
