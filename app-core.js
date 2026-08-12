@@ -1230,12 +1230,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const itemTotal = item.product.sellingPrice * item.quantity;
                 total += itemTotal;
                 
-                const imgSrc = item.product.imagePath || 'images/hero-bg.jpg';
+                const imageHTML = (item.product.imagePath && item.product.imagePath.trim() !== '') 
+                    ? `<img src="${item.product.imagePath}" class="cart-item-img" alt="${item.product.name}" />` 
+                    : '';
 
                 const row = document.createElement('div');
                 row.className = 'cart-drawer-item';
                 row.innerHTML = `
-                    <img src="${imgSrc}" class="cart-item-img" alt="${item.product.name}" />
+                    ${imageHTML}
                     <div class="cart-item-details">
                         <div class="cart-item-title">${item.product.name}</div>
                         <div class="cart-item-price">${parseFloat(item.product.sellingPrice).toFixed(2)} ج.م</div>

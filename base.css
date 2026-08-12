@@ -355,11 +355,11 @@ html, body {
 }
 
 .hero-type-layer {
-    z-index: 10;
+    z-index: 20;
 }
 
 .hero-food-layer {
-    z-index: 20;
+    z-index: 10;
     perspective: 1000px;
     transform-style: preserve-3d;
 }

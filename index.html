@@ -48,7 +48,7 @@
         <div class="hero-layer hero-bg-layer" data-speed="0.1">
             <picture>
                 <source media="(max-width: 768px)" srcset="images/hero-bg-mobile.jpg">
-                <img src="images/hero-bg.jpg" alt="Cinematic BBQ Atmosphere">
+                <img src="images/hero-bg.jpg" alt="Cinematic BBQ Atmosphere" fetchpriority="high">
             </picture>
         </div>
         
@@ -65,7 +65,7 @@
         <!-- Parallax 3D Food Layers -->
         <div class="hero-layer hero-food-layer" data-speed="0.7">
             <div class="temp-jpeg-asset parallax-tilt" style="position: absolute; width: 80vw; max-width: 700px; display:flex; justify-content:center;">
-                <img src="images/hero-brisket-main.jpg" alt="Smoked Brisket" class="hero-main-food temp-jpeg-image" style="position: relative; width: 100%;">
+                <img src="images/hero-brisket-main.png" alt="Smoked Brisket" class="hero-main-food temp-jpeg-image" style="position: relative; width: 100%;" fetchpriority="high">
             </div>
             <div class="temp-jpeg-asset parallax-tilt-opposite" style="position: absolute; width: 40vw; max-width: 350px; bottom: 5%; left: 10%; display:flex; justify-content:center;">
                 <img src="images/hero-burger-main.jpg" alt="Smash Burger" class="hero-secondary-food temp-jpeg-image" style="position: relative; width: 100%;">
@@ -94,19 +94,19 @@
             <div class="craft-grid">
                 <!-- Wood -->
                 <div class="craft-card scroll-fade-up">
-                    <img src="images/craft-wood.jpg" alt="Oak Wood">
+                    <img src="images/craft-wood.jpg" alt="Oak Wood" loading="lazy">
                     <h3>01. الحطب</h3>
                     <p>أخشاب فاخرة مختارة بعناية لتدخين يبرز عمق النكهة.</p>
                 </div>
                 <!-- Fire -->
                 <div class="craft-card scroll-fade-up" style="transition-delay: 100ms;">
-                    <img src="images/craft-fire.jpg" alt="Wood Fire">
+                    <img src="images/craft-fire.jpg" alt="Wood Fire" loading="lazy">
                     <h3>02. النار</h3>
                     <p>نار هادئة، حرارة موزونة، واهتمام بكل تفصيلة.</p>
                 </div>
                 <!-- Time -->
                 <div class="craft-card scroll-fade-up" style="transition-delay: 200ms;">
-                    <img src="images/craft-time.jpg" alt="Time">
+                    <img src="images/craft-time.jpg" alt="Time" loading="lazy">
                     <h3>03. الوقت</h3>
                     <p>14 ساعة من التدخين البطيء لنذوب في أول قضة.</p>
                 </div>
@@ -118,7 +118,7 @@
     <section id="low-slow-section" class="low-slow-cinematic scroll-zoom-section">
         <picture class="low-slow-bg">
             <source media="(max-width: 768px)" srcset="images/low-and-slow-brisket-mob.jpg">
-            <img src="images/low-and-slow-brisket.jpg" alt="Low & Slow Brisket Crust">
+            <img src="images/low-and-slow-brisket.jpg" alt="Low & Slow Brisket Crust" loading="lazy">
         </picture>
         <div class="low-slow-content">
             <h2 class="huge-text parallax-text" data-speed="0.2">LOW & SLOW</h2>
