@@ -1,20 +1,16 @@
-// desktop-interactions.js
+// desktop-interactions.js (Zero to Production Rewrite)
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if desktop
+    // Only run on desktop
     if (window.innerWidth < 992) return;
 
-    // 1. Initialize Lenis (Smooth Scroll)
+    // 1. Initialize Lenis Smooth Scrolling
     const lenis = new Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
         direction: 'vertical',
-        gestureDirection: 'vertical',
         smooth: true,
-        mouseMultiplier: 1,
         smoothTouch: false,
-        touchMultiplier: 2,
-        infinite: false,
     });
 
     function raf(time) {
@@ -23,27 +19,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(raf);
 
-    // Integrate GSAP with Lenis
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
         
         lenis.on('scroll', ScrollTrigger.update);
-        
-        gsap.ticker.add((time)=>{
-            lenis.raf(time * 1000);
-        });
-        
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
         gsap.ticker.lagSmoothing(0, 0);
 
         // ==========================================
-        // CINEMATIC HERO ANIMATIONS
+        // 01. GLOBAL HEADER SCROLL
         // ==========================================
-        
-        // 1. Oversized Text Parallax (Moves down slowly as we scroll down)
-        gsap.to('.hero-oversized-text', {
+        const header = document.querySelector('.global-header');
+        ScrollTrigger.create({
+            start: 'top -50',
+            end: 99999,
+            toggleClass: { className: 'scrolled', targets: header }
+        });
+
+        // ==========================================
+        // 02. HERO ANIMATIONS (Initial Load & Scroll)
+        // ==========================================
+        // Initial Entry
+        const tlHero = gsap.timeline();
+        tlHero.from('.hero-title', { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" })
+              .from('#main-hero-food', { scale: 0.8, opacity: 0, rotationY: 15, duration: 1.5, ease: "power3.out" }, "-=1")
+              .from('.hero-float', { y: 50, opacity: 0, duration: 1, stagger: 0.2, ease: "back.out(1.5)" }, "-=1");
+
+        // Scroll Parallax (Depth Effect)
+        gsap.to('.hero-title', {
             y: 300,
-            opacity: 0,
             scale: 0.9,
+            opacity: 0,
             scrollTrigger: {
                 trigger: '#hero-section',
                 start: 'top top',
@@ -52,9 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 2. Main Burger scroll interaction (Moves up slightly, pushing forward)
-        gsap.to('#main-hero-burger', {
-            y: -100,
+        gsap.to('#main-hero-food', {
+            y: -150,
             scale: 1.1,
             scrollTrigger: {
                 trigger: '#hero-section',
@@ -64,167 +69,85 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 3. Floating Ingredients Parallax based on data-speed
-        const ingredients = document.querySelectorAll('.hero-ingredient');
-        ingredients.forEach(item => {
-            const speed = parseFloat(item.getAttribute('data-speed')) || 0.5;
-            // if speed is positive, it moves down (back layer). If negative, it moves up (front layer).
-            gsap.to(item, {
-                y: () => 500 * speed,
-                rotation: () => speed * 100,
-                scrollTrigger: {
-                    trigger: '#hero-section',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            });
-        });
-
-        // 4. Cursor Magnetic 3D Tilt for Main Burger
+        // ==========================================
+        // 03. HERO MOUSE INTERACTION (Physics)
+        // ==========================================
         const heroSection = document.getElementById('hero-section');
-        const mainBurger = document.getElementById('main-hero-burger');
+        const mainFood = document.getElementById('main-hero-food');
+        const floats = document.querySelectorAll('.hero-float');
         
-        if (heroSection && mainBurger) {
+        if (heroSection && mainFood) {
             heroSection.addEventListener('mousemove', (e) => {
                 const rect = heroSection.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2); // -1 to 1
+                const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2); // -1 to 1
                 
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                // Calculate tilt angles based on mouse distance from center
-                const rotateX = ((y - centerY) / centerY) * -15; // Max 15 deg tilt
-                const rotateY = ((x - centerX) / centerX) * 15;
-                
-                // Move slightly towards the mouse
-                const moveX = ((x - centerX) / centerX) * 30; // Max 30px move
-                const moveY = ((y - centerY) / centerY) * 30;
-                
-                gsap.to(mainBurger, {
-                    rotationX: rotateX,
-                    rotationY: rotateY,
-                    x: moveX,
-                    y: moveY,
-                    duration: 0.8,
+                // Tilt & Move main food
+                gsap.to(mainFood, {
+                    rotationX: -y * 10,
+                    rotationY: x * 10,
+                    x: x * 20,
+                    y: y * 20,
+                    duration: 1,
                     ease: "power2.out"
+                });
+
+                // Move floating elements inversely and faster for depth
+                floats.forEach(float => {
+                    const isFast = float.classList.contains('float-fast');
+                    const multiplier = isFast ? -40 : -20;
+                    gsap.to(float, {
+                        x: x * multiplier,
+                        y: y * multiplier,
+                        rotation: x * 15,
+                        duration: 1.5,
+                        ease: "power2.out"
+                    });
                 });
             });
             
             heroSection.addEventListener('mouseleave', () => {
-                gsap.to(mainBurger, {
-                    rotationX: 0,
-                    rotationY: 0,
-                    x: 0,
-                    y: 0,
-                    duration: 1.2,
-                    ease: "elastic.out(1, 0.3)"
+                gsap.to([mainFood, ...floats], {
+                    rotationX: 0, rotationY: 0, x: 0, y: 0, rotation: 0,
+                    duration: 1.5,
+                    ease: "elastic.out(1, 0.5)"
                 });
             });
         }
-        // ==========================================
-        // 02. BBQ STATEMENT
-        // ==========================================
-        gsap.from('.reveal-text', {
-            y: 50,
-            opacity: 0,
-            duration: 1.5,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: '.reveal-text',
-                start: "top 85%"
-            }
-        });
 
         // ==========================================
-        // 03. THE CRAFT (Parallax assembly)
+        // 04. EDITORIAL MENU (Card Hover Depth)
         // ==========================================
-        const craftLayers = document.querySelectorAll('.craft-layer');
-        craftLayers.forEach(layer => {
-            const startY = parseFloat(layer.getAttribute('data-y')) || 0;
-            gsap.fromTo(layer, 
-                { y: startY, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: '#craft-section',
-                        start: 'top 60%',
-                        end: 'center center',
-                        scrub: 1
-                    }
-                }
-            );
-        });
-
-        // ==========================================
-        // 04. LOW & SLOW (Huge Text Parallax + Brisket rotation)
-        // ==========================================
-        gsap.to('.low-slow-text', {
-            xPercent: -30,
-            scrollTrigger: {
-                trigger: '#low-slow-section',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true
-            }
-        });
-
-        gsap.from('.centerpiece-brisket', {
-            scale: 0.8,
-            rotationZ: -10,
-            rotationY: 30,
-            scrollTrigger: {
-                trigger: '#low-slow-section',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true
-            }
-        });
-
-        // ==========================================
-        // 05. SIGNATURE MENU (Card Hover)
-        // ==========================================
-        const premiumCards = document.querySelectorAll('.premium-card');
-        premiumCards.forEach(card => {
-            const img = card.querySelector('.premium-card-img');
+        const editCards = document.querySelectorAll('.editorial-card');
+        editCards.forEach(card => {
+            const img = card.querySelector('img');
+            
             card.addEventListener('mouseenter', () => {
-                gsap.to(img, { scale: 1.15, y: -20, duration: 0.5, ease: "power2.out" });
+                gsap.to(card, { y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', duration: 0.4, ease: "power2.out" });
+                gsap.to(img, { scale: 1.15, y: -20, rotationZ: 5, duration: 0.5, ease: "back.out(1.5)" });
             });
+            
             card.addEventListener('mouseleave', () => {
-                gsap.to(img, { scale: 1, y: 0, duration: 0.5, ease: "power2.out" });
+                gsap.to(card, { y: 0, boxShadow: 'none', duration: 0.4, ease: "power2.out" });
+                gsap.to(img, { scale: 1, y: 0, rotationZ: 0, duration: 0.5, ease: "power2.out" });
             });
         });
     }
 
-    // Menu Card 3D Tilt Effect
+    // Export function for dynamic cards (from app-core)
     window.initDesktop3DMenu = function() {
-        const cards = document.querySelectorAll('.product-card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', handleTilt);
-            card.addEventListener('mouseleave', resetTilt);
+        // Redefined for dynamic injection if needed
+        const editCards = document.querySelectorAll('.editorial-card');
+        editCards.forEach(card => {
+            const img = card.querySelector('img');
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, { y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', duration: 0.4, ease: "power2.out" });
+                gsap.to(img, { scale: 1.15, y: -20, rotationZ: 5, duration: 0.5, ease: "back.out(1.5)" });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { y: 0, boxShadow: 'none', duration: 0.4, ease: "power2.out" });
+                gsap.to(img, { scale: 1, y: 0, rotationZ: 0, duration: 0.5, ease: "power2.out" });
+            });
         });
-
-        function handleTilt(e) {
-            const card = e.currentTarget;
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -10;
-            const rotateY = ((x - centerX) / centerX) * 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        }
-
-        function resetTilt(e) {
-            const card = e.currentTarget;
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        }
     };
 });

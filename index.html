@@ -40,207 +40,123 @@
 
     <div id="toast" class="toast hidden"></div>
     
-    <!-- Top Navbar -->
-    <nav class="top-navbar">
-        <a href="index.html" class="nav-logo">
-            <i class="fa-solid fa-fire"></i> THE SNEAKER BOX
+    <!-- Global Header -->
+    <header class="global-header">
+        <a href="index.html" class="brand-logo">
+            <i class="fa-solid fa-fire" style="color: var(--color-brand-primary);"></i>
+            SNEAKER BOX BBQ
         </a>
-        <div class="nav-links">
-            <a href="index.html">الرئيسية</a>
-            <a href="menu.html">المنيو</a>
-            <a href="about.html">القصة</a>
-        </div>
-        <div class="nav-actions">
-            <div class="cart-trigger" style="position:relative;">
+        <div class="header-actions">
+            <div class="cart-trigger" onclick="document.getElementById('cart-modal').classList.remove('hidden')">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="badge cart-count" style="display:none; position:absolute; top:-10px; right:-10px; background:var(--primary-color); padding:2px 6px; border-radius:10px; font-size:12px; font-weight:bold;">0</span>
+                <span class="cart-count" style="display:none;">0</span>
             </div>
-            <a href="menu.html" class="btn-primary" style="padding: 0.5rem 1.5rem; font-size: 1rem;">اطلب الآن</a>
-        </div>
-    </nav>
-
-    <!-- ========== 01: CINEMATIC HERO ========== -->
-    <header id="hero-section" style="position: relative; min-height: 100vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a;">
-        
-        <!-- Ambient Smoke/Fire Glow Background -->
-        <div style="position: absolute; width: 80vw; height: 80vw; max-width: 1000px; max-height: 1000px; background: radial-gradient(circle, rgba(255, 51, 0, 0.1) 0%, transparent 60%); filter: blur(60px); z-index: 0; pointer-events: none;"></div>
-
-        <!-- Typography Layer (Behind Food) -->
-        <div style="position: absolute; z-index: 1; text-align: center; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none;">
-            <h1 class="hero-oversized-text" style="font-size: clamp(5rem, 18vw, 15rem); font-weight: 900; line-height: 0.8; color: rgba(255, 255, 255, 0.05); margin: 0; text-transform: uppercase; letter-spacing: -2px;">
-                SMOKE<br>FIRE<br>MEAT
-            </h1>
-        </div>
-
-        <!-- 3D Food Centerpiece -->
-        <div id="hero-food-container" style="position: relative; z-index: 5; margin-top: 50px; display: flex; justify-content: center; align-items: center; width: 100%; max-width: 800px;">
-            <!-- Main Hero Burger -->
-            <img src="images/double_burger.jpg" alt="Premium BBQ Burger" id="main-hero-burger" style="width: 80vw; max-width: 500px; border-radius: 30px; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.95)); transform-style: preserve-3d; z-index: 5;">
-            
-            <!-- Floating Ingredients (Parallax Depth Layers) -->
-            <!-- Back Layer -->
-            <img src="images/brisket_cubes.jpg" class="hero-ingredient parallax-back" data-speed="0.2" alt="Brisket Cubes" style="position: absolute; width: 150px; top: -10%; left: 10%; z-index: 2; border-radius: 20px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));">
-            <img src="images/pickles.png" class="hero-ingredient parallax-back" data-speed="0.3" alt="Pickles" style="position: absolute; width: 90px; top: 15%; right: 5%; z-index: 2; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));">
-            
-            <!-- Front Layer -->
-            <img src="images/brisket_slice.png" class="hero-ingredient parallax-front" data-speed="-0.4" alt="Brisket Slice" style="position: absolute; width: 220px; bottom: -15%; right: 10%; z-index: 8; filter: drop-shadow(0 30px 50px rgba(0,0,0,0.95));">
-            <img src="images/chicken_tenders.jpg" class="hero-ingredient parallax-front" data-speed="-0.2" alt="Chicken Tenders" style="position: absolute; width: 140px; bottom: 5%; left: 5%; z-index: 8; border-radius: 15px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
-            <img src="images/pickles.png" class="hero-ingredient parallax-front" data-speed="-0.5" alt="Pickles" style="position: absolute; width: 120px; bottom: -5%; left: 30%; z-index: 8; filter: drop-shadow(0 25px 45px rgba(0,0,0,0.9));">
-        </div>
-
-        <!-- Foreground Typography & CTA -->
-        <div style="position: absolute; z-index: 10; bottom: 10%; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
-            <p style="font-size: 1.2rem; color: #fff; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 2rem; text-shadow: 0 4px 20px rgba(0,0,0,0.8);">تكساس باربيكيو الأصلي</p>
-            <a href="menu.html" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 4rem; border-radius: 50px; box-shadow: 0 10px 40px rgba(255, 51, 0, 0.4); text-transform: uppercase; font-weight: 800; letter-spacing: 2px;">
-                اطلب الآن
-            </a>
+            <a href="#menu-section" class="btn-primary">اطلب الآن</a>
         </div>
     </header>
 
-    <!-- ========== 02: BBQ STATEMENT ========== -->
-    <section style="background: #0a0a0a; padding: 10rem 20px; text-align: center; position: relative; z-index: 10;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <p style="color: var(--primary-color); font-size: 1.2rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 2rem;">الفلسفة</p>
-            <h2 class="reveal-text" style="font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; line-height: 1.4; color: #fff;">
-                لا توجد طرق مختصرة. فقط لحم ممتاز، حطب حقيقي، ووقت طويل.
-            </h2>
-        </div>
-    </section>
-
-    <!-- ========== 03: THE CRAFT ========== -->
-    <section id="craft-section" style="background: #050505; padding: 10rem 5%; position: relative; overflow: hidden;">
-        <div class="container" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; gap: 4rem;">
-            
-            <div style="flex: 1; min-width: 300px; position: relative;">
-                <h2 style="font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: #fff; line-height: 1; margin-bottom: 2rem;">
-                    حرفة<br><span style="color: var(--primary-color);">الدخان</span>
-                </h2>
-                <p style="color: rgba(255,255,255,0.6); font-size: 1.2rem; line-height: 2; max-width: 400px;">
-                    نستخدم خشب البلوط الأمريكي لتدخين اللحوم ببطء شديد ولمدة تصل إلى 14 ساعة. النتيجة؟ لحم يذوب في الفم بنكهة لا تُنسى.
-                </p>
-            </div>
-            
-            <div class="craft-images-container" style="flex: 1; min-width: 300px; position: relative; height: 500px;">
-                <!-- Layered Images that assemble on scroll -->
-                <img src="images/brisket_slice.png" class="craft-layer" data-y="0" alt="Brisket" style="position: absolute; width: 80%; top: 20%; right: 10%; z-index: 3; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));">
-                <img src="images/pickles.png" class="craft-layer" data-y="-100" alt="Pickles" style="position: absolute; width: 40%; top: 0; left: 10%; z-index: 2; opacity: 0.8;">
-                <img src="images/brisket_cubes.jpg" class="craft-layer" data-y="100" alt="Wood" style="position: absolute; width: 60%; bottom: 10%; left: 0; z-index: 4; border-radius: 20px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));">
-            </div>
-            
-        </div>
-    </section>
-
-    <!-- ========== 04: LOW & SLOW (Centerpiece) ========== -->
-    <section id="low-slow-section" style="background: #0a0a0a; height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-        <h2 class="low-slow-text" style="position: absolute; font-size: clamp(6rem, 20vw, 20rem); font-weight: 900; color: rgba(255,255,255,0.03); white-space: nowrap; z-index: 1; pointer-events: none;">LOW & SLOW</h2>
+    <!-- 01: Cinematic Masterpiece Hero -->
+    <section id="hero-section" style="position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+        <div class="hero-bg" style="position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(255, 69, 0, 0.05) 0%, transparent 70%); pointer-events: none;"></div>
         
-        <div style="position: relative; z-index: 5; text-align: center;">
-            <img src="images/brisket_slice.png" class="centerpiece-brisket" alt="Brisket Slice" style="width: 90vw; max-width: 800px; filter: drop-shadow(0 50px 80px rgba(0,0,0,0.9)); transform-style: preserve-3d;">
+        <div class="hero-content-wrapper" style="position: relative; z-index: 10; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: 1500px;">
+            
+            <h1 class="text-display-huge hero-title" style="position: absolute; z-index: 1; color: rgba(255,255,255,0.03); white-space: nowrap; pointer-events: none;">
+                BRISKET
+            </h1>
+
+            <div class="hero-food-group" style="position: relative; z-index: 5; transform-style: preserve-3d;">
+                <!-- Main Brisket Image -->
+                <img src="images/brisket_slice.png" id="main-hero-food" alt="Smoked Brisket" style="width: 80vw; max-width: 600px; filter: drop-shadow(var(--shadow-deep));">
+                
+                <!-- Floating Elements -->
+                <img src="images/pickles.png" class="hero-float float-fast" alt="Pickles" style="position: absolute; width: 100px; top: -10%; right: -5%; z-index: 6; filter: blur(2px);">
+                <img src="images/brisket_cubes.jpg" class="hero-float float-slow" alt="Burnt Ends" style="position: absolute; width: 150px; bottom: -5%; left: -10%; z-index: 4; border-radius: 12px; filter: brightness(0.7);">
+            </div>
+
+            <div style="position: absolute; z-index: 10; bottom: 10%; text-align: center;">
+                <p class="text-subheading" style="margin-bottom: var(--space-md);">تدخين بطيء. طعم عميق.</p>
+                <a href="#menu-section" class="btn-primary">استكشف المنيو</a>
+            </div>
         </div>
     </section>
 
-    <!-- ========== 05: SIGNATURE MENU (POS Protected) ========== -->
-    <section id="featured-section" style="padding: 8rem 5%; background: #050505;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
-                <div>
-                    <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 1rem; margin-bottom: 1rem;">The Menu</p>
-                    <h2 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; color: #fff; line-height: 1;">الأصناف <span style="color: var(--primary-color);">المميزة</span></h2>
+    <!-- 02: Editorial Brand Statement -->
+    <section class="section-padding" style="background: var(--color-bg-base); text-align: center; position: relative; z-index: 20;">
+        <div class="container">
+            <h2 class="text-display-large text-gradient" style="margin-bottom: var(--space-md); max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2;">
+                لا توجد طرق مختصرة لبريسكت حقيقي.
+            </h2>
+            <p class="text-body" style="margin: 0 auto;">نبدأ بخشب البلوط، وننتهي بلحم يذوب في الفم. 14 ساعة من التدخين البطيء لنقدم لك تجربة تكساس الأصلية.</p>
+        </div>
+    </section>
+
+    <!-- 03: The Craft Sequence -->
+    <section id="craft-sequence" class="section-padding" style="background: var(--color-bg-surface); position: relative; overflow: hidden;">
+        <div class="container" style="display: flex; flex-direction: column; gap: var(--space-xl);">
+            
+            <div class="craft-step" style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); justify-content: space-between;">
+                <div style="flex: 1; min-width: 300px;">
+                    <p class="text-subheading">01. الخشب</p>
+                    <h3 class="text-heading" style="margin-bottom: var(--space-sm);">نار هادئة، خشب صلب.</h3>
+                    <p class="text-body">سر النكهة يبدأ هنا. نختار أخشاب البلوط بعناية لنضمن احتراقاً بطيئاً يغلف اللحم بدخان غني ومعتدل.</p>
                 </div>
-                <a href="menu.html" class="btn-primary" style="padding: 1rem 2rem; border-radius: 50px; display: none;">المنيو الكامل</a>
+                <div style="flex: 1; min-width: 300px; text-align: left;">
+                    <img src="images/brisket_cubes.jpg" alt="Wood" style="width: 100%; max-width: 500px; border-radius: var(--radius-lg); filter: grayscale(50%) contrast(1.2);">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 04: Low & Slow Centerpiece -->
+    <section id="low-slow-centerpiece" style="height: 100vh; background: var(--color-bg-base); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+        <h2 class="text-display-huge low-slow-bg-text" style="position: absolute; color: rgba(255,255,255,0.02); white-space: nowrap; z-index: 1;">LOW & SLOW</h2>
+        <div style="position: relative; z-index: 5; text-align: center;">
+            <img src="images/brisket_slice.png" class="centerpiece-img" alt="Brisket" style="width: 90vw; max-width: 700px; filter: drop-shadow(var(--shadow-deep));">
+        </div>
+    </section>
+
+    <!-- 05: Editorial Signature Menu (POS Connected) -->
+    <section id="menu-section" class="section-padding" style="background: var(--color-bg-surface);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-xl);">
+                <p class="text-subheading">المنيو</p>
+                <h2 class="text-display-large">الأصناف <span class="text-gradient">المميزة</span></h2>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-lg);">
                 
-                <!-- Product Card (Matches POS Logic structure but redesigned) -->
-                <div class="premium-card product-card" style="background: #0a0a0a; border-radius: 20px; padding: 2rem; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer; position: relative;">
-                    <div style="position: relative; height: 250px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d;">
-                        <img src="images/double_burger.jpg" alt="Smash Burger" class="premium-card-img" style="width: 100%; max-width: 250px; border-radius: 20px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                <!-- Product Card 1 -->
+                <div class="editorial-card product-card" style="background: var(--color-bg-base); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid rgba(255,255,255,0.03); transition: var(--transition-medium); cursor: pointer;">
+                    <div class="card-img-wrapper" style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: var(--space-md); perspective: 1000px;">
+                        <img src="images/double_burger.jpg" alt="Smash Burger" style="width: 100%; max-width: 220px; border-radius: var(--radius-md); transition: var(--transition-medium);">
                     </div>
-                    <div style="position: relative; z-index: 10;">
-                        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">سماش برجر دبل</h3>
-                        <p style="color: rgba(255,255,255,0.5); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">قطعتين لحم سماش مع جبنة أمريكية ذايبة، في خبز بريوش محمص مع صوص خاص.</p>
+                    <div>
+                        <h3 class="text-heading" style="font-size: 1.8rem; margin-bottom: 0.5rem;">سماش برجر</h3>
+                        <p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">قطعتين لحم سماش، جبنة، صوص مدخن.</p>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">180 ج.م</span>
-                            <button class="add-to-cart-btn btn-primary" data-id="p1" data-name="سماش برجر دبل" data-price="180" style="padding: 0.8rem 1.5rem; border-radius: 30px; font-weight: 700;">أضف للسلة</button>
+                            <span style="font-size: 1.5rem; font-weight: 900; color: #fff;">180 ج.م</span>
+                            <button class="btn-primary add-to-cart-btn" data-id="p1" data-name="سماش برجر" data-price="180" style="padding: 0.8rem 1.5rem; font-size: 1rem;">أضف</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product Card 2 -->
-                <div class="premium-card product-card" style="background: #0a0a0a; border-radius: 20px; padding: 2rem; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer; position: relative;">
-                    <div style="position: relative; height: 250px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d;">
-                        <img src="images/brisket_slice.png" alt="Brisket" class="premium-card-img" style="width: 100%; max-width: 250px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                <div class="editorial-card product-card" style="background: var(--color-bg-base); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid rgba(255,255,255,0.03); transition: var(--transition-medium); cursor: pointer;">
+                    <div class="card-img-wrapper" style="height: 250px; display: flex; justify-content: center; align-items: center; margin-bottom: var(--space-md); perspective: 1000px;">
+                        <img src="images/brisket_slice.png" alt="Brisket" style="width: 100%; max-width: 220px; transition: var(--transition-medium);">
                     </div>
-                    <div style="position: relative; z-index: 10;">
-                        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">بريسكت مدخن</h3>
-                        <p style="color: rgba(255,255,255,0.5); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">شريحة بريسكت تذوب في الفم، مدخنة 14 ساعة على حطب البلوط.</p>
+                    <div>
+                        <h3 class="text-heading" style="font-size: 1.8rem; margin-bottom: 0.5rem;">بريسكت تكساس</h3>
+                        <p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">لحم مدخن 14 ساعة على حطب البلوط.</p>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">250 ج.م</span>
-                            <button class="add-to-cart-btn btn-primary" data-id="p2" data-name="بريسكت مدخن" data-price="250" style="padding: 0.8rem 1.5rem; border-radius: 30px; font-weight: 700;">أضف للسلة</button>
+                            <span style="font-size: 1.5rem; font-weight: 900; color: #fff;">250 ج.م</span>
+                            <button class="btn-primary add-to-cart-btn" data-id="p2" data-name="بريسكت مدخن" data-price="250" style="padding: 0.8rem 1.5rem; font-size: 1rem;">أضف</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Product Card 3 -->
-                <div class="premium-card product-card" style="background: #0a0a0a; border-radius: 20px; padding: 2rem; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer; position: relative;">
-                    <div style="position: relative; height: 250px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d;">
-                        <img src="images/chicken_tenders.jpg" alt="Chicken Tenders" class="premium-card-img" style="width: 100%; max-width: 250px; border-radius: 20px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
-                    </div>
-                    <div style="position: relative; z-index: 10;">
-                        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">تشيكن تندرز</h3>
-                        <p style="color: rgba(255,255,255,0.5); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">قطع دجاج مقرمشة بتتبيلة خاصة، تقدم مع صوص الرانش والباربيكيو.</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 1.5rem; font-weight: 900; color: var(--primary-color);">120 ج.م</span>
-                            <button class="add-to-cart-btn btn-primary" data-id="p3" data-name="تشيكن تندرز" data-price="120" style="padding: 0.8rem 1.5rem; border-radius: 30px; font-weight: 700;">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== 06: BBQ STORY (Sticky Scroll) ========== -->
-    <section id="story-section" style="background: #000; padding: 10rem 5%; position: relative;">
-        <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <p style="color: var(--primary-color); letter-spacing: 5px; text-transform: uppercase; font-size: 1rem; margin-bottom: 2rem;">الفصل الأخير</p>
-            <h2 style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; color: #fff; margin-bottom: 4rem; line-height: 1.2;">
-                لا نقدم مجرد طعام..<br>نحن نقدم <span style="color: var(--primary-color);">تجربة</span> متكاملة.
-            </h2>
-            <div style="position: relative; border-radius: 30px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8);">
-                <!-- Assuming the b-roll from before is desired here -->
-                <img src="images/brisket_cubes.jpg" alt="Experience" style="width: 100%; filter: brightness(0.8);">
-                <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); display: flex; align-items: flex-end; padding: 3rem;">
-                    <h3 style="font-size: 2rem; color: #fff; font-weight: 800;">بيرنت إندز — كراميل اللحم المدخن.</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== 07: FLOATING REVIEWS ========== -->
-    <section id="reviews-section" style="background: #0a0a0a; padding: 10rem 5%; position: relative; overflow: hidden;">
-        <div class="container" style="text-align: center; position: relative; z-index: 10;">
-            <h2 style="font-size: clamp(3rem, 8vw, 5rem); font-weight: 900; color: #fff; margin-bottom: 5rem;">قالوا عن <span style="color: var(--primary-color);">الدخان</span></h2>
-            
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; perspective: 1000px;">
-                <!-- Review Card 1 -->
-                <div class="review-card" style="background: #111; padding: 3rem 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); width: 100%; max-width: 350px; text-align: right; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
-                    <div style="color: var(--primary-color); font-size: 1.5rem; margin-bottom: 1.5rem;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p style="color: #fff; font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; font-style: italic;">"البريسكت يذوب في الفم حرفياً. أفضل تجربة باربيكيو في المدينة بلا منازع."</p>
-                    <h4 style="color: rgba(255,255,255,0.5); font-size: 1rem;">— أحمد خالد</h4>
-                </div>
-
-                <!-- Review Card 2 -->
-                <div class="review-card" style="background: #111; padding: 3rem 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); width: 100%; max-width: 350px; text-align: right; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: translateY(30px);">
-                    <div style="color: var(--primary-color); font-size: 1.5rem; margin-bottom: 1.5rem;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p style="color: #fff; font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; font-style: italic;">"سماش برجر أسطوري، الصوص واللحم مزيج مرعب من اللذاذة!"</p>
-                    <h4 style="color: rgba(255,255,255,0.5); font-size: 1rem;">— محمد طارق</h4>
-                </div>
             </div>
         </div>
     </section>
