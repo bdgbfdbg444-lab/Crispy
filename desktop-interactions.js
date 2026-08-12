@@ -4,20 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only run on desktop
     if (window.innerWidth < 992) return;
 
-    // 1. Initialize Lenis Smooth Scrolling
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-        direction: 'vertical',
-        smooth: true,
-        smoothTouch: false,
-    });
+    // 1. Initialize Lenis Smooth Scrolling (if available)
+    let lenis = null;
+    try {
+        if (typeof Lenis !== 'undefined') {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+                direction: 'vertical',
+                smooth: true,
+                smoothTouch: false,
+            });
 
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+        }
+    } catch(e) {
+        console.warn('Lenis not available:', e.message);
     }
-    requestAnimationFrame(raf);
 
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -25,8 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!prefersReducedMotion) {
             gsap.registerPlugin(ScrollTrigger);
             
-            lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => lenis.raf(time * 1000));
+            if (lenis) {
+                lenis.on('scroll', ScrollTrigger.update);
+                gsap.ticker.add((time) => lenis.raf(time * 1000));
+            }
         gsap.ticker.lagSmoothing(0, 0);
 
         // ==========================================

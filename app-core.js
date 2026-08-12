@@ -506,7 +506,16 @@ document.addEventListener('DOMContentLoaded', () => {
         menuContainer.style.display = 'block';
     };
     const showError = (message) => {
-        loader.innerHTML = `<p style="color: red; text-align: center; font-weight: bold;">${message}</p>`;
+        if (loader) {
+            loader.innerHTML = `<p style="color: red; text-align: center; font-weight: bold;">${message}</p>`;
+        } else {
+            console.error('Menu Error:', message);
+            // Fallback: show error in the signature grid if on home page
+            const grid = document.getElementById('signature-menu-grid');
+            if (grid) {
+                grid.innerHTML = `<p style="color: #d9480f; text-align: center; font-weight: bold; grid-column: 1 / -1; padding: 2rem;">${message}</p>`;
+            }
+        }
     };
 
     const isHomePage = document.body.id === 'home-page' || document.body.id === 'about-page';
@@ -771,42 +780,69 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('signature-menu-grid');
         if (!grid) return;
         
-        // Define our fixed signature layout: ID -> Image mapping
-        const signatureSetup = [
-            { id: 1, image: 'images/menu-brisket.jpg', title: 'بريسكت تكساس', desc: 'لحم مدخن 14 ساعة على حطب البلوط.' },
-            { id: 2, image: 'images/menu-burger150.jpg', title: 'سماش برجر', desc: 'قطعتين لحم سماش، جبنة، صوص مدخن.' },
-            { id: 3, image: 'images/menu-milkshake.jpg', title: 'ميلك شيك شوكولاتة', desc: 'ميلك شيك شوكولاتة غني وكريمي مع كريمة مخفوقة.' }
-        ];
-
         grid.innerHTML = '';
+
+        // Filter out sold-out products, then render ALL available POS products dynamically
+        const availableProducts = products.filter(p => !(p.IsSoldOut || p.isSoldOut));
         
-        signatureSetup.forEach(setup => {
-            // Find real product data from POS
-            const realProduct = products.find(p => (p.Id || p.id) == setup.id);
-            if (!realProduct) return; // Skip if it doesn't exist in POS
-            
+        if (availableProducts.length === 0) {
+            grid.innerHTML = '<p style="text-align:center; color: rgba(255,255,255,0.5); grid-column: 1 / -1; padding: 2rem;">لا توجد أصناف متاحة حالياً.</p>';
+            return;
+        }
+
+        availableProducts.forEach(product => {
             const card = document.createElement('div');
             card.className = 'signature-card scroll-fade-up';
             
-            const priceVal = realProduct.SellingPrice || realProduct.sellingPrice;
+            const priceVal = product.SellingPrice || product.sellingPrice || 0;
             const priceText = `${parseFloat(priceVal).toFixed(2)} ج.م`;
-            const nameText = realProduct.Name || realProduct.name || setup.title;
+            const nameText = product.Name || product.name || 'منتج';
+            const descText = product.Description || product.description || '';
+            const imagePath = product.ImagePath || product.imagePath || '';
+            const productId = product.Id || product.id;
+
+            // Build image HTML with graceful fallback
+            let imgHtml = '';
+            if (imagePath && imagePath.trim() !== '') {
+                imgHtml = `<div class="signature-img-wrapper">
+                    <img src="${imagePath}" alt="${nameText}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                </div>`;
+            }
 
             card.innerHTML = `
-                <div class="signature-img-wrapper">
-                    <img src="${setup.image}" alt="${nameText}">
-                </div>
+                ${imgHtml}
                 <div class="signature-header">
                     <span class="signature-price">${priceText}</span>
                     <h3 class="text-heading" style="font-size: 1.5rem; margin:0; color: #fff;">${nameText}</h3>
                 </div>
-                <p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">${setup.desc}</p>
-                <button class="btn-primary" style="width: 100%;" onclick="window.openProductDetailsById(${setup.id})">أضف للسلة</button>
+                ${descText ? `<p class="text-body" style="font-size: 0.95rem; margin-bottom: var(--space-md);">${descText}</p>` : ''}
+                <button class="btn-primary" style="width: 100%;" onclick="window.openProductDetailsById(${productId})">أضف للسلة</button>
             `;
             
             grid.appendChild(card);
         });
+
+        // Re-initialize scroll animations for the new cards
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!prefersReducedMotion) {
+                grid.querySelectorAll('.scroll-fade-up').forEach(el => {
+                    gsap.fromTo(el, 
+                        { y: 40, opacity: 0 },
+                        { 
+                            y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: el,
+                                start: "top 90%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+            }
+        }
     }
+
 
     window.addToCartById = (productId, event) => {
         if(event) { event.preventDefault(); event.stopPropagation(); }
