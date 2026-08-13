@@ -1831,7 +1831,6 @@ window.renderPDRecommendations = () => {
     const recList = document.getElementById('pd-recommendations-list');
     recList.innerHTML = '';
     
-    // Hardcoded logic for Phase 9: randomly pick 3 products from menu
     fetchWithVersion(dbUrl + 'menu.json').then(res => res.json()).then(data => {
         if(data) {
             let allProds = [];
@@ -1848,35 +1847,36 @@ window.renderPDRecommendations = () => {
             }
             if (allProds.length > 0) {
                 const recIds = pdCurrentProduct.recommendationProductIds || pdCurrentProduct.RecommendationProductIds || [];
-                
                 if (recIds.length > 0) {
                     const selected = allProds.filter(p => recIds.includes(p.Id || p.id));
-                    
                     if (selected.length > 0) {
-                    selected.forEach(p => {
-                        const card = document.createElement('div');
-                        card.className = 'pd-rec-card';
-                        card.onclick = () => { window.openProductDetails(p); };
-                        
-                        const img = document.createElement('img');
-                        img.src = p.imagePath || 'images/hero-bg.jpg';
-                        
-                        const info = document.createElement('div');
-                        info.className = 'pd-rec-info';
-                        const name = document.createElement('div');
-                        name.className = 'pd-rec-name';
-                        name.textContent = p.name || p.Name;
-                        const price = document.createElement('div');
-                        price.className = 'pd-rec-price';
-                        price.textContent = (p.sellingPrice || p.SellingPrice || 0).toFixed(2) + ' ج.م';
-                        
-                        info.appendChild(name);
-                        info.appendChild(price);
-                        card.appendChild(img);
-                        card.appendChild(info);
-                        recList.appendChild(card);
-                    });
-                    recSection.classList.remove('hidden');
+                        selected.forEach(p => {
+                            const card = document.createElement('div');
+                            card.className = 'pd-rec-card';
+                            card.onclick = () => { window.openProductDetails(p); };
+                            
+                            const img = document.createElement('img');
+                            img.src = p.imagePath || 'images/hero-bg.jpg';
+                            
+                            const info = document.createElement('div');
+                            info.className = 'pd-rec-info';
+                            const name = document.createElement('div');
+                            name.className = 'pd-rec-name';
+                            name.textContent = p.name || p.Name;
+                            const price = document.createElement('div');
+                            price.className = 'pd-rec-price';
+                            price.textContent = (p.sellingPrice || p.SellingPrice || 0).toFixed(2) + ' ج.م';
+                            
+                            info.appendChild(name);
+                            info.appendChild(price);
+                            card.appendChild(img);
+                            card.appendChild(info);
+                            recList.appendChild(card);
+                        });
+                        recSection.classList.remove('hidden');
+                    } else {
+                        recSection.classList.add('hidden');
+                    }
                 } else {
                     recSection.classList.add('hidden');
                 }
