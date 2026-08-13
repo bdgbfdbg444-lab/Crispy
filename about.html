@@ -42,7 +42,7 @@
     </header>
 
     <!-- Cinematic B-Roll Hero -->
-    <!-- app-core.js injects video with z-index: 0 inside this container -->
+    <!-- app-main.js injects video with z-index: 0 inside this container -->
     <section id="broll-section" class="broll-cinematic">
         <div class="broll-overlay"></div>
         <div class="broll-content">
@@ -57,7 +57,7 @@
             <div class="story-decorative-text scroll-fade-up">HERITAGE</div>
             <div class="story-content-block scroll-fade-up" style="transition-delay: 150ms;">
                 <h2 class="text-display-large">وراء كل قطعة لحم.. حكاية</h2>
-                <!-- Dynamic text injected here by POS/app-core.js -->
+                <!-- Dynamic text injected here by POS/app-main.js -->
                 <p id="story-text-preview" class="text-body"></p>
             </div>
         </div>
@@ -69,7 +69,7 @@
             <div class="section-header center scroll-fade-up">
                 <h2 class="text-display-large">كواليس التحضير</h2>
             </div>
-            <!-- Images dynamically injected by app-core.js as .gallery-img -->
+            <!-- Images dynamically injected by app-main.js as .gallery-img -->
             <div id="gallery-grid" class="editorial-gallery scroll-fade-up" style="transition-delay: 200ms;">
             </div>
         </div>
@@ -112,7 +112,7 @@
                 </div>
                 
                 <!-- Map -->
-                <!-- app-core.js replaces the inside of this with an iframe -->
+                <!-- app-main.js replaces the inside of this with an iframe -->
                 <div id="map-iframe-preview" class="map-wrapper scroll-fade-up" style="transition-delay: 150ms;">
                     <p style="color: #666; text-align:center; padding: 2rem;">جاري تحميل الخريطة...</p>
                 </div>
@@ -184,11 +184,11 @@
         </div>
         <!-- Weight Modal -->
         <div id="weight-modal" class="modal hidden">
-            <!-- (Preserved for app-core.js safety) -->
+            <!-- (Preserved for app-main.js safety) -->
         </div>
         <!-- Addons Modal -->
         <div id="addons-modal" class="modal hidden">
-            <!-- (Preserved for app-core.js safety) -->
+            <!-- (Preserved for app-main.js safety) -->
         </div>
         <!-- Success Modal -->
         <div id="success-modal" class="modal hidden">
@@ -216,6 +216,6 @@
     <script src="config.js"></script>
     <script src="desktop-interactions.js"></script>
     <script src="mobile-interactions.js"></script>
-    <script src="app-core.js?v=8"></script>
+    <script src="app-main.js"></script>
 </body>
 </html>
